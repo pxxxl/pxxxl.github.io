@@ -17,17 +17,17 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="函数式编程特别重视一元函数  Partial（偏函数）“偏函数”指：固定某个参数为特定值，然后返回一个接收余下参数的函数。这是一种减少参数的方式。 打个比方：我们已经有了greater函数，它接收两个参数a和b。 如果我想编写一个greater_than_6函数，就可以基于已有的greater函数，将参数b固定为6，这样，得到的新函数greater_than_6只接收一个参数。 来写一下parti">
+    <meta name="description" content="函数式编程特别重视一元函数  Partial（偏函数）“偏函数”指：固定某个参数为特定值，然后返回一个接收余下参数的函数。这是一种减少参数的方式。 打个比方：我们已经有了greater函数，它接收两个参数a和b。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="偏函数和柯里化">
 <meta property="og:url" content="http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/index.html">
 <meta property="og:site_name" content="Cozard 技术空间">
-<meta property="og:description" content="函数式编程特别重视一元函数  Partial（偏函数）“偏函数”指：固定某个参数为特定值，然后返回一个接收余下参数的函数。这是一种减少参数的方式。 打个比方：我们已经有了greater函数，它接收两个参数a和b。 如果我想编写一个greater_than_6函数，就可以基于已有的greater函数，将参数b固定为6，这样，得到的新函数greater_than_6只接收一个参数。 来写一下parti">
+<meta property="og:description" content="函数式编程特别重视一元函数  Partial（偏函数）“偏函数”指：固定某个参数为特定值，然后返回一个接收余下参数的函数。这是一种减少参数的方式。 打个比方：我们已经有了greater函数，它接收两个参数a和b。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-19T04:44:17.000Z">
-<meta property="article:modified_time" content="2022-09-19T04:45:19.461Z">
+<meta property="article:modified_time" content="2022-09-19T05:23:13.265Z">
 <meta property="article:author" content="ZYZ">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
@@ -86,7 +86,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
   </ul>
 </nav>
 
@@ -132,18 +132,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -222,7 +222,16 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-09-19 12:44:17 / 修改时间：12:45:19" itemprop="dateCreated datePublished" datetime="2022-09-19T12:44:17+08:00">2022-09-19</time>
+      <time title="创建时间：2022-09-19 12:44:17 / 修改时间：13:23:13" itemprop="dateCreated datePublished" datetime="2022-09-19T12:44:17+08:00">2022-09-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">C++函数式编程</span></a>
+        </span>
     </span>
 
   
@@ -239,6 +248,8 @@
 <hr>
 <h2 id="Partial（偏函数）"><a href="#Partial（偏函数）" class="headerlink" title="Partial（偏函数）"></a>Partial（偏函数）</h2><p>“偏函数”指：固定某个参数为特定值，然后返回一个接收余下参数的函数。这是一种减少参数的方式。</p>
 <p>打个比方：我们已经有了greater函数，它接收两个参数a和b。</p>
+<span id="more"></span>
+
 <p>如果我想编写一个greater_than_6函数，就可以基于已有的greater函数，将参数b固定为6，这样，得到的新函数greater_than_6只接收一个参数。</p>
 <p>来写一下partial</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span> _Fx, <span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">partial</span><span class="params">(_Fx&amp;&amp; f, Args&amp;&amp;... args)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> std::<span class="built_in">bind_front</span>(f, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -314,7 +325,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">ZYZ</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
     </div>
@@ -322,7 +333,7 @@
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
 
   
 
