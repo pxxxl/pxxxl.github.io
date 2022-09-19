@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -179,6 +179,730 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-9-Y-%E7%BB%84%E5%90%88%E5%AD%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-9-Y-%E7%BB%84%E5%90%88%E5%AD%90/" class="post-title-link" itemprop="url">untitled</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-19 12:48:53 / 修改时间：12:49:05" itemprop="dateCreated datePublished" datetime="2022-09-19T12:48:53+08:00">2022-09-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Y-组合子（Y-Combinator）只是一个听起来很厉害，也很难的概念，然而实践上没有什么太大价值，因为它性能较低。不过学习它能让我们更好地理解函数式编程。</p>
+<p>Y-combinator由Haskell Brooks Curry提出，Haskell的那个Haskell，Curry的那个Curry。</p>
+<p><img src="/../images/untitled/202204102202393.png" alt="img"></p>
+<hr>
+<h2 id="不动点（fixed-point）"><a href="#不动点（fixed-point）" class="headerlink" title="不动点（fixed-point）"></a>不动点（fixed-point）</h2><p>想像一个函数G，它接收一个函数F作为参数，返回另一个函数。</p>
+<p>如果满足<strong>F = G（F）</strong>则称F为G的不动点</p>
+<p>如果F是G的不动点，那么：<strong>F = G（F）=G（G（F））=G（G（G（F）））= ……</strong></p>
+<h2 id="匿名递归"><a href="#匿名递归" class="headerlink" title="匿名递归"></a>匿名递归</h2><p>想象一个匿名函数（为了方便称呼，给它名字M），它接收一个函数<strong>f</strong>，然后在其函数体内调用<strong>f</strong>。</p>
+<p>在此基础上，如果这样定义一个函数：<strong>Func = M（Func）</strong>；</p>
+<p>这样Func将成为递归函数，因为：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Func（）</span><br><span class="line"><span class="comment">//相当于</span></span><br><span class="line">M（Func）（）</span><br><span class="line"><span class="comment">//M在函数体内调用Func，于是相当于</span></span><br><span class="line">Func（）</span><br></pre></td></tr></table></figure>
+
+<p>无限递归。</p>
+<p>然而如果在M的函数体内加上递归终止条件与迭代条件，Func就能成为一个真正的递归函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//伪代码</span></span><br><span class="line"><span class="keyword">auto</span> M = [](接收<span class="type">int</span> a返回<span class="type">int</span> b的函数)&#123;</span><br><span class="line">    <span class="keyword">return</span> a == <span class="number">0</span> ? <span class="number">1</span> : 函数(a - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Func&lt;<span class="built_in">int</span>(<span class="type">int</span>)&gt; = <span class="built_in">M</span>(Func);</span><br><span class="line"><span class="comment">//Func是阶乘递归</span></span><br></pre></td></tr></table></figure>
+
+<p>成功用M构造了递归。注意看M的表达式，当M返回函数的时候：</p>
+<p><strong>Func = M（Func）；</strong></p>
+<p>Func成为了M的不动点，同时Func自己是递归函数。</p>
+<p>显然，如果需要写一个匿名递归函数，M部分是能很快写出来的，因为M知道递归函数的名字Func，M可以在自己的函数体里面写Func的递归逻辑，就像在Func的函数体里一样。</p>
+<p>难点在已知M的情况下找出Func，是否能找到这样一个具有普遍性的函数，它接收M，返回Func？</p>
+<hr>
+<h3 id="数学推导格式规定"><a href="#数学推导格式规定" class="headerlink" title="数学推导格式规定"></a>数学推导格式规定</h3><h4 id="规则一："><a href="#规则一：" class="headerlink" title="规则一："></a>规则一：</h4><p><img src="/../images/untitled/91ff51ec92b238f5dfe8ef2e063d0906.svg+xml" alt="img">             </p>
+<p><img src="/../images/untitled/9a14c5c608787364742381e8e29ffa32.svg+xml" alt="img">       </p>
+<h4 id="规则二："><a href="#规则二：" class="headerlink" title="规则二："></a>规则二：</h4><p><img src="/../images/untitled/09ab8f6be57635bac6a78da3382ee55e.svg+xml" alt="img"></p>
+<h4 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h4><p>化简式子</p>
+<p><img src="/../images/untitled/9056be8a47e563b97de6fe43cc84b3db.svg+xml" alt="img"></p>
+<p>可以看到，左边括号里是一个函数，用7来调用它，得</p>
+<p><img src="/../images/untitled/ce99cd4785cbe6d20163fdd34035f8a8.svg+xml" alt="img"></p>
+<p>可以看到，左边括号里是一个函数，用2来调用它，得</p>
+<p><img src="/../images/untitled/b15983bcda2a67366d095cfeb326717a.svg+xml" alt="img"></p>
+<p>很好，现在你已经掌握这套推导规则了，现在让我们引入Y-组合子吧！</p>
+<hr>
+<h2 id="Y-组合子"><a href="#Y-组合子" class="headerlink" title="Y-组合子"></a>Y-组合子</h2><p>Haskell Curry找到了一个函数 Y-组合子，它的形式是这样的：</p>
+<p><img src="/../images/untitled/3fa37fb6ebde9b09d29c0fbdd3dc8a29.svg+xml" alt="img"></p>
+<p>它有这样的性质：（F是函数）</p>
+<p><img src="/../images/untitled/d763a13dd9181f5337fb115964e267e0.svg+xml" alt="img"></p>
+<p>即<strong>Y（F）是 F 的不动点</strong></p>
+<p>下面开始数学证明：</p>
+<p><img src="/../images/untitled/a1788572a58fc8c6ce72f5b8e01da2d4.svg+xml" alt="img"></p>
+<p><img src="/../images/untitled/ed1dec5f2850001dbe70263aa3e1dd8b.svg+xml" alt="img"></p>
+<p>//注意了要把<img src="/../images/untitled/90232451b8a642d14d6fd5aa82e64078.svg+xml" alt="img">当成一个整体来调用函数了</p>
+<p><img src="/../images/untitled/64e1e19aad9d4789269f597a028d4b24.svg+xml" alt="img"></p>
+<p><img src="/../images/untitled/9af8d2e20db9e47df739977c6a666ae2.svg+xml" alt="img"></p>
+<p>证毕。</p>
+<h2 id="利用Y-组合子实现匿名递归"><a href="#利用Y-组合子实现匿名递归" class="headerlink" title="利用Y-组合子实现匿名递归"></a>利用Y-组合子实现匿名递归</h2><p>比照前面的几个式子：</p>
+<p><img src="/../images/untitled/43ab695f75e7cea0f1def91c29f284df.svg+xml" alt="img"></p>
+<p><img src="/../images/untitled/0e1ae1382c298342cc3002ea13927f20.svg+xml" alt="img"></p>
+<p>其中Func是递归函数。</p>
+<p>不妨令 Y（F）= Func ，M = F，上述公式完全成立</p>
+<p>代换，得：</p>
+<p><img src="/../images/untitled/c382f38ae8cddfb2677250ecd58e3b8f.svg+xml" alt="img"></p>
+<p>成功了。</p>
+<h2 id="C-实现Y-组合子"><a href="#C-实现Y-组合子" class="headerlink" title="C++实现Y-组合子"></a>C++实现Y-组合子</h2><p>代码如下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> Y = [](<span class="keyword">auto</span>&amp;&amp; f)&#123;</span><br><span class="line">    <span class="keyword">return</span> [&amp;f](<span class="keyword">auto</span>&amp;&amp; x)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">f</span>([&amp;x](<span class="keyword">auto</span>&amp;&amp; y)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">x</span>(x)(y);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;[&amp;f](<span class="keyword">auto</span>&amp;&amp; x)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">f</span>([&amp;x](<span class="keyword">auto</span>&amp;&amp; y)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">x</span>(x)(y);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>来使用一下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> M = [](<span class="keyword">auto</span>&amp;&amp; f)&#123;</span><br><span class="line">    <span class="keyword">return</span> [](<span class="type">int</span> n)&#123;</span><br><span class="line">        n == <span class="number">0</span> ? <span class="number">1</span> : <span class="built_in">f</span>(n);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> factorial = <span class="built_in">compose</span>(Y, M);</span><br></pre></td></tr></table></figure>
+
+<p>这样就完成了匿名递归函数的编写。</p>
+<p>对了还有个可优化的点，还记得我们之前说过的柯里化吗，既然Y组合子每次使用时都要和M函数结合，为什么我们不把Y组合子直接固定在compose里呢？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> rec = <span class="built_in">curry</span>(compose)(Y);</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> factorial = <span class="built_in">rec</span>(M);</span><br></pre></td></tr></table></figure>
+
+<p>简洁，优雅，这便是函数式编程的魅力。</p>
+<hr>
+<p>这时候你可能已筋疲力竭，不禁会想，弄这个开销巨大，对于递归编写又没多少简化的东西干什么呢？我想说的是，编程不仅仅是枯燥乏味的增删改查——</p>
+<p>一轮精妙的推导，一节优美的实现，一段如诗的代码，才是程序员的浪漫与追求。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-8-%E6%93%8D%E4%BD%9C%E5%AE%B9%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-8-%E6%93%8D%E4%BD%9C%E5%AE%B9%E5%99%A8/" class="post-title-link" itemprop="url">操作容器</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-19 12:47:55 / 修改时间：12:48:14" itemprop="dateCreated datePublished" datetime="2022-09-19T12:47:55+08:00">2022-09-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在函数式编程中，变量是不可变的，当产生一个新值时，我们创造一个新变量来“代表”它，而不是“修改”现有的变量。</p>
+<p>对于容器也是一样，对容器的操作不会改变现有容器里的值以及容器本身，而是产生一个新的容器，里面装着新的值。</p>
+<p>可以使用C++标准库自带的**std::vector(C++11)**作为容器，也可以自己写一个。</p>
+<p>这里把vector重新命个名，叫seq。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T = <span class="type">int</span>&gt;</span><br><span class="line"><span class="keyword">using</span> seq = std::vector&lt;T&gt;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="操作容器"><a href="#操作容器" class="headerlink" title="操作容器"></a>操作容器</h2><p>与命令式编程不同，函数式编程操作容器往往不是靠下标，而是用一组可复用的函数和功能函数进行组合来整体操作容器。</p>
+<p>有点绕口，来直接看实例。</p>
+<h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><p>将容器中的每个值用传入的函数映射成新的值，然后装入新的容器中，看例子。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; vec&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> increase = [](<span class="type">int</span> a)&#123;</span><br><span class="line">    <span class="keyword">return</span> a + <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> new_vec = <span class="built_in">map</span>(vec, increase);</span><br><span class="line"></span><br><span class="line"><span class="comment">//new_vec : &#123;2, 3, 4, 5, 6&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>下面是针对std::vector的map的一种实现<strong>（C++11）</strong>，你也可以实现自己的版本</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> F&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">map</span><span class="params">(seq&lt;T&gt; vec, F&amp;&amp; f)</span> </span>&#123;</span><br><span class="line">    seq new_vec = vec;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> i = <span class="number">0</span>; i &lt; my_array.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">        new_vec[i] = std::forward&lt;F&gt;(f)(new_vec[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> new_vec;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h3><p>将容器中满足某个条件的值复制到新的容器中，看例子。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">std::array&lt;<span class="type">int</span>&gt; my_array&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> judge = [](<span class="type">int</span> a)&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; <span class="number">3</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> new_array = <span class="built_in">filter</span>(my_array, judge);</span><br><span class="line"></span><br><span class="line"><span class="comment">//new_array : &#123;4, 5&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>下面是针对std::vector的filter的一种实现<strong>（C++11）</strong>，你也可以实现自己的版本</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> F&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">filter</span><span class="params">(std::seq&lt;T&gt; vec, F&amp;&amp; f)</span> </span>&#123;</span><br><span class="line">    std::seq&lt;T&gt; n_vec;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> value : vec) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">f</span>(value)) &#123;</span><br><span class="line">            n_vec.<span class="built_in">push_back</span>(std::<span class="built_in">move</span>(value));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> n_vec;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a>reduce</h3><p>这个用图片更易理解</p>
+<p><img src="/../images/untitled/202204102002831.png" alt="img"></p>
+<p>reduce接收三个参数，第一个是列表，第二个是接收两个参数的函数，第三个是初始值，返回一个值。</p>
+<p>来实现reduce</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> F, <span class="keyword">typename</span> Init&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">reduce</span><span class="params">(seq&lt;T&gt; vec, F&amp;&amp; f, Init&amp;&amp; init)</span> </span>&#123;</span><br><span class="line">    std::<span class="type">decay_t</span>&lt;Init&gt; v;</span><br><span class="line">    v = init;</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="title">if</span> <span class="params">(vec.size() == <span class="number">0</span>)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; value : vec ) &#123;</span><br><span class="line">        v = <span class="built_in">f</span>(v, value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-7-%E5%87%BD%E5%AD%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-7-%E5%87%BD%E5%AD%90/" class="post-title-link" itemprop="url">函子</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-19 12:46:34 / 修改时间：12:47:10" itemprop="dateCreated datePublished" datetime="2022-09-19T12:46:34+08:00">2022-09-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><em>从本节开始，我们就要接触“容器”了。在大多数情况下，函数式编程是操作放在“容器”中的数据而不是操作裸数据。让我们从最简单的容器——functor开始吧。</em></p>
+<hr>
+<h2 id="Functor（函子）"><a href="#Functor（函子）" class="headerlink" title="Functor（函子）"></a>Functor（函子）</h2><p>定义：</p>
+<ul>
+<li>函子必须是一个容器</li>
+<li>函子必须有map方法，（map：接收一个函数，map用functor里的值调用这个函数，然后根据返回值构造一个新的函子。）</li>
+</ul>
+<p>来实现一个最简单的函子吧</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">functor_t</span> &#123;</span><br><span class="line">    T t;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">functor_t</span>(T v) &#123; t = v; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">auto</span> <span class="title">map</span><span class="params">(std::function&lt;T(T)&gt;&amp;&amp; mapping)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">functor_t</span>&lt;T&gt;(std::forward&lt;std::function&lt;<span class="built_in">T</span>(T)&gt;&gt;(mapping)(t));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">functor_t</span>&lt;std::<span class="type">decay_t</span>&lt;T&gt;&gt; <span class="built_in">functor_of</span>(T&amp;&amp; t) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; std::forward&lt;T&gt;(t) &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//约定俗成，functor应该有一个叫做of的方法来构建一个functor</span></span><br></pre></td></tr></table></figure>
+
+<p>函数式编程里的计算大多是操作函子而不是操作函子里的值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> functorA = <span class="built_in">functor</span>(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> add_3 = <span class="built_in">curry</span>(add)(<span class="number">3</span>);</span><br><span class="line"><span class="keyword">auto</span> multiply_5 = <span class="built_in">curry</span>(multiply)(<span class="number">5</span>);</span><br><span class="line"><span class="keyword">auto</span> mod_2 = <span class="built_in">curry</span>(mod)(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> print = [](<span class="keyword">auto</span>&amp;&amp; a)&#123;std::cout&lt;&lt;a;<span class="keyword">return</span> a;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> processed = functorA.<span class="built_in">map</span>(add_3).<span class="built_in">map</span>(multiply_5).<span class="built_in">map</span>(mod_2).<span class="built_in">map</span>(is_even).<span class="built_in">map</span>(print);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>函子还可以连续调用，来看下面例子。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> num = <span class="built_in">functor_of</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> num_is_even = num.<span class="built_in">map</span>(is_even);</span><br><span class="line"><span class="comment">//num_is_even同样是一个functor</span></span><br><span class="line"></span><br><span class="line">num.map</span><br></pre></td></tr></table></figure>
+
+<p>在函子的基础上添加某些特性可以构造特殊的函子。</p>
+<h2 id="Maybe"><a href="#Maybe" class="headerlink" title="Maybe"></a>Maybe</h2><p>maybe是特殊的函子，它具有函子的所有特征，此外，它实现了“空值过滤”的功能。</p>
+<p>它的map具有一种特点，如果maybe里的值是一个“空值”，那么map就会直接将maybe拷贝一份作为返回值，而不会尝试拿“空值”来调用传入的函数（如果调用了，可能会产生错误）。</p>
+<p>来实现一下吧。</p>
+<h2 id="Applicative"><a href="#Applicative" class="headerlink" title="Applicative"></a>Applicative</h2><p>applicative是特殊的函子，它具有函子的所有特征，此外，它实现了“apply”的功能。</p>
+<p>如果一个applicative里装着值，另一个applicative里装着接收这个值的函数，装着值的applicative就可以apply另一个applicative，利用函数的返回值创建一个新的applicative。</p>
+<h2 id="Monad（单子）"><a href="#Monad（单子）" class="headerlink" title="Monad（单子）"></a>Monad（单子）</h2><p>monad是特殊的函子，它具有函子的所有特征，此外，它实现了“flatmap”的功能。</p>
+<p>有时处理函子时会出现“函子嵌套”，就是说函子内部储存的值也是一个函子。而monad的flatmap保证函子内部储存的值一定不是函子。（flatmap好比将嵌套的函子“拍平”）</p>
+<p>来实现一下</p>
+<h2 id="更美观的书写方式"><a href="#更美观的书写方式" class="headerlink" title="更美观的书写方式"></a>更美观的书写方式</h2><p>C++20的range库使用了类似Unix的“管道运算符”，可以让函子（以及一些容器）的函数调用变得极其优美。首先，我们需要重载functor的  |  运算符。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">functor_t</span> &#123;</span><br><span class="line">    T t;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">functor_t</span>(T v) &#123; t = v; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">auto</span> <span class="title">map</span><span class="params">(std::function&lt;T(T)&gt;&amp;&amp; mapping)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">functor_t</span>&lt;T&gt;(std::forward&lt;std::function&lt;<span class="built_in">T</span>(T)&gt;&gt;(mapping)(t));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">auto</span> <span class="keyword">operator</span>|(std::function&lt;<span class="built_in">T</span>(T)&gt;&amp;&amp; mapping) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">functor_t</span>&lt;T&gt;(std::forward&lt;std::function&lt;<span class="built_in">T</span>(T)&gt;&gt;(mapping)(t));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">functor_t</span>&lt;std::<span class="type">decay_t</span>&lt;T&gt;&gt; <span class="built_in">functor_of</span>(T&amp;&amp; t) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; std::forward&lt;T&gt;(t) &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>本质是map改了个名字，但是调用效果非常棒。</p>
+<p>改写本章开头functor演示的代码。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> processed = functorA</span><br><span class="line">    |add_3</span><br><span class="line">    |multiply_5</span><br><span class="line">    |mod_2</span><br><span class="line">    |is_even</span><br><span class="line">    |print</span><br><span class="line">    ;</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<p>好看吧，这种写法清晰明朗，比一长条的map要易读。而且这种写法也符合无参风格（point-free），是函数式编程所提倡的！</p>
+<p>接下来一章，我们将学习C++的range库，深入了解一下C++特色的函数式编程。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-6-%E5%B0%8F%E7%BB%93%E4%B8%80%E4%B8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-6-%E5%B0%8F%E7%BB%93%E4%B8%80%E4%B8%8B/" class="post-title-link" itemprop="url">小结一下</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-19 12:45:51 / 修改时间：12:46:29" itemprop="dateCreated datePublished" datetime="2022-09-19T12:45:51+08:00">2022-09-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在前面的章节中，我们已经初步学习了函数式编程的基本思维以及概念，下面来梳理一下：</p>
+<hr>
+<ul>
+<li>函数式编程将函数作为一等公民</li>
+<li>函数式编程是声明式的</li>
+<li>函数式编程要求不要改变变量的值</li>
+</ul>
+<ul>
+<li>尽量编写纯函数</li>
+<li>使用组合函数将纯函数组合起来</li>
+<li>使用std::function实现lambda的递归</li>
+<li>使用组合函数时可以无视被组合函数的中间参数，这种风格叫做Point-Free</li>
+<li>使用偏函数与柯里化减少函数的参数，最好降低至一个</li>
+</ul>
+<hr>
+<p>在接下来的章节中，我们将要接触到“容器”以及对容器的操作。很多时候我们并不处理裸露在外面的值，而是处理被包裹在容器中的值。</p>
+<p>我们还将接触到一些有趣的数学推导，见证Y-组合子是如何帮助我们实现匿名递归的。</p>
+<ul>
+<li>C++20对于Range的支持与管道运算符</li>
+<li>对容器的操作</li>
+<li>函子Functor以及衍生</li>
+<li>Y-组合子与递归</li>
+</ul>
+<hr>
+<p>我准备了一些题目，尝试着用函数式编程的思维解决他们。这些题目有助于加深你对函数式编程的理解。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/" class="post-title-link" itemprop="url">偏函数和柯里化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-19 12:44:17 / 修改时间：12:45:19" itemprop="dateCreated datePublished" datetime="2022-09-19T12:44:17+08:00">2022-09-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>函数式编程特别重视一元函数</strong></p>
+<hr>
+<h2 id="Partial（偏函数）"><a href="#Partial（偏函数）" class="headerlink" title="Partial（偏函数）"></a>Partial（偏函数）</h2><p>“偏函数”指：固定某个参数为特定值，然后返回一个接收余下参数的函数。这是一种减少参数的方式。</p>
+<p>打个比方：我们已经有了greater函数，它接收两个参数a和b。</p>
+<p>如果我想编写一个greater_than_6函数，就可以基于已有的greater函数，将参数b固定为6，这样，得到的新函数greater_than_6只接收一个参数。</p>
+<p>来写一下partial</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span> _Fx, <span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">partial</span><span class="params">(_Fx&amp;&amp; f, Args&amp;&amp;... args)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> std::<span class="built_in">bind_front</span>(f, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写完了，<strong>C++20及以上适用</strong>。</p>
+<p><em>也可以用C++标准库（C++11）提供的std::bind来固定参数：</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std::placeholders;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> more_than_6 = std::<span class="built_in">bind</span>(more, _1, <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">more_than_6</span>(<span class="number">1</span>);   <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<p><em>以下是bind用法的归纳：</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std::placeholders;</span><br><span class="line"><span class="comment">//占位符被定义在这个名字空间里</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//std::bind接收 n+1 个参数，其中n是函数参数的个数</span></span><br><span class="line"><span class="comment">//std::bind的第一个参数是函数名，后面的参数要么是具体的值，要么是占位符</span></span><br><span class="line"><span class="comment">//占位符类似这种：_1, _2, _3,......</span></span><br><span class="line"><span class="comment">//占位符表示 “生成的新函数的第n个参数” 将会被放在原函数的占位符位置。来看演示</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> less_than_6 = std::<span class="built_in">bind</span>(more, <span class="number">6</span>, _1);</span><br><span class="line"><span class="comment">//看，一共只有一个占位符，这意味着新函数一共只会有一个参数</span></span><br><span class="line"><span class="comment">//调用这个新函数时，这个参数会被放进对应占位符的位置</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">less_than_6</span>(<span class="number">10</span>);</span><br><span class="line"><span class="comment">//bind的顺序是(6, _1), 10被放进_1</span></span><br><span class="line"><span class="comment">//所以相当于调用：</span></span><br><span class="line"><span class="built_in">more</span>(<span class="number">6</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//来来来我们再比较一下</span></span><br><span class="line">std::<span class="built_in">bind</span>(more, <span class="number">6</span>, _1);</span><br><span class="line">       <span class="built_in">less_than_6</span>(<span class="number">10</span>);</span><br><span class="line">           <span class="built_in">more</span>(<span class="number">6</span>, <span class="number">10</span>);</span><br><span class="line"><span class="comment">//我想你已经大概明白了，来看看复杂的</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> less = std::<span class="built_in">bind</span>(more, _2, _1);</span><br><span class="line"><span class="comment">//这次有两个占位符</span></span><br><span class="line"><span class="built_in">less</span>(<span class="number">6</span>, <span class="number">10</span>);</span><br><span class="line"><span class="comment">//6被放进占位符_1  ,因为它是新函数的第一个参数</span></span><br><span class="line"><span class="comment">//10被放进占位符_2 ,因为它是新函数的第二个参数</span></span><br><span class="line"><span class="comment">//bind的顺序是(_2, _1)</span></span><br><span class="line"><span class="comment">//所以等效于调用：</span></span><br><span class="line"><span class="built_in">more</span>(<span class="number">10</span>, <span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Curry（柯里化）"><a href="#Curry（柯里化）" class="headerlink" title="Curry（柯里化）"></a>Curry（柯里化）</h2><p>柯里化是特殊的Partial（偏函数）。</p>
+<p>它并不固定任何一个参数，被柯里化的函数有这样的行为：</p>
+<ul>
+<li>只接收一个或多个参数并固定它，返回一个被柯里化的接收剩余参数的函数</li>
+<li>当所有参数都被固定时返回结果</li>
+</ul>
+<p>概念有点绕，来看演示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//函数名curry</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> sum_of_three = [](<span class="keyword">auto</span> a, <span class="keyword">auto</span> b, <span class="keyword">auto</span> c)&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b + c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> curried = <span class="built_in">curry</span>(sum_of_three);</span><br><span class="line"></span><br><span class="line"><span class="comment">//以下的调用法等效</span></span><br><span class="line"><span class="built_in">sum_of_three</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);                   <span class="comment">//6</span></span><br><span class="line"><span class="built_in">curried_sum_of_three</span>(<span class="number">1</span>)(<span class="number">2</span>)(<span class="number">3</span>);           <span class="comment">//6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//理解柯里化函数的调用法</span></span><br><span class="line"><span class="keyword">auto</span> curried_sum_1 = <span class="built_in">curried</span>(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">auto</span> curried_sum_2 = <span class="built_in">curried_sum_1</span>(<span class="number">2</span>);</span><br><span class="line"><span class="keyword">auto</span> curried_sum_3 = <span class="built_in">curried_sum_2</span>(<span class="number">3</span>);   <span class="comment">//6</span></span><br></pre></td></tr></table></figure>
+
+<p>标准库中没有这样的函数，我们来自己写一个：</p>
+<p><strong>（利用C++20的concept弄的，早些版本的写法不熟练）</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">curry_t</span> &#123;</span><br><span class="line">	F f;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span>&amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(std::invoke(f, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> std::<span class="built_in">invoke</span>(f, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(!std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span>&amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(curry(partial(f, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(curry(partial(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">curry</span>(<span class="built_in">partial</span>(f, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span>&amp;&amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(std::invoke(f, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> std::<span class="built_in">invoke</span>(f, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(!std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span>&amp;&amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(curry(partial(f, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(curry(partial(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">curry</span>(<span class="built_in">partial</span>(f, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span><span class="type">const</span> &amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(std::invoke(f, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> std::<span class="built_in">invoke</span>(f, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(!std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span><span class="type">const</span> &amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(curry(partial(f, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(curry(partial(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">curry</span>(<span class="built_in">partial</span>(f, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span><span class="type">const</span> &amp;&amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(std::invoke(f, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> std::<span class="built_in">invoke</span>(f, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(!std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span><span class="type">const</span> &amp;&amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(curry(partial(f, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(curry(partial(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">curry</span>(<span class="built_in">partial</span>(f, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">curry_t</span>&lt;std::<span class="type">decay_t</span>&lt;F&gt;&gt; <span class="built_in">curry</span>(F&amp;&amp; f)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> &#123; std::forward&lt;F&gt;(f) &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外说一下，纯粹的curry严格地让函数一次只接收一个参数，而上面的curry要求更宽松，你可以一次传几个参数进去。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-4-%E8%83%B6%E6%B0%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-4-%E8%83%B6%E6%B0%B4/" class="post-title-link" itemprop="url">胶水</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-19 12:39:56 / 修改时间：12:40:40" itemprop="dateCreated datePublished" datetime="2022-09-19T12:39:56+08:00">2022-09-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>已经编写了一些小型函数，我们来看看它们可以如何变化与组合</strong></p>
+<p><strong>记住法则一：函数是一等公民。</strong></p>
+<hr>
+<h2 id="函数否定"><a href="#函数否定" class="headerlink" title="函数否定"></a>函数否定</h2><p>希望编写一个函数，它接收另一个函数，返回这个函数的否定函数。</p>
+<p>C++17标准库提供了这个函数：std::not_fn</p>
+<p>（接收一个返回bool类型的函数，返回一个反转原函数返回值的新函数）</p>
+<p>来试一下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> is_odd = [](<span class="keyword">auto</span> a)&#123;</span><br><span class="line">    <span class="keyword">return</span> a % <span class="number">2</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> is_even = std::<span class="built_in">not_fn</span>(is_odd);</span><br><span class="line"><span class="comment">//判断奇偶的函数</span></span><br><span class="line"><span class="comment">//其中判断偶的函数没有直接编写，而是从判断奇的函数中直接生成</span></span><br></pre></td></tr></table></figure>
+
+<p>把函数当作参数，“函数式编程”是不是有点意思了？再来看这个：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> not_equ = std::<span class="built_in">not_fn</span>(eq);</span><br><span class="line"><span class="comment">//从 “等于” 函数中直接生成 “不等于” 函数</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">not_equ</span>(<span class="number">1</span>, <span class="number">2</span>);    <span class="comment">//true</span></span><br><span class="line"><span class="built_in">eq</span>(<span class="number">1</span>, <span class="number">2</span>);         <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="函数或，函数与"><a href="#函数或，函数与" class="headerlink" title="函数或，函数与"></a>函数或，函数与</h2><p>有了逻辑非，怎能没有逻辑或和逻辑与呢？但很遗憾，标准库没有提供。</p>
+<p>怕什么，学C++的最会造轮子了！来写一下试试。</p>
+<p>（注：若看不懂，建议复制粘贴直接用，这部分的语法我将在“模板元编程”部分讲解。）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//函数逻辑或</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F1</span>, <span class="keyword">class</span> <span class="title class_">F2</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">or_fn_t</span> &#123;</span><br><span class="line">    F1 f1;</span><br><span class="line">    F2 f2;</span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> &amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f1, std::forward&lt;Args&gt;(args)...) || std::invoke(f2, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f1, std::forward&lt;Args&gt;(args)...) || std::invoke(f2, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f1, std::forward&lt;Args&gt;(args)...) || std::<span class="built_in">invoke</span>(f2, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span><span class="type">const</span> &amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f1, std::forward&lt;Args&gt;(args)...) || std::invoke(f2, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f1, std::forward&lt;Args&gt;(args)...) || std::invoke(f2, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f1, std::forward&lt;Args&gt;(args)...) || std::<span class="built_in">invoke</span>(f2, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> &amp;&amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f1, std::forward&lt;Args&gt;(args)...) || std::invoke(f2, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f1, std::forward&lt;Args&gt;(args)...) || std::invoke(f2, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f1, std::forward&lt;Args&gt;(args)...) || std::<span class="built_in">invoke</span>(f2, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> <span class="type">const</span> &amp;&amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f1, std::forward&lt;Args&gt;(args)...) || std::invoke(f2, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f1, std::forward&lt;Args&gt;(args)...) || std::invoke(f2, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f1, std::forward&lt;Args&gt;(args)...) || std::<span class="built_in">invoke</span>(f2, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F1</span>, <span class="keyword">class</span> <span class="title class_">F2</span>&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">or_fn_t</span>&lt;std::<span class="type">decay_t</span>&lt;F1&gt;, std::<span class="type">decay_t</span>&lt;F2&gt;&gt; <span class="built_in">or_fn</span>(F1&amp;&amp; f1, F2&amp;&amp; f2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; std::forward&lt;F1&gt;(f1), std::forward&lt;F2&gt;(f2) &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//函数逻辑与</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F1</span>, <span class="keyword">class</span> <span class="title class_">F2</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">and_fn_t</span> &#123;</span><br><span class="line">    F1 f1;</span><br><span class="line">    F2 f2;</span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> &amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f1, std::forward&lt;Args&gt;(args)...) &amp;&amp; std::invoke(f2, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f1, std::forward&lt;Args&gt;(args)...) &amp;&amp; std::invoke(f2, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f1, std::forward&lt;Args&gt;(args)...) &amp;&amp; std::<span class="built_in">invoke</span>(f2, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span><span class="type">const</span>&amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f1, std::forward&lt;Args&gt;(args)...) &amp;&amp; std::invoke(f2, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f1, std::forward&lt;Args&gt;(args)...) &amp;&amp; std::invoke(f2, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f1, std::forward&lt;Args&gt;(args)...) &amp;&amp; std::<span class="built_in">invoke</span>(f2, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> &amp;&amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f1, std::forward&lt;Args&gt;(args)...) &amp;&amp; std::invoke(f2, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f1, std::forward&lt;Args&gt;(args)...) &amp;&amp; std::invoke(f2, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f1, std::forward&lt;Args&gt;(args)...) &amp;&amp; std::<span class="built_in">invoke</span>(f2, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> <span class="type">const</span>&amp;&amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f1, std::forward&lt;Args&gt;(args)...) &amp;&amp; std::invoke(f2, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f1, std::forward&lt;Args&gt;(args)...) &amp;&amp; std::invoke(f2, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f1, std::forward&lt;Args&gt;(args)...) &amp;&amp; std::<span class="built_in">invoke</span>(f2, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F1</span>, <span class="keyword">class</span> <span class="title class_">F2</span>&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">and_fn_t</span>&lt;std::<span class="type">decay_t</span>&lt;F1&gt;, std::<span class="type">decay_t</span>&lt;F2&gt;&gt; <span class="built_in">and_fn</span>(F1&amp;&amp; f1, F2&amp;&amp; f2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; std::forward&lt;F1&gt;(f1), std::forward&lt;F2&gt;(f2) &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在有两个函数 or_fn 和 and_fn。</p>
+<p>(接收两个参数完全相同且返回bool类型的函数，返回经过逻辑组合的新函数）</p>
+<p>来用一下试试：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> eq_less = <span class="built_in">or_fn</span>(eq, less);</span><br><span class="line"><span class="comment">//“小于”和“等于”通过 逻辑或 生成“小于等于”</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> greater = <span class="built_in">not_fn</span>(eq_less);</span><br><span class="line"><span class="comment">//否定 “小于等于” 来生成 “大于”</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> eq_greater = <span class="built_in">or_fn</span>(eq, greater);</span><br><span class="line"><span class="comment">//简单粗暴的 “或” 组合</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">eq_greater</span>(<span class="number">1</span>, <span class="number">2</span>);    <span class="comment">//false</span></span><br><span class="line"><span class="built_in">greater</span>(<span class="number">2</span>, <span class="number">1</span>);       <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<p>现在，你体会到函数式编程所说的“函数是一等公民”了吗？</p>
+<p>凭借类似于“胶水”的组合函数，我们能像变量一样操纵、组合与生成新函数。</p>
+<h2 id="函数组合"><a href="#函数组合" class="headerlink" title="函数组合"></a>函数组合</h2><p>数学中有“复合函数”这一概念。复合函数将前一个函数的输出用作下一个函数的输入，来看几张图：</p>
+<p>（图引用自<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74777206%EF%BC%89">https://zhuanlan.zhihu.com/p/74777206）</a></p>
+<p><img src="/../images/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-4-%E8%83%B6%E6%B0%B4/202204081549052.png" alt="img"></p>
+<p><strong>命令式编程存在一系列中间变量</strong></p>
+<p><img src="/../images/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-4-%E8%83%B6%E6%B0%B4/202204081551629.png" alt="img"></p>
+<p><strong>函数式编程</strong></p>
+<p><img src="/../images/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-4-%E8%83%B6%E6%B0%B4/202204081553000.png" alt="img"></p>
+<p><strong>函数组合</strong></p>
+<p>在函数式编程中我们称此为“函数组合”（compose），函数组合是生成新函数的重要途径。</p>
+<p>C++标准库没有“函数组合”函数，所以又到了喜闻乐见的造轮子时间~</p>
+<p>（注：若看不懂，建议复制粘贴直接用，这部分的语法我将在“模板元编程”部分讲解。）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//函数组合，从右往左执行</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F1</span>, <span class="keyword">class</span> <span class="title class_">F2</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">compose_t</span> &#123;</span><br><span class="line">    F1 f1;</span><br><span class="line">    F2 f2;</span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> &amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f1, std::invoke(f2, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f1, std::invoke(f2, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f1, std::<span class="built_in">invoke</span>(f2, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> <span class="type">const</span> &amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f1, std::invoke(f2, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f1, std::invoke(f2, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f1, std::<span class="built_in">invoke</span>(f2, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> &amp;&amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f1, std::invoke(f2, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f1, std::invoke(f2, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f1, std::<span class="built_in">invoke</span>(f2, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> <span class="type">const</span> &amp;&amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f1, std::invoke(f2, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f1, std::invoke(f2, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f1, std::<span class="built_in">invoke</span>(f2, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F1</span>, <span class="keyword">class</span> <span class="title class_">F2</span>&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">compose_t</span>&lt;std::<span class="type">decay_t</span>&lt;F1&gt;, std::<span class="type">decay_t</span>&lt;F2&gt;&gt; <span class="built_in">compose</span>(F1&amp;&amp; f1, F2&amp;&amp; f2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; std::forward&lt;F1&gt;(f1), std::forward&lt;F2&gt;(f2) &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F1</span>, <span class="keyword">class</span> <span class="title class_">F2</span>, <span class="keyword">class</span>... Args&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">compose_t</span>&lt;std::<span class="type">decay_t</span>&lt;F1&gt;, std::<span class="type">decay_t</span>&lt;<span class="type">compose_t</span>&lt;F2, Args...&gt;&gt;&gt; <span class="built_in">compose</span>(F1&amp;&amp; f1, F2&amp;&amp; f2, Args&amp;&amp;... args)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; std::forward&lt;F1&gt;(f1), std::forward&lt;<span class="type">compose_t</span>&lt;F2, Args...&gt;&gt;(<span class="built_in">compose</span>(f2, args)) &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//函数组合，从左往右执行</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F1</span>, <span class="keyword">class</span> <span class="title class_">F2</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">pipe_t</span> &#123;</span><br><span class="line">    F1 f1;</span><br><span class="line">    F2 f2;</span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> &amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f2, std::invoke(f1, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f2, std::invoke(f1, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f2, std::<span class="built_in">invoke</span>(f1, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> <span class="type">const</span>&amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f2, std::invoke(f1, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f2, std::invoke(f1, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f2, std::<span class="built_in">invoke</span>(f1, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> &amp;&amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f2, std::invoke(f1, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f2, std::invoke(f1, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f2, std::<span class="built_in">invoke</span>(f1, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span> <span class="type">const</span>&amp;&amp;</span></span><br><span class="line"><span class="function">        <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f2, std::invoke(f1, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">        -&gt; <span class="title">decltype</span><span class="params">(std::invoke(f2, std::invoke(f1, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">invoke</span>(f2, std::<span class="built_in">invoke</span>(f1, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F1</span>, <span class="keyword">class</span> <span class="title class_">F2</span>&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">pipe_t</span>&lt;std::<span class="type">decay_t</span>&lt;F1&gt;, std::<span class="type">decay_t</span>&lt;F2&gt;&gt; <span class="built_in">pipe</span>(F1&amp;&amp; f1, F2&amp;&amp; f2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; std::forward&lt;F1&gt;(f1), std::forward&lt;F2&gt;(f2) &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args, <span class="keyword">class</span> <span class="title class_">F1</span>, <span class="keyword">class</span> <span class="title class_">F2</span>&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">pipe_t</span>&lt;std::<span class="type">decay_t</span>&lt;<span class="type">pipe_t</span>&lt;Args..., F1&gt;&gt;,std::<span class="type">decay_t</span>&lt;F2&gt;&gt; <span class="built_in">pipe</span>(Args&amp;&amp;... args, F1&amp;&amp; f1, F2&amp;&amp; f2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123; std::forward&lt;<span class="type">pipe_t</span>&lt;Args..., F1&gt;&gt;(<span class="built_in">pipe</span>(f2, args)) ,std::forward&lt;F2&gt;(f2) &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在有了两个函数compose和pipe</p>
+<p>演示一下用法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//compose和pipe接收任意个数的函数，返回经过组合的函数</span></span><br><span class="line"><span class="comment">//其中compose是从右向左组合，pipe是从左向右组合</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> sum_is_odd = <span class="built_in">compose</span>(is_odd, sum);</span><br><span class="line"></span><br><span class="line"><span class="built_in">sum_is_odd</span>(<span class="number">1</span>, <span class="number">3</span>);</span><br><span class="line"><span class="comment">//相当于调用</span></span><br><span class="line"><span class="built_in">is_odd</span>(<span class="built_in">sum</span>(<span class="number">1</span>, <span class="number">3</span>));</span><br><span class="line"><span class="comment">//结果是false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> mul_is_odd = <span class="built_in">pipe</span>(mul, is_odd);</span><br><span class="line"></span><br><span class="line"><span class="built_in">mul_is_odd</span>(<span class="number">1</span>, <span class="number">3</span>);</span><br><span class="line"><span class="comment">//相当于调用</span></span><br><span class="line"><span class="built_in">is_odd</span>(<span class="built_in">mul</span>(<span class="number">1</span>, <span class="number">3</span>));</span><br><span class="line"><span class="comment">//结果是true</span></span><br></pre></td></tr></table></figure>
+
+<p>有了compose和pipe，我们能将一系列过程看作一个整体，从而忽略复杂的中间量，简化代码。</p>
+<p>此外，注意到如果函数只接收一个参数，我们就有机会连续组合多个函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> add_1 = [](<span class="type">int</span> a)&#123;</span><br><span class="line">    <span class="keyword">return</span> a + <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> add_4 = <span class="built_in">compose</span>(add_1, add_1, add_1, add_1);</span><br><span class="line"><span class="comment">//只是举个例子，不必纠结实用性</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">add_4</span>(<span class="number">1</span>);     <span class="comment">//5</span></span><br></pre></td></tr></table></figure>
+
+<p>我们目前编写的大多数函数是多参数函数，在下一节我们来看看如何将多参数函数转化为单参数函数。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-3-%E7%A7%AF%E6%9C%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-3-%E7%A7%AF%E6%9C%A8/" class="post-title-link" itemprop="url">积木</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-19 12:38:07 / 修改时间：12:40:08" itemprop="dateCreated datePublished" datetime="2022-09-19T12:38:07+08:00">2022-09-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>下面我们来趁热打铁，编写一些简单的纯函数来练练手，逐渐熟悉函数式编程的思维方式。</p>
+<p><em><strong>打开你的编辑器，和我一起写</strong></em></p>
+<p><em><strong>这些纯函数将会在之后的学习中用到</strong></em></p>
+<hr>
+<h2 id="包装个简单的算数操作试试"><a href="#包装个简单的算数操作试试" class="headerlink" title="包装个简单的算数操作试试"></a>包装个简单的算数操作试试</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> sum = [](<span class="keyword">auto</span> a, <span class="keyword">auto</span> b)&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> sub = [](<span class="keyword">auto</span> a, <span class="keyword">auto</span> b)&#123;</span><br><span class="line">    <span class="keyword">return</span> a - b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> mul = [](<span class="keyword">auto</span> a, <span class="keyword">auto</span> b)&#123;</span><br><span class="line">    <span class="keyword">return</span> a * b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> divi = [](<span class="keyword">auto</span> a, <span class="keyword">auto</span> b)&#123;</span><br><span class="line">    <span class="keyword">return</span> a / b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> mod = [](<span class="keyword">auto</span> a, <span class="keyword">auto</span> b)&#123;</span><br><span class="line">    <span class="keyword">return</span> a % b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>看上去没什么用，然而这种高度抽象的简单函数正是复杂函数的基础。</p>
+<h2 id="接下来编写逻辑函数与比较函数"><a href="#接下来编写逻辑函数与比较函数" class="headerlink" title="接下来编写逻辑函数与比较函数"></a>接下来编写逻辑函数与比较函数</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> not_ = [](<span class="type">bool</span> a)&#123;</span><br><span class="line">    <span class="keyword">return</span> !a;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> and_ = [](<span class="type">bool</span> a, <span class="type">bool</span> b)&#123;</span><br><span class="line">    <span class="keyword">return</span> a &amp;&amp; b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> or_ = [](<span class="type">bool</span> a, <span class="type">bool</span> b)&#123;</span><br><span class="line">    <span class="keyword">return</span> a || b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> xor_ = [](<span class="type">bool</span> a, <span class="type">bool</span> b)&#123;</span><br><span class="line">    <span class="built_in">return</span> (!a&amp;&amp;b)||(!b&amp;&amp;a);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> less = [](<span class="keyword">auto</span> a, <span class="keyword">auto</span> b) &#123;</span><br><span class="line">    <span class="keyword">return</span> a &lt; b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> eq = [](<span class="keyword">auto</span> a, <span class="keyword">auto</span> b) &#123;</span><br><span class="line">    <span class="keyword">return</span> a == b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>函数式编程有点像搭积木，我们先造好一些小型积木，到后面再看看它们能组合出什么好玩的大家伙来。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -285,6 +1009,110 @@
 <hr>
 <p>完毕。</p>
 <p>以上勾勒了函数式编程的轮廓，不理解也没关系，继续下面的章节，在实践中慢慢体会函数式编程的魅力。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-1-lambda%20%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-1-lambda%20%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">lambda 表达式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-19 00:10:57 / 修改时间：00:12:27" itemprop="dateCreated datePublished" datetime="2022-09-19T00:10:57+08:00">2022-09-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>熟悉一下C++函数式编程的主角：lambda表达式。</p>
+<p><em>请将你的编译器版本调到C++17及以上。</em></p>
+<hr>
+<h3 id="定义一个labmda变量（C-11与C-14）"><a href="#定义一个labmda变量（C-11与C-14）" class="headerlink" title="定义一个labmda变量（C++11与C++14）"></a>定义一个labmda变量（C++11与C++14）</h3><p>labmda既是一个函数，也是一个变量（事实上，它是一个由编译器自动生成的可调用类），让我们先来看看labmda是什么样子的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[]()&#123;&#125;</span><br><span class="line"><span class="comment">//此即为labmda的基本结构</span></span><br><span class="line"><span class="comment">//记住labmda既是一个函数，也是一个变量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> func1 = []()&#123;&#125;;</span><br><span class="line"><span class="comment">//一般使用自动类型推导来定义labmda变量，因为通常labmda表达式的类型名很长</span></span><br><span class="line"><span class="comment">//现在我们拥有了一个叫func1的labmda表达式变量</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> func2 = [](<span class="type">int</span> a)&#123;&#125;</span><br><span class="line"><span class="comment">//我们的func2现在可以接受一个int类型的变量作为参数</span></span><br><span class="line"><span class="comment">//但是它什么都不做</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> func3 = [](<span class="type">int</span> a)&#123;</span><br><span class="line">    std::cout&lt;&lt;a;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//func3拥有了函数体，它打印传入的int类型的变量</span></span><br><span class="line"><span class="comment">//记住labmda既是一个函数，也是一个变量</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> func4 = [](<span class="type">int</span> a)&#123;</span><br><span class="line">    std::cout&lt;&lt;a;</span><br><span class="line">    <span class="keyword">return</span> a+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//func4拥有了返回值</span></span><br><span class="line"><span class="comment">//注意：可以不声明返回值类型，编译器会自己推导（C++14）</span></span><br><span class="line"><span class="comment">//如果需要声明返回值，就这样写（C++11）：</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> func5 = [](<span class="type">int</span> a)-&gt;<span class="type">int</span>&#123;</span><br><span class="line">    std::cout&lt;&lt;a;</span><br><span class="line">    <span class="keyword">return</span> a+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，labmda已经拥有了一个函数所应该拥有的一切：</p>
+<ul>
+<li>传入参数</li>
+<li>函数体</li>
+<li>返回值</li>
+<li>名字</li>
+</ul>
+<p>下面来使用它。</p>
+<h3 id="使用labmda变量（C-11）"><a href="#使用labmda变量（C-11）" class="headerlink" title="使用labmda变量（C++11）"></a>使用labmda变量（C++11）</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> func = [](<span class="type">int</span> a)-&gt;<span class="type">int</span>&#123;</span><br><span class="line">    std::cout&lt;&lt;a;</span><br><span class="line">    <span class="keyword">return</span> a+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> num = <span class="built_in">func</span>(<span class="number">1</span>);</span><br><span class="line"><span class="comment">//可以将lambda表达式视为一个函数，像使用函数一样使用它。</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们来看看labmda的捕获列表。</p>
+<h3 id="捕获列表（C-11）"><a href="#捕获列表（C-11）" class="headerlink" title="捕获列表（C++11）"></a>捕获列表（C++11）</h3><p>lambda表达式可以“捕获”目前所处位置可见的变量，然后在函数体里面操作这些变量。</p>
+<p>来看例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> message = <span class="number">17</span>;</span><br><span class="line">    <span class="keyword">auto</span> func = [message](<span class="type">int</span> a)&#123;</span><br><span class="line">        <span class="keyword">return</span> a + message;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    std::cout&lt;&lt;<span class="built_in">func</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出18</span></span><br></pre></td></tr></table></figure>
+
+<p>将需要捕获的变量写进方括号，即可在函数体里面操作这个变量。（如果你在lambda函数体内使用了某个外部的局部变量又没有捕获，编译器会报错的。）</p>
+<p>有两种捕获方式：</p>
+<ul>
+<li>值捕获：相当于把外部变量复制一份放进lambda函数体里。</li>
+<li>引用捕获：相当于创建外部变量的引用放进lambda函数体里，在lambda函数体里修改这个变量将影响到对应外部变量的值。</li>
+</ul>
+<p>来看例子：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> var1 = <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> var2 = <span class="number">2</span>;</span><br><span class="line"><span class="type">int</span> var3 = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> func1 = [var1]()&#123;&#125;;</span><br><span class="line"><span class="comment">//这是默认情况，值捕获</span></span><br><span class="line"><span class="keyword">auto</span> func1 = [var1, var2]()&#123;&#125;;</span><br><span class="line"><span class="comment">//这是默认情况，值捕获，而且捕获了两个变量。</span></span><br><span class="line"><span class="keyword">auto</span> func2 = [&amp;var1]()&#123;&#125;;</span><br><span class="line"><span class="comment">//这是引用捕获</span></span><br><span class="line"><span class="keyword">auto</span> func3 = [=]()&#123;&#125;;</span><br><span class="line"><span class="comment">//对所有变量进行值捕获</span></span><br><span class="line"><span class="keyword">auto</span> func4 = [&amp;]()&#123;&#125;;</span><br><span class="line"><span class="comment">//对所有变量进行引用捕获</span></span><br><span class="line"><span class="keyword">auto</span> func5 = [=,&amp;var2]()&#123;&#125;;</span><br><span class="line"><span class="comment">//var2进行引用捕获，其他所有变量进行值捕获</span></span><br></pre></td></tr></table></figure>
+
+<p>基本语法就是这样，实际使用时可以自己类推。</p>
+<p>（到这里你可能觉得捕获列表没啥用。我可以理解，你现在只需要简单了解一下，待会儿正式使用时你会惊叹它的威力的。）</p>
+<h3 id="lambda参数自动类型推导（C-14）"><a href="#lambda参数自动类型推导（C-14）" class="headerlink" title="lambda参数自动类型推导（C++14）"></a>lambda参数自动类型推导（C++14）</h3><p><strong>C++14允许lambda表达式的参数类型是“auto”，编译器将在编译时自动推导其类型。</strong></p>
+<hr>
+<p>好，这样我们就学完lambda表达式的基本功能了。现在，让我们迈入函数式编程的旅途吧！</p>
 
       
     </div>
@@ -445,336 +1273,9 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/18/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-1-%E5%88%9B%E5%BB%BA%E5%AD%90%E7%B1%BB%E6%A8%A1%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
-      <meta itemprop="name" content="ZYZ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cozard 技术空间">
-      <meta itemprop="description" content="Cozard 的官方博客">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Cozard 技术空间">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/18/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-1-%E5%88%9B%E5%BB%BA%E5%AD%90%E7%B1%BB%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">创建子类模型</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-09-18 23:55:43" itemprop="dateCreated datePublished" datetime="2022-09-18T23:55:43+08:00">2022-09-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-19 00:01:53" itemprop="dateModified" datetime="2022-09-19T00:01:53+08:00">2022-09-19</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>子类模型需要提供 QabstractemModel 基类中定义的许多虚函数的实现。需要实现的函数数量取决于模型的类型——它是为视图提供简单的列表、表格还是复杂的项目层次结构。从 QAbstractListModel 和 QAbstractTableModel 继承的模型可以利用它们所提供函数的默认实现。以树状结构组织数据项的模型必须为QabstractemModel中的许多虚函数提供实现。</p>
-<p>需要在模型子类中实现的功能可分为三组：</p>
-<p><strong>数据项处理</strong>：所有模型都需要实现功能，以使视图和委托能够查询模型的维度、检查项目和检索数据。</p>
-<p><strong>导引和索引创建</strong>：具有层次结构的模型需要提供视图可以调用的功能，以导引它们展示的树状结构；以及获取项的索引。</p>
-<p><strong>拖放支持和MIME类型处理</strong>：模型继承了控制内部和外部拖放操作的函数。这些函数允许按照其他组件和应用程序可以理解的MIME类型来描述数据项。</p>
-<h2 id="数据项处理"><a href="#数据项处理" class="headerlink" title="数据项处理"></a>数据项处理</h2><p>模型可以提供对其提供的数据项的不同访问级别：它们可以是简单的只读项，或者能支持调整大小操作，有的甚至允许编辑。</p>
-<h3 id="只读权限"><a href="#只读权限" class="headerlink" title="只读权限"></a>只读权限</h3><p>如果模型提供的数据项是只读的，在子类中这些函数需要被实现：</p>
-<table>
-<thead>
-<tr>
-<th>flags()</th>
-<th>其他组件用于获取有关模型提供的每个项目的信息的标志在许多模型中，标志的组合应该包括Qt：：ItemIsEnabled和Qt：：ItemIsSelectable。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>data()</td>
-<td>用于向视图和委托提供项数据。通常，模型只需要为Qt：：DisplayRole和用户特定的角色(role)提供数据，但为Qt：：ToolTipRole、Qt：：AccessibleTextRole和Qt：：AccessibleDescriptionRole提供数据也是一种很好的做法。有关与每个角色关联的类型的信息，请参阅Qt：：ItemDataRole枚举文档。</td>
-</tr>
-<tr>
-<td>headerData()</td>
-<td>为视图提供要在其标头中显示的信息。该信息仅由可以显示标头信息的视图检索。</td>
-</tr>
-<tr>
-<td>rowCount()</td>
-<td>模型提供的数据行数</td>
-</tr>
-</tbody></table>
-<p>这四个函数必须在所有类型的模型中实现，包括列表模型（QAbstractListModel 子类）和表模型（QAbstractTableModel 子类）。</p>
-<p>此外，必须在QAbstractTableModel和QAbstractItemModel的直接子类中实现以下功能：</p>
-<table>
-<thead>
-<tr>
-<th>columnCount()</th>
-<th>模型提供的数据列数。列表模型不提供此功能，因为它已在QAbstractListModel中实现。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h3 id="可编辑数据项"><a href="#可编辑数据项" class="headerlink" title="可编辑数据项"></a>可编辑数据项</h3><p>可编辑模型允许修改数据项，并可能提供允许插入和删除行和列的功能。要启用编辑，必须实现下列函数：</p>
-<table>
-<thead>
-<tr>
-<th>flags()</th>
-<th>必须为每个项目返回适当的标志(flag)组合。特别的，除了应用于只读模型中的项的值之外，此函数返回的值还必须包括Qt：：ItemIsEditable。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>setData()</td>
-<td>用于修改与指定模型索引关联的数据项。为了能够接受用户界面元素提供的用户输入，此函数必须处理与Qt：：EditRole关联的数据。该实现还可以接受与Qt：：ItemDataRole指定的许多不同类型的角色相关联的数据。更改数据项后，模型必须发出dataChanged（）信号，以通知其他组件该更改。</td>
-</tr>
-<tr>
-<td>setHeaderData()</td>
-<td>用于修改水平和垂直标头信息。更改数据项后，模型必须发出headerDataChanged（）信号，以通知其他组件该更改。</td>
-</tr>
-</tbody></table>
-<h3 id="可变容量模型"><a href="#可变容量模型" class="headerlink" title="可变容量模型"></a>可变容量模型</h3><p>所有类型的模型都可以支持插入和删除行。表模型和层次模型还可以支持插入和删除列。而在模型尺寸发生更改之前和之后，要将更改通知给其他组件。因此，可实现以下函数以允许调整模型的容量，但这些函数的实现必须确保适当的函数被调用以通知与这个模型相连接的视图和委托：</p>
-<table>
-<thead>
-<tr>
-<th>insertRows</th>
-<th>用于向模型中添加新行和数据项。注意必须在插入操作之前调用beginInsertRows（），插入完成后立即调用endInsertRows（）。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>removeRows</td>
-<td>用于从所有类型的模型中删除行及其包含的数据项。在删除行之前，必须调用beginRemoveRows（），完成后立即调用endRemoveRows（）。</td>
-</tr>
-<tr>
-<td>insertColumns</td>
-<td>用于向模型中添加新列和数据项。注意必须在插入操作之前调用beginInsertColumns（），插入完成后立即调用endInsertColumns（）。</td>
-</tr>
-<tr>
-<td>removeColumns</td>
-<td>用于从所有类型的模型中删除列及其包含的数据项。在删除行之前，必须调用beginRemoveColumns（），完成后立即调用endRemoveColumns（）。</td>
-</tr>
-</tbody></table>
-<p>通常，如果操作成功，这些函数应返回true。然而，可能存在操作仅部分成功的情况；例如，可以插入的行数小于指定的行数。在这种情况下，模型应返回false以表示操作失败并指示相关组件处理这种情况。</p>
-<p>在调整容量API的实现中调用函数发出的信号使相关的组件有机会在某些数据不可用之前采取行动。使用begin和end函数封装insert和remove操作，还可以使模型正确管理持久模型索引。</p>
-<p>通常，begin和end函数能够通知其他组件模型底层结构的更改。对于模型结构的更复杂更改，可能涉及内部重组、数据排序或任何其他结构更改，有必要按顺序执行以下操作：</p>
-<ul>
-<li>发出layoutAboutToBeChanged（）信号</li>
-<li>更新表示模型结构的内部数据。</li>
-<li>使用changePersistentIndexList（）更新持久索引</li>
-<li>发出layoutChanged（）信号。</li>
-</ul>
-<p>此序列可用于任何结构更新，是一种更高级和更方便的保护方法。例如，如果一个有200万行的模型需要删除所有奇数行，即有100万个长度为1的裁剪范围。可以使用beginRemoveRows和endRemoveRows 100万次，但这显然效率低下。相反，这可以视作一个布局更改来发出信号，它会立即更新所有必要的持久性索引。</p>
-<h3 id="模型数据的惰性填充"><a href="#模型数据的惰性填充" class="headerlink" title="模型数据的惰性填充"></a>模型数据的惰性填充</h3><p>模型数据的惰性填充有效地延迟对模型信息的请求，直到视图实际需要它为止。</p>
-<p>一些模型需要从远程源获取数据，或者必须执行耗时的操作以获取有关数据组织方式的信息。由于视图通常要求尽可能多的信息以准确显示模型数据，因此限制返回给它们的信息量以减少不必要的后续数据请求可能会很有用。</p>
-<p>在层次模型中，查找给定项的子项数量是一项代价高昂的操作，因此确保仅在必要时调用模型的rowCount（）非常有用。在这种情况下，可以重新实现hasChildren（）函数，为视图提供一种廉价的方法来检查子项的存在，对于QTreeView，<strong>draw the appropriate decoration for their parent item.</strong></p>
-<p>无论hasChildren（）的重新实现是否返回true或false，视图都可能不需要调用rowCount（）来确定存在多少子级。例如，如果父项未展开以显示子项，则QTreeView不需要知道有多少子项。</p>
-<p>如果知道许多项都有子项，那么重新实现hasChildren（）以无条件返回true有时是一种有用的方法。这使得检查每个数据项子项的操作被推迟到之后进行，同时使模型数据的初始总体尽可能快。唯一的缺点是，没有子项的数据项可能在某些视图中显示不正确，直到用户尝试查看这些数据项。</p>
-<h3 id="导航-Navigation-和模型索引创建"><a href="#导航-Navigation-和模型索引创建" class="headerlink" title="导航(Navigation)和模型索引创建"></a>导航(Navigation)和模型索引创建</h3><p>层次模型需要提供函数以导航它们公开的树状结构，供视图调用，并让视图可以获取项的索引。</p>
-<h4 id="父级和子级"><a href="#父级和子级" class="headerlink" title="父级和子级"></a>父级和子级</h4><p>由于暴露给视图的结构由底层数据结构决定，因此每个模型子类都可以通过提供以下函数的实现来创建自己的模型索引：</p>
-<table>
-<thead>
-<tr>
-<th>index</th>
-<th>给定父项的模型索引，此函数允许视图和委托访问该项的子项。如果找不到与指定的行、列和父模型索引相对应的有效子项，则函数必须返回QModelIndex（），这是一个无效的模型索引。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>parent</td>
-<td>提供与任何给定子项的父项相对应的模型索引。如果指定的模型索引对应于模型中的顶级项，或者如果模型中没有有效的父项，则函数必须返回使用空QModelIndex（）构造函数创建的无效模型索引。</td>
-</tr>
-</tbody></table>
-<p>上述两个函数都使用createIndex（）工厂函数来生成索引，供其他组件使用。模型通常会向该函数提供一些唯一标识符，以确保模型索引稍后可以与其相应的项重新关联。</p>
-<h3 id="拖放支持和MIME类型处理"><a href="#拖放支持和MIME类型处理" class="headerlink" title="拖放支持和MIME类型处理"></a>拖放支持和MIME类型处理</h3><p>模型/视图类支持拖放操作，提供了许多应用程序所需的默认行为。但是，也可以自定义项目在拖放操作期间的编码方式，默认情况下是复制还是移动数据项，以及如何将数据项插入现有模型。</p>
-<p>此外，方便视图类（convenience view）实现了专门的行为，这些行为应该严格遵循现有开发人员的预期。“方便视图”部分提供了此行为的概述。</p>
-<h4 id="MIME数据"><a href="#MIME数据" class="headerlink" title="MIME数据"></a>MIME数据</h4><p>默认情况下，内置模型和视图使用内部MIME类型（application/x-QAbstracteModelDataList）传递有关模型索引的信息。这将指定数据项列表的数据，其中包含每个项目的行号和列号，以及关于每个项目支持的角色的信息。</p>
-<p>使用此MIME类型编码的数据可以通过使用包含要序列化的项的QModelIndexList调用QAbstractItemModel：：mimeData（）来获得。</p>
-<p>在自定义模型中实现拖放支持时，可以通过重新实现以下函数以专用格式导出数据项：</p>
-<table>
-<thead>
-<tr>
-<th>mimeData</th>
-<th>此函数可以重写，以非默认<strong>application/x-qabstractemodeldatalist</strong>内部MIME类型的格式返回数据。子类可以从基类获得默认的QMimeData对象，并以其他格式向其添加数据。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>对于许多模型，以MIME类型（如text/plain和image/png）表示的通用格式提供项目的内容非常有用。请注意，可以使用QMimeData：：setImageData（）、QMimeData：：setColorData（）和QMimeData：：setHtml（）函数轻松地将图像、颜色和HTML文档添加到QMimeData对象中。</p>
-<h4 id="接受拖放数据"><a href="#接受拖放数据" class="headerlink" title="接受拖放数据"></a>接受拖放数据</h4><p>在视图上执行拖放操作时，将查询基础模型，以确定其支持的操作类型以及可以接受的MIME类型。此信息由qabstractemmodel：：supportedDropActions（）和qabstractemmodel：：mimeTypes（）函数提供。不重写QAbstractItemModel提供的实现的模型支持复制操作和项的默认内部MIME类型。</p>
-<p>将序列化的项数据放到视图中时，将使用QabstractemModel：：dropMimeData（）的实现将数据插入当前模型。此功能的默认实现不会覆盖模型中的任何数据；相反，它尝试将数据项作为项的同级或子项插入。</p>
-<p>要利用QabstractemModel对内置MIME类型的默认实现，新模型必须提供以下函数的重新实现：</p>
-<table>
-<thead>
-<tr>
-<th>insertRows（）</th>
-<th>这些函数使模型能够使用qabstractemmodel：：dropMimeData（）提供的现有实现自动插入新数据。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>insertColumns（）</td>
-<td></td>
-</tr>
-<tr>
-<td>setData</td>
-<td>允许用项目填充新行和新列。</td>
-</tr>
-<tr>
-<td>setItemData</td>
-<td>此函数为填充新项提供更有效的支持。</td>
-</tr>
-</tbody></table>
-<p>要接受其他形式的数据，必须重新实现以下功能：</p>
-<table>
-<thead>
-<tr>
-<th>supportDropActions</th>
-<th>用于返回拖放操作的组合，指示模型接受的拖放操作类型。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>mimeTypes</td>
-<td>用于返回可由模型解码和处理的MIME类型列表。通常，支持输入到模型中的MIME类型与它在编码数据以供外部组件使用时可以使用的类型相同。</td>
-</tr>
-<tr>
-<td>dropMimeData</td>
-<td>对通过拖放操作传输的数据执行实际解码，确定在模型中设置数据的位置，并在必要时插入新行和新列。如何在子类中实现此功能取决于每个模型公开的数据的要求。</td>
-</tr>
-</tbody></table>
-<p>如果dropMimeData（）函数的实现通过插入或删除行或列来更改模型的维度，或者如果修改了数据项，则必须小心确保发出了所有的相关信号。这时候调用子类中其他函数的重新实现，如setData（）、insertRows（）和insertColumns（），就可以确保模型的行为一致。</p>
-<p>为了确保拖动操作正常工作，必须重新实现以下从模型中删除数据的功能：</p>
-<ul>
-<li>removeRows（）</li>
-<li>removeRow（）</li>
-<li>removeColumns（）</li>
-<li>removeColumns（）</li>
-</ul>
-<p>有关在项目视图中拖放的详细信息，请参阅在项目视图中使用拖放。</p>
-<h3 id="便利性视图"><a href="#便利性视图" class="headerlink" title="便利性视图"></a>便利性视图</h3><p>方便视图（QListWidget、QTableWidget和QTreeWidget）覆盖了默认的拖放功能，以提供不太灵活但更自然的行为，适用于许多应用程序。例如，由于更常见的做法是将数据放入QTableWidget中的单元格，用传输的数据替换现有内容，因此模型将设置目标项的数据，而不是在模型中插入新行和列。有关在便利视图中拖放的详细信息，请参见在项目视图中使用拖放。</p>
-<h3 id="针对大量数据的性能优化"><a href="#针对大量数据的性能优化" class="headerlink" title="针对大量数据的性能优化"></a>针对大量数据的性能优化</h3><p>canFetchMore（）函数检查父级是否有更多可用数据，并相应地返回true或false。函数的作用是：根据指定的父级获取数据。例如，可以在涉及增量数据的数据库查询中组合这两个功能，以填充QabstractemModel。我们重新实现canFetchMore（）以指示是否有更多数据需要提取，并根据需要使用fetchMore（）填充模型。</p>
-<p>另一个例子是动态填充的树模型，当树模型中的一个分支展开时，我们将重新实现fetchMore（）。</p>
-<p>如果重新实现fetchMore（）将行添加到模型中，则需要调用beginInsertRows（）和endInsertRows（）。此外，必须重新实现canFetchMore（）和fetchMore（），因为它们的默认实现返回false，并且不执行任何操作。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/07/My-New-Blog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
-      <meta itemprop="name" content="ZYZ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cozard 技术空间">
-      <meta itemprop="description" content="Cozard 的官方博客">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Cozard 技术空间">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/07/My-New-Blog/" class="post-title-link" itemprop="url">My New Blog</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-09-07 23:50:42" itemprop="dateCreated datePublished" datetime="2022-09-07T23:50:42+08:00">2022-09-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-18 19:25:12" itemprop="dateModified" datetime="2022-09-18T19:25:12+08:00">2022-09-18</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 </div>
   </main>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="函数式编程特别重视一元函数  Partial（偏函数）“偏函数”指：固定某个参数为特定值，然后返回一个接收余下参数的函数。这是一种减少参数的方式。 打个比方：我们已经有了greater函数，它接收两个参数a和b。 如果我想编写一个greater_than_6函数，就可以基于已有的greater函数，将参数b固定为6，这样，得到的新函数greater_than_6只接收一个参数。 来写一下parti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="偏函数和柯里化">
+<meta property="og:url" content="http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/index.html">
+<meta property="og:site_name" content="Cozard 技术空间">
+<meta property="og:description" content="函数式编程特别重视一元函数  Partial（偏函数）“偏函数”指：固定某个参数为特定值，然后返回一个接收余下参数的函数。这是一种减少参数的方式。 打个比方：我们已经有了greater函数，它接收两个参数a和b。 如果我想编写一个greater_than_6函数，就可以基于已有的greater函数，将参数b固定为6，这样，得到的新函数greater_than_6只接收一个参数。 来写一下parti">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-19T04:44:17.000Z">
+<meta property="article:modified_time" content="2022-09-19T04:45:19.461Z">
+<meta property="article:author" content="ZYZ">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/","path":"2022/09/19/C++函数式编程-5-偏函数和柯里化/","title":"偏函数和柯里化"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>偏函数和柯里化 | Cozard 技术空间</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cozard 技术空间</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">规划、设计、探索</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Partial%EF%BC%88%E5%81%8F%E5%87%BD%E6%95%B0%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">Partial（偏函数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Curry%EF%BC%88%E6%9F%AF%E9%87%8C%E5%8C%96%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">Curry（柯里化）</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYZ"
+      src="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+  <p class="site-author-name" itemprop="name">ZYZ</p>
+  <div class="site-description" itemprop="description">Cozard 的官方博客</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pxxxl" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pxxxl" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/wang-lang-pai-ma-wu-dao/posts" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wang-lang-pai-ma-wu-dao&#x2F;posts" rel="noopener" target="_blank"><i class="fa-brands fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="偏函数和柯里化 | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          偏函数和柯里化
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-19 12:44:17 / 修改时间：12:45:19" itemprop="dateCreated datePublished" datetime="2022-09-19T12:44:17+08:00">2022-09-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>函数式编程特别重视一元函数</strong></p>
+<hr>
+<h2 id="Partial（偏函数）"><a href="#Partial（偏函数）" class="headerlink" title="Partial（偏函数）"></a>Partial（偏函数）</h2><p>“偏函数”指：固定某个参数为特定值，然后返回一个接收余下参数的函数。这是一种减少参数的方式。</p>
+<p>打个比方：我们已经有了greater函数，它接收两个参数a和b。</p>
+<p>如果我想编写一个greater_than_6函数，就可以基于已有的greater函数，将参数b固定为6，这样，得到的新函数greater_than_6只接收一个参数。</p>
+<p>来写一下partial</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span> _Fx, <span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">partial</span><span class="params">(_Fx&amp;&amp; f, Args&amp;&amp;... args)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> std::<span class="built_in">bind_front</span>(f, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写完了，<strong>C++20及以上适用</strong>。</p>
+<p><em>也可以用C++标准库（C++11）提供的std::bind来固定参数：</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std::placeholders;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> more_than_6 = std::<span class="built_in">bind</span>(more, _1, <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">more_than_6</span>(<span class="number">1</span>);   <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<p><em>以下是bind用法的归纳：</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std::placeholders;</span><br><span class="line"><span class="comment">//占位符被定义在这个名字空间里</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//std::bind接收 n+1 个参数，其中n是函数参数的个数</span></span><br><span class="line"><span class="comment">//std::bind的第一个参数是函数名，后面的参数要么是具体的值，要么是占位符</span></span><br><span class="line"><span class="comment">//占位符类似这种：_1, _2, _3,......</span></span><br><span class="line"><span class="comment">//占位符表示 “生成的新函数的第n个参数” 将会被放在原函数的占位符位置。来看演示</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> less_than_6 = std::<span class="built_in">bind</span>(more, <span class="number">6</span>, _1);</span><br><span class="line"><span class="comment">//看，一共只有一个占位符，这意味着新函数一共只会有一个参数</span></span><br><span class="line"><span class="comment">//调用这个新函数时，这个参数会被放进对应占位符的位置</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">less_than_6</span>(<span class="number">10</span>);</span><br><span class="line"><span class="comment">//bind的顺序是(6, _1), 10被放进_1</span></span><br><span class="line"><span class="comment">//所以相当于调用：</span></span><br><span class="line"><span class="built_in">more</span>(<span class="number">6</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//来来来我们再比较一下</span></span><br><span class="line">std::<span class="built_in">bind</span>(more, <span class="number">6</span>, _1);</span><br><span class="line">       <span class="built_in">less_than_6</span>(<span class="number">10</span>);</span><br><span class="line">           <span class="built_in">more</span>(<span class="number">6</span>, <span class="number">10</span>);</span><br><span class="line"><span class="comment">//我想你已经大概明白了，来看看复杂的</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> less = std::<span class="built_in">bind</span>(more, _2, _1);</span><br><span class="line"><span class="comment">//这次有两个占位符</span></span><br><span class="line"><span class="built_in">less</span>(<span class="number">6</span>, <span class="number">10</span>);</span><br><span class="line"><span class="comment">//6被放进占位符_1  ,因为它是新函数的第一个参数</span></span><br><span class="line"><span class="comment">//10被放进占位符_2 ,因为它是新函数的第二个参数</span></span><br><span class="line"><span class="comment">//bind的顺序是(_2, _1)</span></span><br><span class="line"><span class="comment">//所以等效于调用：</span></span><br><span class="line"><span class="built_in">more</span>(<span class="number">10</span>, <span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="Curry（柯里化）"><a href="#Curry（柯里化）" class="headerlink" title="Curry（柯里化）"></a>Curry（柯里化）</h2><p>柯里化是特殊的Partial（偏函数）。</p>
+<p>它并不固定任何一个参数，被柯里化的函数有这样的行为：</p>
+<ul>
+<li>只接收一个或多个参数并固定它，返回一个被柯里化的接收剩余参数的函数</li>
+<li>当所有参数都被固定时返回结果</li>
+</ul>
+<p>概念有点绕，来看演示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//函数名curry</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> sum_of_three = [](<span class="keyword">auto</span> a, <span class="keyword">auto</span> b, <span class="keyword">auto</span> c)&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b + c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">auto</span> curried = <span class="built_in">curry</span>(sum_of_three);</span><br><span class="line"></span><br><span class="line"><span class="comment">//以下的调用法等效</span></span><br><span class="line"><span class="built_in">sum_of_three</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);                   <span class="comment">//6</span></span><br><span class="line"><span class="built_in">curried_sum_of_three</span>(<span class="number">1</span>)(<span class="number">2</span>)(<span class="number">3</span>);           <span class="comment">//6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//理解柯里化函数的调用法</span></span><br><span class="line"><span class="keyword">auto</span> curried_sum_1 = <span class="built_in">curried</span>(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">auto</span> curried_sum_2 = <span class="built_in">curried_sum_1</span>(<span class="number">2</span>);</span><br><span class="line"><span class="keyword">auto</span> curried_sum_3 = <span class="built_in">curried_sum_2</span>(<span class="number">3</span>);   <span class="comment">//6</span></span><br></pre></td></tr></table></figure>
+
+<p>标准库中没有这样的函数，我们来自己写一个：</p>
+<p><strong>（利用C++20的concept弄的，早些版本的写法不熟练）</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">curry_t</span> &#123;</span><br><span class="line">	F f;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span>&amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(std::invoke(f, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> std::<span class="built_in">invoke</span>(f, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(!std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span>&amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(curry(partial(f, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(curry(partial(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">curry</span>(<span class="built_in">partial</span>(f, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span>&amp;&amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(std::invoke(f, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> std::<span class="built_in">invoke</span>(f, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(!std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span>&amp;&amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(curry(partial(f, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(curry(partial(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">curry</span>(<span class="built_in">partial</span>(f, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span><span class="type">const</span> &amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(std::invoke(f, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> std::<span class="built_in">invoke</span>(f, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(!std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span><span class="type">const</span> &amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(curry(partial(f, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(curry(partial(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">curry</span>(<span class="built_in">partial</span>(f, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span><span class="type">const</span> &amp;&amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(std::invoke(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(std::invoke(f, std::forward&lt;Args&gt;(args)...))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> std::<span class="built_in">invoke</span>(f, std::forward&lt;Args&gt;(args)...);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</span></span><br><span class="line"><span class="function">		<span class="title">requires</span> <span class="params">(!std::is_invocable&lt;F, Args...&gt;::value)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Args&amp;&amp;... args)</span><span class="type">const</span> &amp;&amp;</span></span><br><span class="line"><span class="function">		<span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(curry(partial(f, std::forward&lt;Args&gt;(args)...))))</span></span></span><br><span class="line"><span class="function">		-&gt;<span class="title">decltype</span><span class="params">(curry(partial(f, std::forward&lt;Args&gt;(args)...)))</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">curry</span>(<span class="built_in">partial</span>(f, std::forward&lt;Args&gt;(args)...));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">F</span>&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">curry_t</span>&lt;std::<span class="type">decay_t</span>&lt;F&gt;&gt; <span class="built_in">curry</span>(F&amp;&amp; f)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> &#123; std::forward&lt;F&gt;(f) &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外说一下，纯粹的curry严格地让函数一次只接收一个参数，而上面的curry要求更宽松，你可以一次传几个参数进去。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-4-%E8%83%B6%E6%B0%B4/" rel="prev" title="胶水">
+                  <i class="fa fa-chevron-left"></i> 胶水
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/19/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-6-%E5%B0%8F%E7%BB%93%E4%B8%80%E4%B8%8B/" rel="next" title="小结一下">
+                  小结一下 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa-regular fa-earth-asia"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZYZ</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
