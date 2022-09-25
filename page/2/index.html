@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -179,152 +179,6 @@
 
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/13/%E7%8E%B0%E4%BB%A3C++-2-%E5%BC%95%E7%94%A8.md/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
-      <meta itemprop="name" content="ZYZ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cozard 技术空间">
-      <meta itemprop="description" content="Cozard 的官方博客">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Cozard 技术空间">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/13/%E7%8E%B0%E4%BB%A3C++-2-%E5%BC%95%E7%94%A8.md/" class="post-title-link" itemprop="url">引用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-13 23:59:06" itemprop="dateCreated datePublished" datetime="2022-04-13T23:59:06+08:00">2022-04-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-22 23:45:02" itemprop="dateModified" datetime="2022-09-22T23:45:02+08:00">2022-09-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%8E%B0%E4%BB%A3C/" itemprop="url" rel="index"><span itemprop="name">现代C++</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本篇文章采用循序渐进的手法，首先讨论函数体内的引用使用，然后讨论函数间引用传递，然后引入模板参数，最后引入cv限制符</p>
-<hr>
-<h2 id="函数体内部（无类型推导，无cv限制符）"><a href="#函数体内部（无类型推导，无cv限制符）" class="headerlink" title="函数体内部（无类型推导，无cv限制符）"></a>函数体内部（无类型推导，无cv限制符）</h2><p>对于每一个量做以下划分：</p>
-<ul>
-<li>左值：有地址的值</li>
-<li>右值：没有地址的值</li>
-<li>左值引用</li>
-<li>右值引用</li>
-</ul>
-<ol>
-<li>左值引用只可以接受左值、左值引用、右值引用。</li>
-<li>右值引用只可以接受右值。</li>
-</ol>
-<h2 id="函数之间（无类型推导，无cv限制符）"><a href="#函数之间（无类型推导，无cv限制符）" class="headerlink" title="函数之间（无类型推导，无cv限制符）"></a>函数之间（无类型推导，无cv限制符）</h2><p>对于函数的形参类型做以下划分：</p>
-<ul>
-<li>无引用</li>
-<li>左值引用</li>
-<li>右值引用</li>
-</ul>
-<ol>
-<li>无引用（接收左值，右值，左值引用，右值引用）：用传来的实参初始化一个左值。</li>
-<li>左值引用（接收左值，左值引用，右值引用）：用传来的实参初始化一个左值引用。</li>
-<li>右值引用（接收右值）：用传来的实参初始化一个右值引用。</li>
-</ol>
-<p>对于函数的返回值类型做以下划分：</p>
-<ul>
-<li>无引用</li>
-<li>左值引用</li>
-<li>右值引用</li>
-</ul>
-<ol>
-<li>无引用：返回值是右值</li>
-<li>左值引用：返回值是左值引用，用return值来初始化。</li>
-<li><strong>右值引用：返回值是右值</strong>，用return值来初始化。</li>
-</ol>
-<h2 id="类型推导"><a href="#类型推导" class="headerlink" title="类型推导"></a>类型推导</h2><h3 id="用类型推导初始化变量时（函数体内部）："><a href="#用类型推导初始化变量时（函数体内部）：" class="headerlink" title="用类型推导初始化变量时（函数体内部）："></a>用类型推导初始化变量时（函数体内部）：</h3><ul>
-<li>无引用</li>
-<li>左值引用</li>
-<li>万能引用</li>
-</ul>
-<ol>
-<li>无引用：去掉给定值的类型的引用，剩下来的部分即为T（此外如果T自己有cv修饰，那么T不包含cv），随后按照无类型推导规则确定值类型。</li>
-<li>左值引用：去掉给定值的类型的引用，剩下来的部分即为T（此外如果T自己有cv修饰，那么T不包含cv），随后按照无类型推导规则确定值类型。</li>
-<li>万能引用：</li>
-</ol>
-<ul>
-<li>给定值为右值，T为给定值类型（T&amp;&amp;为变量类型）</li>
-<li>给定值为左值，T为给定值类型（T&amp;为变量类型）</li>
-<li>给定值为左值引用，T为相同类型的左值引用（T为变量类型）</li>
-<li>给定值为右值引用，T为相同类型的左值引用（T为变量类型）</li>
-</ul>
-<p>（此外如果T自己有cv修饰，那么T不包含cv）</p>
-<h3 id="用类型推导形参推导函数匹配时："><a href="#用类型推导形参推导函数匹配时：" class="headerlink" title="用类型推导形参推导函数匹配时："></a>用类型推导形参推导函数匹配时：</h3><p>（除了这种情况：“右值匹配无引用与左值引用”之外。无引用必和有引用冲突）</p>
-<p>右值—&gt;万能引用</p>
-<p>左值—&gt;左值引用/万能引用（此时左值引用与万能引用等效）</p>
-<p>左值引用—&gt;左值引用优先—&gt;万能引用</p>
-<p>右值引用—&gt;左值引用优先—&gt;万能引用</p>
-<h3 id="用类型推导函数返回值时（即使用auto）："><a href="#用类型推导函数返回值时（即使用auto）：" class="headerlink" title="用类型推导函数返回值时（即使用auto）："></a>用类型推导函数返回值时（即使用auto）：</h3><ul>
-<li>无引用，返回值是右值</li>
-<li>左值引用，返回值是左值引用</li>
-<li>万能引用：按推导返回值，再按照无类型推导的返回值返回</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -1241,6 +1095,97 @@
 <p>There are versions of TCP<br>specifically  designed  for  use  over  wireless  links,  over  high-bandwidth  paths  with large RTTs, for paths with packet re-ordering, and for short paths strictly within data centers.</p>
 <h3 id="QUIC-Quick-UDP-Internet-Connections"><a href="#QUIC-Quick-UDP-Internet-Connections" class="headerlink" title="QUIC : Quick UDP Internet Connections"></a>QUIC : Quick UDP Internet Connections</h3><p>QUIC  is  a  new  application-layer  protocol designed from the ground up to improve the performance of transport-layer services  for  secure  HTTP. </p>
 <p>Connection-Oriented  and  Secure.<br>Streams.<br>Reliable,  TCP-friendly  congestion-controlled  data  transfer. </p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/12/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-3-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/12/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-3-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/" class="post-title-link" itemprop="url">网络层数据平面</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-12 23:59:06" itemprop="dateCreated datePublished" datetime="2022-04-12T23:59:06+08:00">2022-04-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-25 10:55:16" itemprop="dateModified" datetime="2022-09-25T10:55:16+08:00">2022-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">计算机网络笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Network-Layer-Data-Plane"><a href="#Network-Layer-Data-Plane" class="headerlink" title="Network Layer : Data Plane"></a>Network Layer : Data Plane</h1><p><em><strong>network layer : host to host communication service</strong></em></p>
+<p><em>the per-router functions in the layer that determine how a datagram arriving on a router’s input links is forwarded to one of that router’s output links</em><br><em>traditional IP forwarding and generalized forwarding</em><br><em>IPV4 and IPV6</em></p>
+<p>The primary role of the network layer is deceptively simple，to move packets from<br>a sending host to a receiving host</p>
+<p>Forwarding. When a packet arrives at a router’s input link, the router must move the packet to the  appropriate output link</p>
+<p><strong>Forwarding and routing</strong><br>Forwarding refers to the router-local action of transferring a packet from an input<br>link interface to the appropriate output link interface. Forwarding takes place at very<br>short timescales (typically a few nanoseconds), and thus is typically implemented in<br>hardware. Routing refers to the network-wide process that determines the end-to-end<br>paths that packets take from source to destination. Routing takes place on much longer<br>timescales (typically seconds), and as we will see is often implemented in software.</p>
+<p>We can think of forwarding as the process of getting<br>through a single interchange: A car enters the interchange from one road and deter-<br>mines which road it should take to leave the interchange. We can think of routing as<br>the process of planning the trip from Pennsylvania to Florida: Before embarking on<br>the trip, the driver has consulted a map and chosen one of many paths possible, with<br>each path consisting of a series of road segments connected at interchanges.</p>
+<p>WFQ different from round robin in???(P341)</p>
 
       
     </div>
