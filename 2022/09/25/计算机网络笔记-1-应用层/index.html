@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Application Layerprinciplewhen developing your new application, you need to write software thatwill run on multiple end systems. This software could be written, for example, inC, Java, or Python. Impo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cozard 技术空间">
+<meta property="og:url" content="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-1-%E5%BA%94%E7%94%A8%E5%B1%82/index.html">
+<meta property="og:site_name" content="Cozard 技术空间">
+<meta property="og:description" content="Application Layerprinciplewhen developing your new application, you need to write software thatwill run on multiple end systems. This software could be written, for example, inC, Java, or Python. Impo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-25T02:43:07.297Z">
+<meta property="article:modified_time" content="2022-03-05T08:13:46.196Z">
+<meta property="article:author" content="ZYZ">
+<meta property="article:tag" content="Code Program Method">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-1-%E5%BA%94%E7%94%A8%E5%B1%82/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-1-%E5%BA%94%E7%94%A8%E5%B1%82/","path":"2022/09/25/计算机网络笔记-1-应用层/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Cozard 技术空间</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cozard 技术空间</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">规划、设计、探索</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Application-Layer"><span class="nav-number">1.</span> <span class="nav-text">Application Layer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#principle"><span class="nav-number">1.1.</span> <span class="nav-text">principle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#architectures"><span class="nav-number">1.2.</span> <span class="nav-text">architectures</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#client-server"><span class="nav-number">1.2.1.</span> <span class="nav-text">client-server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#P2P"><span class="nav-number">1.2.2.</span> <span class="nav-text">P2P</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-and-Server-Processes"><span class="nav-number">1.3.</span> <span class="nav-text">Client and Server Processes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Interface-Between-the-Process-and-the-Computer-Network"><span class="nav-number">1.4.</span> <span class="nav-text">The Interface Between the Process and the Computer Network</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP"><span class="nav-number">1.5.</span> <span class="nav-text">IP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Choose-a-transport-layer-services-for-applications"><span class="nav-number">1.6.</span> <span class="nav-text">Choose a transport layer services for applications</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transport-Services-Provided-by-the-Internet"><span class="nav-number">1.7.</span> <span class="nav-text">Transport Services Provided by the Internet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP"><span class="nav-number">1.7.1.</span> <span class="nav-text">TCP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP"><span class="nav-number">1.7.2.</span> <span class="nav-text">UDP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TLS"><span class="nav-number">1.7.3.</span> <span class="nav-text">TLS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Application-Layer-Protocols"><span class="nav-number">1.8.</span> <span class="nav-text">Application-Layer Protocols</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-heart-of-the-Web"><span class="nav-number">1.8.1.</span> <span class="nav-text">HTTP, heart of the Web</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-with-Non-Persistent-Connections"><span class="nav-number">1.8.2.</span> <span class="nav-text">HTTP with Non-Persistent Connections</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-with-Persistent-Connections"><span class="nav-number">1.8.3.</span> <span class="nav-text">HTTP with Persistent Connections</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-Message-Format"><span class="nav-number">1.9.</span> <span class="nav-text">HTTP Message Format</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-Request-Message"><span class="nav-number">1.9.1.</span> <span class="nav-text">HTTP Request Message</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-Response-Message"><span class="nav-number">1.9.2.</span> <span class="nav-text">HTTP Response Message</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookies"><span class="nav-number">1.9.3.</span> <span class="nav-text">Cookies</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Caching"><span class="nav-number">1.9.4.</span> <span class="nav-text">Web Caching</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-2"><span class="nav-number">1.10.</span> <span class="nav-text">HTTP&#x2F;2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Electronic-Mail"><span class="nav-number">1.11.</span> <span class="nav-text">Electronic Mail</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SMTP"><span class="nav-number">1.11.1.</span> <span class="nav-text">SMTP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Format"><span class="nav-number">1.11.2.</span> <span class="nav-text">Format</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS%E2%80%94The-Internet%E2%80%99s-Directory-Service"><span class="nav-number">1.12.</span> <span class="nav-text">DNS—The Internet’s Directory Service</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Resource-Record"><span class="nav-number">1.12.1.</span> <span class="nav-text">Resource Record</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Peer-to-Peer-Distribution"><span class="nav-number">1.13.</span> <span class="nav-text">Peer-to-Peer Distribution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Video-Streaming-and-Content-Distribution-Networks"><span class="nav-number">1.14.</span> <span class="nav-text">Video Streaming and Content Distribution Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Content-Distribution-Networks"><span class="nav-number">1.14.1.</span> <span class="nav-text">Content Distribution Networks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Socket-Programming-Creating-Network-Applications"><span class="nav-number">1.15.</span> <span class="nav-text">Socket Programming: Creating Network Applications</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Socket-Programming-with-UDP"><span class="nav-number">1.15.1.</span> <span class="nav-text">Socket Programming with UDP</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Socket-Programming-with-TCP"><span class="nav-number">1.16.</span> <span class="nav-text">Socket Programming with TCP</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYZ"
+      src="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+  <p class="site-author-name" itemprop="name">ZYZ</p>
+  <div class="site-description" itemprop="description">Cozard 的官方博客</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pxxxl" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pxxxl" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/wang-lang-pai-ma-wu-dao/posts" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wang-lang-pai-ma-wu-dao&#x2F;posts" rel="noopener" target="_blank"><i class="fa-brands fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-1-%E5%BA%94%E7%94%A8%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-25 10:43:07" itemprop="dateCreated datePublished" datetime="2022-09-25T10:43:07+08:00">2022-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-03-05 16:13:46" itemprop="dateModified" datetime="2022-03-05T16:13:46+08:00">2022-03-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Application-Layer"><a href="#Application-Layer" class="headerlink" title="Application Layer"></a>Application Layer</h1><h2 id="principle"><a href="#principle" class="headerlink" title="principle"></a>principle</h2><p>when developing your new application, you need to write software that<br>will run on multiple end systems. This software could be written, for example, in<br>C, Java, or Python. Importantly, you do not need to write software that runs on network-<br>core devices</p>
+<h2 id="architectures"><a href="#architectures" class="headerlink" title="architectures"></a>architectures</h2><h3 id="client-server"><a href="#client-server" class="headerlink" title="client-server"></a>client-server</h3><p>there is an always-on host, called the server,<br>which services requests from many other hosts, called clients.</p>
+<p>server has a fixed, well-known address, called an IP address.</p>
+<p>a clientcan always contact the server by sending a packet to the server’s IP address.</p>
+<p>A data center can have hundreds of thousands of servers</p>
+<h3 id="P2P"><a href="#P2P" class="headerlink" title="P2P"></a>P2P</h3><p>the application exploits direct communication between pairs of intermittently connected hosts, called peers.</p>
+<h2 id="Client-and-Server-Processes"><a href="#Client-and-Server-Processes" class="headerlink" title="Client and Server Processes"></a>Client and Server Processes</h2><p>In the context of a communication session between a pair of processes, the process that initiates the communication (that is, initially contacts the other process at the beginning of the session) is labeled as the client. The process that waits to be contacted to begin the session is the server.</p>
+<h2 id="The-Interface-Between-the-Process-and-the-Computer-Network"><a href="#The-Interface-Between-the-Process-and-the-Computer-Network" class="headerlink" title="The Interface Between the Process and the Computer Network"></a>The Interface Between the Process and the Computer Network</h2><p><strong>Socket</strong><br>Let’s consider an analogy to help us understand processes and sockets. A process is analogous to a house and its socket is analogous to its door. When a process wants to send a message to another process on another host, it shoves the message out its door (socket). This sending process assumes that there is a transportation infrastructure on the other side of its door that will transport the message to the door of the destination process. Once the message arrives at the destination host, the message passes through the receiving process’s door (socket), and the receiving process then acts on the message.</p>
+<p>The only control that the application developer has on the transportlayer side is (1) the choice of transport protocol and (2) perhaps the ability to fix a few transport-layer parameters such as maximum buffer and maximum segment sizes</p>
+<h2 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h2><p>To  identify  the  receiving  process,  two  pieces  of  information  need  to  be  specified:  (1) the address of the host and (2) an identifier that specifies the receiving process in the destination host.<br>a 32-bit  quantity  that  we  can  think  of  as  uniquely  identifying  the  host.</p>
+<p>port number， the receiving socket<br>Popular applica-<br>tions have been assigned specific port numbers. For example, a Web server is identified  by port number 80. A mail server process (using the SMTP protocol) is identified by  port number 25. A list of well-known port numbers for all Internet standard protocols  can be found at <a target="_blank" rel="noopener" href="http://www.iana.org/">www.iana.org</a>. </p>
+<h2 id="Choose-a-transport-layer-services-for-applications"><a href="#Choose-a-transport-layer-services-for-applications" class="headerlink" title="Choose a transport layer services for applications"></a>Choose a transport layer services for applications</h2><ul>
+<li>Reliable Data Transfer</li>
+<li>Throughput</li>
+<li>Timing</li>
+<li>Security</li>
+</ul>
+<h2 id="Transport-Services-Provided-by-the-Internet"><a href="#Transport-Services-Provided-by-the-Internet" class="headerlink" title="Transport Services Provided by the Internet"></a>Transport Services Provided by the Internet</h2><h3 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h3><ul>
+<li>Connection-oriented service</li>
+<li>Reliable data transfer service</li>
+</ul>
+<h3 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h3><p>UDP is a no-frills, lightweight transport protocol, providing minimal services. UDP is connectionless, so there is no handshaking before the two processes start to com- municate. UDP provides an unreliable data transfer service—that is, when a process  sends  a  message  into  a  UDP  socket,  UDP  provides  no  guarantee  that  the  message  will  ever  reach  the  receiving  process.  Furthermore,  messages  that  do  arrive  at  the receiving process may arrive out of order.</p>
+<h3 id="TLS"><a href="#TLS" class="headerlink" title="TLS"></a>TLS</h3><p>TCP’s enhancements being implemented in the application layer</p>
+<h2 id="Application-Layer-Protocols"><a href="#Application-Layer-Protocols" class="headerlink" title="Application-Layer Protocols"></a>Application-Layer Protocols</h2><p>An application-layer protocol  defines  how  an  application’s  processes,  running  on  different  end  systems, pass messages to each other. In particular, an application-layer protocol defines:</p>
+<p>The types of messages exchanged, for example, request messages and response<br>messages<br>• The syntax of the various message types, such as the fields in the message and<br>how the fields are delineated<br>• The semantics of the fields, that is, the meaning of the information in the fields<br>• Rules for determining when and how a process sends messages and responds to<br>messages</p>
+<h3 id="HTTP-heart-of-the-Web"><a href="#HTTP-heart-of-the-Web" class="headerlink" title="HTTP, heart of the Web"></a>HTTP, heart of the Web</h3><p>A  Web  page  (also  called  a  document)  consists  of  objects.</p>
+<p>HTTP need not worry about lost data or the details of how TCP recovers from loss or reordering of  data within the network. That is the job of TCP and the protocols in the lower layers of the protocol stack.</p>
+<p> the  server  sends  requested  files  to  clients  without storing any state information about the client</p>
+<p>a stateless protocol.</p>
+<p>A  Web  server  is  always  on,  with  a  fixed  IP  address,  and  it  services  requests from potentially millions of different browsers.</p>
+<h3 id="HTTP-with-Non-Persistent-Connections"><a href="#HTTP-with-Non-Persistent-Connections" class="headerlink" title="HTTP with Non-Persistent Connections"></a>HTTP with Non-Persistent Connections</h3><p>each TCP connection is closed after the server sends the object—the connection does not  persist for other objects. HTTP/1.0 employes non-persistent TCP connections. Note that each non-persistent TCP connection transports exactly one request message and one response message</p>
+<p>Indeed, users can configure some browsers to control the degree of parallelism. Browsers may open multiple TCP con-nection</p>
+<p>This  HTTP request/response eats up another RTT. Thus, roughly, the total response time is two RTTs plus the transmission time at the server of the HTML file.</p>
+<p>shortcoming</p>
+<ul>
+<li>a brand-new connection must  be  established  and  maintained  for  each  requested  object.</li>
+<li>each object suffers a delivery delay of two RTTs</li>
+</ul>
+<h3 id="HTTP-with-Persistent-Connections"><a href="#HTTP-with-Persistent-Connections" class="headerlink" title="HTTP with Persistent Connections"></a>HTTP with Persistent Connections</h3><p>The default mode of HTTP uses persistent connections with pipelining.</p>
+<h2 id="HTTP-Message-Format"><a href="#HTTP-Message-Format" class="headerlink" title="HTTP Message Format"></a>HTTP Message Format</h2><h3 id="HTTP-Request-Message"><a href="#HTTP-Request-Message" class="headerlink" title="HTTP Request Message"></a>HTTP Request Message</h3><p>ordinary ASCII text<br>lines, each followed by a carriage return and a line feed The last line is fol-lowed by an additional carriage return and line feed</p>
+<p>The first line of an HTTP request message is called the request line; the subsequent  lines  are  called  the  header  lines.  The  request  line  has  three  fields:  the method field, the URL field, and the HTTP version field. The method field can take on  several  different  values,  including  GET,  POST,  HEAD,  PUT,  and  DELETE.</p>
+<p>The GET method is used when the browser requests an object, with the requested object identified in the  URL  field. </p>
+<p>let’s now look at the general format of a request<br>message, as shown in Figure 2.8.<br>P113<br>HTML forms often use<br>the GET method and include the inputted data (in the form fields) in the requested URL.</p>
+<p>The  HEAD  method  is  similar  to  the  GET  method.  When  a  server  receives  a request with the HEAD method, it responds with an HTTP message but it leaves out the requested object. Application developers often use the HEAD method for debug-ging.  The  PUT  method  is  often  used  in  conjunction  with  Web  publishing  tools.  It allows  a  user  to  upload  an  object  to  a  specific  path  (directory)  on  a  specific  Web server.  The  PUT  method  is  also  used  by  applications  that  need  to  upload  objects to Web servers. The DELETE method allows a user, or an application, to delete an object on a Web server.</p>
+<h3 id="HTTP-Response-Message"><a href="#HTTP-Response-Message" class="headerlink" title="HTTP Response Message"></a>HTTP Response Message</h3><p>…</p>
+<h3 id="Cookies"><a href="#Cookies" class="headerlink" title="Cookies"></a>Cookies</h3><ul>
+<li>a cookie header  line  in  the  HTTP  response  message;</li>
+<li>a cookie  header  line  in  the  HTTP request  message;</li>
+<li>a cookie  file  kept  on  the  user’s  end  system  and  managed  by the user’s browser</li>
+<li>a back-end database at the Web site</li>
+</ul>
+<h3 id="Web-Caching"><a href="#Web-Caching" class="headerlink" title="Web Caching"></a>Web Caching</h3><p>proxy server</p>
+<p>conditional GET<br>(1) the request message uses the GET method and (2) the request message includes an<br>If-Modified-Since: header line.</p>
+<h2 id="HTTP-2"><a href="#HTTP-2" class="headerlink" title="HTTP/2"></a>HTTP/2</h2><p>enabling request and response multiplexing over a single TCP connection, provide request prioritization and server push, and provide efficient compression of HTTP header fields</p>
+<p>HTTP/2 changes how the data is formatted and transported between the client and server.</p>
+<p>with only 1 TCP<br>care for HOL problems</p>
+<p>The HTTP/2 solution for HOL blocking is to break each message into small frames, and interleave the request and response messages on the same TCP connection.</p>
+<p>use framing sublayer<br>Response Message Prioritization and Server Pushing。<br>the  server  can  push  additional  objects  to  the  client,  without  the  client  having  to<br>request each one</p>
+<p>HTTP/3<br>QUIC, discussed in Chapter 3, is a new “transport” protocol that is implemented in<br>the application layer over the bare-bones UDP protocol</p>
+<h2 id="Electronic-Mail"><a href="#Electronic-Mail" class="headerlink" title="Electronic Mail"></a>Electronic Mail</h2><p>Mail  servers  form  the  core  of  the  e-mail  infrastructure.  Each  recipient, has a mailbox located in one of the mail servers. </p>
+<h3 id="SMTP"><a href="#SMTP" class="headerlink" title="SMTP"></a>SMTP</h3><p>SMTP transfers messages from senders’ mail servers to the recipients’ mail servers.</p>
+<p>does not normally use intermediate mail servers for sending mail</p>
+<p>First,  the  client  SMTP  (running  on  the  sending  mail  server  host)  has TCP  establish  a  connection  to  port  25  at  the  server  SMTP  (running  on  the  receiv-ing  mail  server  host).  If  the  server  is  down,  the  client  tries  again  later.  Once this  connection  is  established,  the  server  and  client  perform  some  application-layer handshaking—just as humans often introduce themselves before trans-ferring  information  from  one  to  another,  SMTP  clients  and  servers  introduce themselves before transferring information. During this SMTP handshaking phase,  the SMTP client indicates the e-mail address of the sender (the person who gener-ated the message) and the e-mail address of the recipient. Once the SMTP client and server have introduced themselves to each other, the client sends the message. SMTP can count on the reliable data transfer service of TCP to get the message to the server without errors. The client then repeats this process over the same TCP connection if it has other messages to send to the server; otherwise, it instructs TCP to close the connection.</p>
+<p>send all of the messages over the same TCP connection.</p>
+<h3 id="Format"><a href="#Format" class="headerlink" title="Format"></a>Format</h3><p>The  commands  in  that  section  were  part  of  the SMTP handshaking protocol;<br>Every  header  must  have  a  From:  header  line  and  a  To:  header  line; a  header  may  include  a  Subject:  header  line  as  well  as  other  optional  header lines.  </p>
+<p>typically the send-er’s user agent does not dialogue directly with the recipient’s mail server. Instead, as shown in Figure 2.16, Alice’s user agent uses SMTP or HTTP to deliver the e-mail message into her mail server, then Alice’s mail server uses SMTP (as an SMTP cli-ent) to relay the e-mail message to Bob’s mail server.</p>
+<p>HTTP and IMAP approaches allow Bob to manage folders, maintained in Bob’s mail server. Bob can move messages into the folders he creates, delete messages, mark messages as important, and so on.</p>
+<h2 id="DNS—The-Internet’s-Directory-Service"><a href="#DNS—The-Internet’s-Directory-Service" class="headerlink" title="DNS—The Internet’s Directory Service"></a>DNS—The Internet’s Directory Service</h2><p>One identifier for a host is its hostname. Hostnames—such as <a target="_blank" rel="noopener" href="http://www.facebook.com/">www.facebook.com</a>, <a target="_blank" rel="noopener" href="http://www.google.com/">www.google.com</a>,  gaia.cs.umass.edu—are  mnemonic  and  are  therefore appreciated by humans</p>
+<p>hosts are also identified by so-called IP addresses</p>
+<p>The DNS is (1) a distributed database implemented in a hierarchy of DNS servers,  and  (2)  an  application-layer  protocol  that  allows  hosts  to  query  the  distributed database</p>
+<p>the  DNS  protocol  runs  over UDP and uses port 53</p>
+<ol>
+<li>The same user machine runs the client side of the DNS application.</li>
+<li>The browser extracts the hostname, <a target="_blank" rel="noopener" href="http://www.someschool.edu/">www.someschool.edu</a>, from the URL and passes the hostname to the client side of the DNS application.</li>
+<li>The DNS client sends a query containing the hostname to a DNS server.</li>
+<li>The DNS client eventually receives a reply, which includes the IP address for the hostname.</li>
+<li>Once the browser receives the IP address from DNS, it can initiate a TCP con-nection to the HTTP server process located at port 80 at that IP address.</li>
+</ol>
+<p>it<br>(1) runs between communicating end systems using the client-server paradigm and<br>(2) relies on an underlying end-to-end transport protocol to transfer DNS messages between communicating end systems</p>
+<p>A Distributed, Hierarchical Database<br>Root  name  servers  provide the IP addresses of the TLD servers.<br>For each of the top-level domains—top-level domains  such  as  com,  org,  net,  edu,  and  gov,  and  all  of  the  country  top-level domains such as uk, fr, ca, and jp—there is TLD server (or server cluster).TLD servers provide the IP addresses for authoritative DNS servers</p>
+<p>Every  organization  with  publicly  accessible  hosts (such  as  Web  servers  and  mail  servers)  on  the  Internet  must  provide  publicly accessible  DNS  records  that  map  the  names  of  those  hosts  to  IP  addresses.  An organization’s  authoritative  DNS  server  houses  these  DNS  records.</p>
+<h3 id="Resource-Record"><a href="#Resource-Record" class="headerlink" title="Resource Record"></a>Resource Record</h3><p>A resource record is a four-tuple that contains the following fields:(Name, Value, Type, TTL)</p>
+<p>To obtain the canonical name for the mail server, a DNS client would query for<br>an MX record; to obtain the canonical name for the other server, the DNS client<br>would query for the CNAME record.<br>If Type=A, then Name is a hostname and Value is the IP address for the host-<br>name. Thus, a Type A record provides the standard hostname-to-IP address map-<br>ping. As an example, (relay1.bar.foo.com, 145.37.93.126, A) is<br>a Type A record.<br>• If Type=NS, then Name is a domain (such as foo.com) and Value is the host-<br>name of an authoritative DNS server that knows how to obtain the IP addresses<br>for hosts in the domain. This record is used to route DNS queries further along in<br>the query chain. As an example, (foo.com, dns.foo.com, NS) is a Type<br>NS record</p>
+<p>If a DNS server is authoritative for a particular hostname, then the DNS server<br>will contain a Type A record for the hostname. (Even if the DNS server is not author-<br>itative, it may contain a Type A record in its cache.) If a server is not authoritative<br>for a hostname, then the server will contain a Type NS record for the domain that<br>includes the hostname; it will also contain a Type A record that provides the IP address<br>of the DNS server in the Value field of the NS record.</p>
+<h2 id="Peer-to-Peer-Distribution"><a href="#Peer-to-Peer-Distribution" class="headerlink" title="Peer-to-Peer Distribution"></a>Peer-to-Peer Distribution</h2><p>pairs  of intermittently connected hosts, called peers, communicate directly with each other.</p>
+<p>most popular P2P file distribution protocol is BitTorrent</p>
+<p> the collection of all peers participating in the distribution of a particular file is<br>called a torrent. Peers in a torrent download equal-size chunks of the file from one<br>another, with a typical chunk size of 256 KBytes. When a peer first joins a torrent, it<br>has no chunks. Over time it accumulates more and more chunks. While it downloads<br>chunks  it  also  uploads  chunks  to  other  peers.  Once  a  peer  has  acquired  the  entire<br>file, it may (selfishly) leave the torrent, or (altruistically) remain in the torrent and<br>continue to upload chunks to other peers. Also, any peer may leave the torrent at any<br>time with only a subset of chunks, and later rejoin the torrent.</p>
+<h2 id="Video-Streaming-and-Content-Distribution-Networks"><a href="#Video-Streaming-and-Content-Distribution-Networks" class="headerlink" title="Video Streaming and Content Distribution Networks"></a>Video Streaming and Content Distribution Networks</h2><p>they are implemented using application-level protocols and servers that function in some ways like a cache.</p>
+<p>In  HTTP  streaming,  the  video  is  simply  stored  at  an  HTTP  server  as  an  ordinary file with a specific URL. When a user wants to see the video, the client establishes a  TCP  connection  with  the  server  and  issues  an  HTTP  GET  request  for  that  URL. The server then sends the video file, within an HTTP response message, as quickly as the underlying network protocols and traffic conditions will allow.</p>
+<p>On the client side, the bytes are collected in a client application buffer.</p>
+<p>In DASH, the video is encoded into several different versions, with each version having a different bit rate and, correspondingly, a different quality level. The client dynamically requests chunks of video segments of a few seconds in length. When the amount of available bandwidth is high, the client naturally selects chunks from a high-rate version; and when the available bandwidth is low, it naturally selects from a low-rate version. The client selects different chunks one at a time with HTTP GET request messages </p>
+<p>With DASH, each video version is stored in the HTTP server, each with a differ-ent URL. The HTTP server also has a manifest file, which provides a URL for each version  along  with  its  bit  rate.</p>
+<p>The  client  first  requests  the  manifest  file  and  learns about the various versions. The client then selects one chunk at a time by specifying a URL and a byte range in an HTTP GET request message for each chunk. While down-loading chunks, the client also measures the received bandwidth and runs a rate deter-mination algorithm to select the chunk to request next.</p>
+<h3 id="Content-Distribution-Networks"><a href="#Content-Distribution-Networks" class="headerlink" title="Content Distribution Networks"></a>Content Distribution Networks</h3><p>The CDN may be a private CDN, that is, owned by the content provider<br>itself;  for  example,  Google’s  CDN  distributes  YouTube  videos  and  other  types  of<br>content. The CDN may alternatively be a third-party CDN that distributes content<br>on behalf of multiple content providers; Akamai, Limelight and Level-3 all operate<br>third-party  CDNs.  A  very  readable  overview  of  modern  CDNs  is  [Leighton  2009;<br>Nygren 2010].<br>CDNs  typically  adopt  one  of  two  different  server  placement  philosophies<br>[Huang 2008]:<br>• Enter  Deep.  One  philosophy,  pioneered  by  Akamai,  is  to  enter  deep  into  the<br>access  networks  of  Internet  Service  Providers,  by  deploying  server  clusters  in<br>access ISPs all over the world. (Access networks are described in Section 1.3.)<br>Akamai takes this approach with clusters in thousands of locations. The goal is<br>to get close to end users, thereby improving user-perceived delay and throughput<br>by decreasing the number of links and routers between the end user and the CDN<br>server from which it receives content. Because of this highly distributed design,<br>the task of maintaining and managing the clusters becomes challenging.<br>• Bring  Home.  A  second  design  philosophy,  taken  by  Limelight  and  many<br>other  CDN  companies,  is  to  bring  the  ISPs  home  by  building  large  clusters<br>at a smaller number (for example, tens) of sites. Instead of getting inside the<br>access  ISPs,  these  CDNs  typically  place  their  clusters  in  Internet  Exchange<br>Points  (IXPs)  (see  Section  1.3).  Compared  with  the  enter-deep  design  phi-<br>losophy,  the  bring-home  design  typically  results  in  lower  maintenance  and<br>management  overhead,  possibly  at  the  expense  of  higher  delay  and  lower<br>throughput to end users.</p>
+<p><strong>Most CDNs take advantage of DNS to intercept and redirect requests</strong></p>
+<p>At the core of any CDN deployment is a cluster selection strategy</p>
+<h2 id="Socket-Programming-Creating-Network-Applications"><a href="#Socket-Programming-Creating-Network-Applications" class="headerlink" title="Socket Programming: Creating Network Applications"></a>Socket Programming: Creating Network Applications</h2><p>Two types：open or proprietary</p>
+<h3 id="Socket-Programming-with-UDP"><a href="#Socket-Programming-with-UDP" class="headerlink" title="Socket Programming with UDP"></a>Socket Programming with UDP</h3><p>We said that each process is<br>analogous to a house and the process’s socket is analogous to a door. The application<br>resides on one side of the door in the house; the transport-layer protocol resides on<br>the other side of the door in the outside world. The application developer has control<br>of everything on the application-layer side of the socket; however, it has little control<br>of the transport-layer side.</p>
+<p>When a socket is created, an  identifier,  called  a  port  number,  is  assigned  to  it</p>
+<h2 id="Socket-Programming-with-TCP"><a href="#Socket-Programming-with-TCP" class="headerlink" title="Socket Programming with TCP"></a>Socket Programming with TCP</h2><p>Unlike UDP, TCP is a connection-oriented protocol. This means that before the cli-<br>ent and server can start to send data to each other, they first need to handshake and<br>establish a TCP connection. One end of the TCP connection is attached to the client<br>socket and the other end is attached to a server socket. When creating the TCP con-<br>nection, we associate with it the client socket address (IP address and port number)<br>and the server socket address (IP address and port number<br> With the TCP connec-<br>tion established, when one side wants to send data to the other side, it just drops the<br>data into the TCP connection via its socket. This is different from UDP, for which<br>the server must attach a destination address to the packet before dropping it into the<br>socket.</p>
+<p>During  the  three-way  handshake,  the  client  process  knocks  on  the  welcom-<br>ing  door  of  the  server  process.  When  the  server  “hears”  the  knocking,  it  creates  a<br>new  door—more  precisely,  a  new  socket  that  is  dedicated  to  that  particular   client.<br>In  our  example  below,  the  welcoming  door  is  a  TCP  socket  object  that  we  call<br>serverSocket; the newly created socket dedicated to the client making the con-<br>nection is called connectionSocket. Students who are encountering TCP sock-<br>ets for the first time sometimes confuse the welcoming socket (which is the initial<br>point  of  contact  for  all  clients  wanting  to  communicate  with  the  server),  and  each<br>newly  created  server-side  connection  socket  that  is  subsequently  created  for  com-<br>municating with each client.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-5-%E9%93%BE%E8%B7%AF%E5%B1%82/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-6-%E6%97%A0%E7%BA%BF%E4%B8%8E%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa-regular fa-earth-asia"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZYZ</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

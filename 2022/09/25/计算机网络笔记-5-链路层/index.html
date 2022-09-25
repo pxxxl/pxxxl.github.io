@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Link Layer包是怎样在单个链路上传播的。有两种截然不同的链路层channel，一种是广播channel，一种是点到点交流链路 任何运行在链路层的设备都叫做node节点，包括主机，路由器，交换机，WiFi连接处。连接相邻节点的通道叫做链路。数据报被封装成为链路层帧。 链路层的工作便是把数据报从一个节点传输到相邻的节点，但是传输手段多种多样。 链路层可能提供以下服务：  组成帧。所有链路层协议">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cozard 技术空间">
+<meta property="og:url" content="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-5-%E9%93%BE%E8%B7%AF%E5%B1%82/index.html">
+<meta property="og:site_name" content="Cozard 技术空间">
+<meta property="og:description" content="Link Layer包是怎样在单个链路上传播的。有两种截然不同的链路层channel，一种是广播channel，一种是点到点交流链路 任何运行在链路层的设备都叫做node节点，包括主机，路由器，交换机，WiFi连接处。连接相邻节点的通道叫做链路。数据报被封装成为链路层帧。 链路层的工作便是把数据报从一个节点传输到相邻的节点，但是传输手段多种多样。 链路层可能提供以下服务：  组成帧。所有链路层协议">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-25T02:42:53.328Z">
+<meta property="article:modified_time" content="2022-06-16T04:33:39.550Z">
+<meta property="article:author" content="ZYZ">
+<meta property="article:tag" content="Code Program Method">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-5-%E9%93%BE%E8%B7%AF%E5%B1%82/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-5-%E9%93%BE%E8%B7%AF%E5%B1%82/","path":"2022/09/25/计算机网络笔记-5-链路层/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Cozard 技术空间</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cozard 技术空间</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">规划、设计、探索</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Link-Layer"><span class="nav-number">1.</span> <span class="nav-text">Link Layer</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYZ"
+      src="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+  <p class="site-author-name" itemprop="name">ZYZ</p>
+  <div class="site-description" itemprop="description">Cozard 的官方博客</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pxxxl" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pxxxl" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/wang-lang-pai-ma-wu-dao/posts" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wang-lang-pai-ma-wu-dao&#x2F;posts" rel="noopener" target="_blank"><i class="fa-brands fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-5-%E9%93%BE%E8%B7%AF%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-25 10:42:53" itemprop="dateCreated datePublished" datetime="2022-09-25T10:42:53+08:00">2022-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-06-16 12:33:39" itemprop="dateModified" datetime="2022-06-16T12:33:39+08:00">2022-06-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Link-Layer"><a href="#Link-Layer" class="headerlink" title="Link Layer"></a>Link Layer</h1><p>包是怎样在单个链路上传播的。<br>有两种截然不同的链路层channel，一种是广播channel，一种是点到点交流链路</p>
+<p>任何运行在链路层的设备都叫做node节点，包括主机，路由器，交换机，WiFi连接处。连接相邻节点的通道叫做链路。数据报被封装成为链路层帧。</p>
+<p>链路层的工作便是把数据报从一个节点传输到相邻的节点，但是传输手段多种多样。</p>
+<p>链路层可能提供以下服务：</p>
+<ul>
+<li>组成帧。所有链路层协议都把数据报封装进帧然后再放进链接。帧包括头部以及数据部。</li>
+<li>链接直达。medium access control（MAC）协议规定了数据报在在连接中的传输规则。</li>
+<li>可靠传输。有的传输协议会保证可靠传输，（不拖到传输层和应用层处理）这在无线传输中可能很有必要，但是有线传输错误率并不高所以不常使用。</li>
+<li>错误侦测和更正。在链路层的错误侦测通常更复杂，且在硬件中实现。</li>
+</ul>
+<p>在大部分情况下，链路层在一块叫做network adapter网络适配器（也叫newwork interface controller（NIC））的芯片上实现。由此，许多链路层的功能是在硬件上实现的。例如因特尔700系列适配器实现了以太网协议。 Atheros AR5006实现了WiFi协议。</p>
+<p>链路层控制器接过协议栈上层传递下来的数据报，包进链路层帧，然后传进链路。</p>
+<p>链路层有些部分是在软件上实现的，一般是高一级的链路层功能，像是装配链路层地址信息，激活控制器硬件，处理错误，传数据报上网络层…链路层是协议栈里面硬件和软件相会之处。</p>
+<p><strong>错误探测和更正技术</strong><br>error-detection and -correction bits（EDC）与帧D被一起送往接收方，这时候EDC和D将可能变化。传输过程中错误并不是总能被发现。</p>
+<p>下面有三种检测科技</p>
+<p><strong>Parity Checks</strong><br>使用单个的奇偶校验位。检测出是否发生奇数个比特错误。<br>一般情况下同时出现多个比特错误的概率是很小的，错误通常爆发式出现，这时候探测到的概率就是百分之五十。<br>如果把比特看为二维数组，并且每行每列都使用奇偶校验位，那么甚至能更正不严重的错误。</p>
+<p>接收机检测和纠正错误的能力称为forward error correction（FEC）。</p>
+<p>在需要速度的场合很有用。</p>
+<p><strong>checksum</strong><br>Internet校验和基于这种方法。字节数据被视为16位整数并求和。然后，该和的1s补码形成段标头中携带的Internet校验和。</p>
+<p>在TCP和UDP协议中，对所有字段（包括标头和数据字段）计算Internet校验和。在IP中，校验和是通过IP头计算的（因为UDP或TCP段有自己的校验和）。在其他协议中，例如XTP【Strayer 1992】，在报头上计算一个校验和，在整个数据包上计算另一个校验和。</p>
+<p>链路层使用循环冗余校验。由于传输层基于软件，所以需要有简单快速策略，而链路层的错误探测基于适配器的专用硬件，可以快速进行复杂的循环冗余校验。</p>
+<p><strong>Cyclic Redundancy Check (CRC)</strong><br>循环冗余校验</p>
+<p>CRC码也叫多项式码，它将bit串视为系数为1与0的多项式，操作被解释为多项式算术。</p>
+<p>模2算数：二进制加减乘除，不考虑加法的进位和减法的借位。加法和减法都等价于按位异或。</p>
+<p>发送者和接收者共同约定一个除数。</p>
+<p>被发送的帧必须扩展一部分。设除数r+1位，则将被发送的帧数据扩展r个0模2除除数，所得到的余数即为要扩展的部分（书里有数学推导）。</p>
+<p>除数G是约定好了的。比如32位的：<br>100000100110000010001110110110111</p>
+<p>可以探测到少于r+1位的爆发式错误，大于r+1的有1-0.5^r的概率探测到，可以探测到奇数位错误。</p>
+<p>数学证明不在讨论之列。</p>
+<p><strong>Multiple Access Links and Protocols</strong></p>
+<p>有两种网络链路：点到点链路和广播链路。</p>
+<p>point-to-point protocol（PPP）和high-level data link control（HDLC）是为点到点链路设计的协议。</p>
+<p>广播链路可以有很多发送端和接收端，连接到共享的广播通道上。一个节点发送了帧，其他的被链接的节点都会收到这个帧。</p>
+<p>Ethernet 和 wireless LANs都是广播技术的例子。</p>
+<p>本节不讨论具体协议，先解决关键问题：协调多个发送和接收节点对共享广播信道的访问——多访问问题。</p>
+<p>碰撞：多于两个节点同时发出帧时，这些帧都会丢失。</p>
+<p>有许多工作都是为了解决 multiple access protocol问题的。</p>
+<p>有很多multiple access protocol，可归为三类：</p>
+<ul>
+<li>channel partitioning protocols</li>
+<li>random access protocols</li>
+<li>taking-turns protocols</li>
+</ul>
+<p>多址接入协议应该有这些特征：（速率为每秒R比特的广播频道）<br>1、当只有一个节点有数据要发送时，该节点的吞吐量为R bps。<br>2、当M个节点有数据要发送时，每个节点的吞吐量为R/M bps。这不一定意味着M个节点中的每个节点总是具有R/M的瞬时速率，而是每个节点应该在一些适当定义的时间间隔上具有R/M的平均传输速率。<br>3、协议分散；也就是说，here is no master node that represents a single point of failure for the network.<br>4、协议简单，实现成本低廉。</p>
+<p><strong>Channel Partitioning Protocols</strong></p>
+<p>通道分割</p>
+<p>时分复用（TDM）绝对公平地为每个节点提供了相同地可发送时间。但有两个缺点：即使只有一个节点需要传输，它也只能在自己的时间范围内传输；节点必须遵守传输顺序。</p>
+<p>频分复用（FDM）具有与时分复用相同的特点。</p>
+<p>码分多址（code division multiple access）（CDMA）为每个节点安排一个码值，每个节点使用独特的码值来编码它所发送的数据。如果码值选得很好，不同的节点可以同时传输，使他们各自的接收者都接收到。</p>
+<p>随机访问协议</p>
+<p>每个节点都全力传输数据，出现碰撞时，参与进碰撞的节点都会独立等待一段随机延迟再重复传输。</p>
+<p>很多协议使用这种策略。<br>ALOHA协议使用这种策略。<br>carrier sense multiple access protocol（CSMA）（载波侦听多路访问协议）使用这种策略，以太网使用CSMA。</p>
+<p><strong>slotted ALOHA</strong></p>
+<p>做以下假设：<br>时间被分为一段一段槽，帧能在一段槽里被传完，所有节点能知道碰撞发生了。</p>
+<p>于是节点的行为是这样的：</p>
+<ul>
+<li>当节点有一个新的帧要发送时，它会等待到下一个时隙的开始，并在该时隙中传输整个帧。</li>
+<li>如果没有冲突，则节点已成功传输其帧，因此无需考虑重新传输帧。（如果节点有新帧，则可以为传输准备新帧。）</li>
+<li>如果发生冲突，节点会在插槽结束之前检测到冲突。节点在每个后续时隙中以概率p重新传输其帧，直到帧在没有冲突的情况下传输。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>允许持续全速传输。</li>
+<li>去中心化。</li>
+</ul>
+<p>但是有很多节点时冲突问题很严重。</p>
+<p><strong>ALOHA</strong><br>仍然规定了传输时间t，但是这次发送帧不会同步。</p>
+<p>很多节点时效率是slotted ALOHA的一半。</p>
+<p><strong>Carrier Sense Multiple Access (CSMA)</strong></p>
+<p>carrier sensing载波感应，节点在传输之前会监听通道，如果探测到传输消失，过一小段时间后会开始传输。<br>collision detection碰撞检测，正在传输的节点监听通道，如果出现碰撞则立即停止传输，随机等待一段时间后重新开始监听。</p>
+<p>这两个规则体现在载波侦听多址（CSMA）和带冲突检测的CSMA（CSMA/CD）协议系列中</p>
+<p>比特在通道里传播的时间越长，就越有可能发生碰撞，因为其他节点可能误以为此时没有节点在传输。</p>
+<p><strong>Carrier Sense Multiple Access with Collision Detection (CSMA/CD)</strong></p>
+<p>带冲突检测的载波侦听多址接入（CSMA/CD）</p>
+<p>这是适配器的行为：<br>1、适配器从网络层获取数据报，准备链路层帧，并放置帧适配器缓冲区。<br>2、如果适配器检测到信道空闲（即，没有信号能量从信道进入适配器），它将开始传输帧。另一方面，如果适配器检测到信道正忙，它将等待，直到检测到没有信号能量，然后开始传输帧。<br>3、传输时，适配器使用广播频道监视是否存在来自其他适配器的信号能量。<br>4、如果适配器传输整个帧而未检测到来自其他适配器的信号能量，则适配器完成帧的传输。另一方面，如果适配器在传输时检测到来自其他适配器的信号能量，它将中止传输（即停止传输其帧）。<br>5、中止后，适配器随机等待一段时间，然后返回步骤2。</p>
+<p>如何选择碰撞后的等待时间呢？binary exponential backoff algorithm二进制指数退避算法解决了这一问题。Ethernet和NOCSIS线缆网络多址协议使用了它。</p>
+<p>具体地，当传输已经经历n次碰撞的帧时，节点从{0,1,2，….2n-1}中随机选择K的值。因此，帧经历的碰撞越多，从中选择K的间隔就越大。对于以太网，节点等待的实际时间量是K*512位的倍（即，将512位发送到以太网所需的时间量的K倍），并且n可以接受的最大值被限制为10。</p>
+<p><strong>Taking-Turns Protocols</strong></p>
+<p>理想的协议有这样的特点：1.当只有一个节点活动时，满效率。2.当M个节点活动时，效率均分。<br>ALOHA和CSMA有第一条特性，但是没有第二条。接下来介绍的轮流协议可以做到两条。</p>
+<p>polling protocol轮询协议<br>一个节点被设计成主节点。主节点以循环方式轮询每个节点，给予每个节点发送帧的机会。</p>
+<p>缺点：</p>
+<ul>
+<li>轮询延迟</li>
+<li>如果主节点失效了，整个通道都会失效。</li>
+</ul>
+<p>蓝牙协议使用polling protocol</p>
+<p>token-passing protocol令牌传递协议<br>一个小型的，特殊用途的帧，叫做令牌在节点间传送，以一种固定顺序（即节点一总是会给节点二，节点二给三）。当一个节点拿到令牌后，如果有帧要送就抓住，直到送完或者到达一次允许的最大传输帧数，如果没有就把令牌送出去。</p>
+<p>缺点：一个节点失效了，整个通道都会失效。若节点拒绝释放令牌，还需要一些恢复过程介入。</p>
+<p><strong>DOCSIS：有线互联网接入的链路层协议</strong></p>
+<p>线缆接入网络一般都链接了几千居民线缆调制解调器到电缆调制解调器终端系统 (CMTS)上。<br>Data-Over-Cable  Service  Interface  Specifications (DOCSIS) （有线数据服务接口规范）指定了电缆数据网络体系结构及其协议。</p>
+<p>使用FDM分割下行与上行段，到多个频段。下行频道在24MHz与192MHz之间，最大传输1.6Gbps，上行6.4MHz到96MHz，最大1Gbps。每个上下行通道都是广播通道。下行通道只有CMTS一个节点传输，没有多路访问问题。</p>
+<p>每个上行信道被划分为时间间隔（类似TDM），每个时间间隔包含一系列小时隙，在此期间，电缆调制解调器可以传输到CMT。CMTS明确授予独立电缆调制解调器在特定迷你插槽期间传输的权限。CMTS通过在下游通道上发送称为MAP消息的控制消息来实现这一点，以指定在控制消息中指定的时间间隔内，哪个电缆调制解调器（带有要发送的数据）可以在哪个小时隙期间传输。由于小时隙被明确分配给电缆调制解调器，CMT可以确保在小时隙期间没有冲突传输。</p>
+<p>但CMT如何知道哪些电缆调制解调器首先要发送数据？这是通过让电缆调制解调器在专用于此目的的一组特殊间隔迷你插槽期间向CMT发送迷你插槽请求帧来实现的，这些小时隙请求帧以随机访问方式传输，因此可能相互冲突。电缆调制解调器既不能检测上游信道是否繁忙，也不能检测冲突。相反，如果在下一条下游控制消息中未收到对请求分配的响应，电缆调制解调器推断其迷你插槽请求帧发生冲突。当推断出冲突时，电缆调制解调器使用二进制指数延迟，并重发。当链路里没有什么上行交通时，线缆调制解调器可能会在名义上分配给迷你槽请求的帧上传递数据帧，以避免等待迷你帧分配。</p>
+<p><strong>Switched Local Area Networks</strong></p>
+<p>交换机在链路层工作，他们switch链路层的帧而不是网络层的数据报，它们不认IP，不用OSPF。</p>
+<p><strong>Link-Layer Addressing 和 ARP</strong></p>
+<p>主机和路由器拥有链路层地址，（同时有网络层地址），为什么需要有两个地址呢？这一节将给出答案。</p>
+<p>MAC地址<br>事实上不是主机和路由器有链路层地址，而是适配器（网络接口）有链路层地址。一个主机如果有多个适配器，那它将有多个链路层地址，就像有多个IP地址一样。</p>
+<p>但是链路层交换机没有链路层地址。因为它的工作只是在主机和路由器两者之间携带数据报。这份工作是透明的，发送者不必将帧定向寻址到交换机。</p>
+<p>链路层地址可以叫做LAN（局域网）地址、物理地址、MAC地址。MAC地址叫得最多。对大多数局域网（包括以太网、802.11无线局域网）MAC地址6字节长（2^48个）经常表示为16进制。尽管现在已经可以用软件改变MAC地址，但是我们假定MAC地址固定。</p>
+<p>MAC地址不重复，IEEE管理MAC地址空间。</p>
+<p>适配器的MAC地址自生产出来即固定。</p>
+<p>当一个适配器想送一个帧到一些目标适配器时，发送者适配器把目标MAC地址嵌入帧，然后发到局域网里面。如果适配器收到目标不是其MAC地址的帧，它会丢弃。</p>
+<p>广播地址，所有适配器都会接受：FFFFFFFFFFFF</p>
+<p>为什么主机和路由器需要有两层地址？</p>
+<ul>
+<li>LAN是为任意网络层协议设计的，不仅仅是IP和互联网。网络层除了IP以外还有其他协议比如说IPX、DECnet。LAN需要保持中立。</li>
+<li>如果适配器用网络层地址，那么就需要反复重新配置。</li>
+<li>此外，如果链路层没有自己的地址，把所有帧都发给网络层处理，那么会被打扰得很厉害，因为会收到在LAN中被广播的无关帧</li>
+</ul>
+<p>学到这里已经有三种地址了：应用层的主机名（指DNS服务），网络层的IP，链路层的MAC</p>
+<p>Address Resolution Protocol (ARP)</p>
+<p>以下讨论作这样的假设：交换机将广播所有的帧。</p>
+<p>使用ARP可以通过本LAN的IP地址来查询MAC地址。主机里的ARP模块接收IP地址返回对应的MAC地址。</p>
+<p>再次强调：ARP只解析与当前主机和路由器接口处于同一子网的IP地址。</p>
+<p>每台主机和路由器都有ARP表（内存中），放着IP和ARP映射关系。还有一条time-to-live值（TTL）表示这条映射将在什么时候被删除。这张表并不需要包含所有主机与路由器。一般的到期时间是20分钟。</p>
+<p>如果表里没有想要的映射条目，就需要构造ARP包，包里面包含发送端与接收端IP和MAC地址（查询时广播FFFFFFFFFFFF），查询与回复具有相同格式。查询包将会查询当前子网的所有设备。</p>
+<p>接收端ARP模块发现接收到的ARP包的目标地址和自己的IP地址相同，相同的话就送回包含着所需映射的ARP包（非FFFFFFFFFFFF广播帧）。</p>
+<p>接下来讨论发出子网的情况。</p>
+<p>（记住路由器的每个端口都有一个IP地址和一个MAC地址。）</p>
+<p>发送者先会将数据报写上目标地址，帧上却写路由器地址，发给路由器。路由器使用网络层协议（forwarding table使用）确定数据报要往哪里发。</p>
+<p><strong>Ethernet以太网</strong></p>
+<p>以太网是目前最流行的有线LAN技术。</p>
+<p>最初的以太网LAN是由Bob Metcalfe和David Boggs在20世纪70年代中期发明的。最初的以太网LAN使用同轴总线互连节点。以太网总线拓扑实际上在整个20世纪80年代和90年代中期一直存在。具有总线拓扑的以太网是一个广播LAN，所有传输的帧都传输到总线上，并由连接到总线的所有适配器处理。</p>
+<p>90年代末，大多数公司和大学把他们的LAN换成了使用基于中心（hub）的星形拓扑结构的以太网。中心使用物理层设备，收到一个比特后单纯地放大它，然后送给所有相连的节点。</p>
+<p>2000早期，以太网获得巨大改进，现在中心的物理层设备换成了交换机。这个交换机“碰撞少”、“善良”、“存储并转发”。</p>
+<p>以太网帧</p>
+<ul>
+<li>前导码（Preamble）（8字节），前七个字节是10101010，最后一个是10101011。前七个字节用于叫醒接收者适配器，同步接收者的时钟。最后两个比特告诉接收者重要的东西来了</li>
+<li>目标地址（6字节）（MAC地址）</li>
+<li>源地址（6字节）（MAC地址）</li>
+<li>类型域（2字节），载荷里面可以装其他类型的网络层协议，不只是IP。此外，ARP协议有它自己的类型数字。与网络层数据报的协议域和传输层段的端口数字域相类似，这些域犹如胶水将下层与上层的协议粘起来。</li>
+<li>数据域（46到1500字节）装着IP数据报</li>
+<li>循环冗余校验码（4字节）</li>
+</ul>
+<p>以太网是“无连接”的，如同IP和UDP一样。</p>
+<p>以太网是“不可靠”的，接收者发现报文错误之后只是简单地丢掉它。发送者不知道报文被丢弃了或者是没有送到。（当然如果上层有TCP的话，TCP会重发）</p>
+<p>以太网技术<br>历史上以太网使用同轴电缆，只需将电缆们连在一起，局域网就完成了。</p>
+<p>现在节点连在交换机上，用双绞铜线或光纤。</p>
+<p>mid-1990s 100Mbps以太网被标准化，十倍于之前。</p>
+<p>40Gigabit Ethernet凭借着已经装配好的巨量以太网设施，具有巨大的潜能，它的标准包括以下这些：</p>
+<ul>
+<li>使用标准以太网帧，这可以追溯到10Mbps时代。</li>
+<li>允许点到点。在Gigabit 以太网级别的行话里，中心（hub）叫做有缓存的分配者（buffered distributors）</li>
+<li>用CSMA/CD来分享广播通道。为了拥有可接受的效率，节点之间的最大距离必须被限制。</li>
+<li>允许在点到点通道的两个方向上以40 Gbps的速度进行全双工操作</li>
+</ul>
+<p>下一节将学习交换机，现代交换机是全双工的（full-duplex）不会有碰撞，即使两个节点之间互相传播。所以MAC协议实际上不需要了。</p>
+<p>有了这么大的改变，以太网帧的格式始终没有变，以太网仍然是以太网。</p>
+<p><strong>链路层交换机</strong><br>交换机的职责是接收传入的链路层帧，将它们转发到出口链路。交换机对于节点们来说是透明的（就好像链路上根本没有这台机器一样）。交换机拥有出口（output interface）缓冲区（buffer），来应对流量突然增大超出链路传输能力的情况。</p>
+<p>转发与过滤<br>过滤功能是来决定帧是被转发进接口，或者是被丢弃。转发功能是决定一个包应被发往哪些接口。</p>
+<p>这两个功能是根据转发表来完成的。转发表条目中包含一些（并不一定所有）主机和路由器。条目包含：一个MAC地址，导向那个地址的交换机接口，这条条目放进表的时间。</p>
+<p>（在第四章网络层中我们认识到很多现代的包交换机（packet switch）可以被配置成基于MAC或IP进行转发）</p>
+<p>接收到发来的帧时，链路层交换机具有这样的行为：</p>
+<ul>
+<li>如果帧上写的目标地址不在表中，就把它发给除了接收链路接口之外的所有接口。</li>
+<li>如果在表中，就把帧装到对应接口的缓冲区。</li>
+</ul>
+<p>自学习<br>交换机的表格是自动构建的，动态的，自治的。以下是它的行为：</p>
+<ul>
+<li>交换机表（switch table）初始为空</li>
+<li>每收到一个帧，交换机就会组合“源MAC”地址、接口号、现在时间来组合成条目插到表里面去。</li>
+<li>如果一段时间内（the aging time）某个地址没有发来帧，交换机会把条目删去。</li>
+</ul>
+<p>交换机是即插即用的设备，它们不需要用户或管理员的干预。</p>
+<p>交换机是全双工的，每个接口都能同时收发。</p>
+<p>交换机可以消灭掉碰撞。交换机 会把帧缓存起来，每次不会同时传输超过一个帧。因为交换机的效率是所有接口的效率相加，因此相比于hub或者粗暴链接，使用交换机的LAN获得了相当大的性能提升。</p>
+<p>异质链路。交换机将链路们分开了，不同速的链路可以在同一个LAN下工作。这保证了兼容旧设备。</p>
+<p>管理。交换机提供了强化的安全，也可以减轻网络的管理负担。比方说交换机可以发现某个一直在发帧的出了问题的适配器，然后断掉它的链接。交换机也会收集带宽使用、碰撞率、交通类型的统计信息，呈给管理人员看。</p>
+<p><strong>交换机 vs 路由器</strong><br>传统上，路由器基于第三层，用网络层地址；交换机基于第二层，用MAC地址。然而第4章学到的现代交换机使用“匹配加动作”可以转发第二层的帧。使用广义转发的交换机可以使用帧头部、数据报头部、传输层头部的11个域中的一些完成转发。</p>
+<p>首先考虑交换机的利弊。如上所述，交换机是即插即用的，交换机也可以具有相对较高的过滤和转发速率，交换机只能处理到第2层的帧，而路由器必须处理到第3层的数据报。另一方面，为了防止广播帧的循环，交换网络的活动拓扑被限制为生成树。此外，大型交换网络将需要主机和路由器中的大型ARP表，并将产生大量ARP流量和处理。此外，交换机容易受到广播风暴的影响。如果一台主机失控并传输源源不断的以太网广播帧，交换机将转发所有这些帧，导致整个网络崩溃。</p>
+<p>现在考虑一下路由器的优缺点。由于网络寻址通常是分层的（而不是像MAC寻址那样平坦），所以即使网络有冗余路径，数据包通常也不会在路由器中循环。（然而，当路由器表配置错误时，数据包可能会循环；但正如我们在第4章中了解到的，IP使用一个特殊的数据报头字段来限制循环。）因此，数据包不限于生成树，可以使用源和目标之间的最佳路径。因为路由器没有生成树的限制，所以它们允许互联网具有丰富的拓扑结构，例如，包括欧洲和北美之间的多个活动链接。路由器的另一个特点是，它们提供防火墙保护，防止第二层广播风暴。不过，路由器最显著的缺点可能是它们不是即插即用的，它们和连接到它们的主机需要配置它们的IP地址。此外，路由器通常比交换机具有更大的每包处理时间，因为它们必须通过第3层字段进行处理。最后，单词router有两种不同的发音方式，要么是“rootor”要么是“rowter”，人们会浪费大量时间争论正确的发音。</p>
+<p>一般来说，几百台主机的小型网络，有几个LAN部分。对于这些小型网络，交换机足够了。大一点的网络就需要包含路由器了。路由器提供更健壮的交通隔离，使用更聪明的路径。</p>
+<p>虚拟局域网（VLANs）</p>
+<p>某个机构的局域网们可能会被设置成这样：每个部门有自己的局域网，交换机。交换机通过层级结构连接。这种配置方式有缺陷：</p>
+<ul>
+<li>缺少交通隔离。携带广播地址或者未被交换机识别的地址的帧会被传遍整个机构网络。隐私需要被保护。</li>
+<li>低效率使用。单个团体，主机较少时不划算。把这些团体放到一个LAN里又会无法隔离。</li>
+<li>管理使用者。员工挪动工作团队，或者跨团队很难管理。</li>
+</ul>
+<p>支持VLAN的交换机则可以解决这些问题。交换机的端口（接口）们被管理员分成了几组，每组都构成一个VLAN。交换机的硬件将只为同一个VLAN内的主机传输帧。</p>
+<p>如果两个VLAN要通信，可以拉一个端口出来接到路由器上，配置这个端口同时属于两个VLAN。</p>
+<p>VLAN中继是一个互联VLAN交换机的很好方法，每个交换机都有一个特别端口，被配置成为中继端口。中继端口属于所有VLAN。有以太网帧格式扩展以解决获知VLAN源头的问题。在发送方VLAN中继接口处，报文头部加上了4字节VLAN tag，包含2字节标记协议标识符（TPID）字段（固定十六进制值为81-00）、包含12位VLAN标识符字段的2字节标记控制信息字段，和与IP数据报TOS字段类似的3位优先级字段。</p>
+<p>虚拟局域网还有很多种不同的实现方法。</p>
+<p><strong>Link Virtualization:A Network as a Link LAyer</strong></p>
+<p>由于本章涉及链路层协议，并且鉴于我们现在接近本章的结尾，反思一下我们对术语链路的理解是如何演变的，我们在本章开始时将链路视为连接两个通信主机的物理导线。在研究多址协议时，我们发现，多个主机可以通过共享电线连接，而连接主机的“电线”可以是无线电频谱或其他媒体。这使我们更抽象地将链接视为一个通道，而不是一条电线。在我们对以太网LAN的研究中我们看到，互连介质实际上可能是一个相当复杂的交换基础设施。在整个进化过程中。然而主机本身认为互连介质只是连接两个或多个主机的链路层通道。例如，我们看到，一个以太网主机可以很幸运地不知道它是通过一个短LAN组件还是通过地理位置分散的交换LAN（图6）连接到其他LAN主机或通过VLAN。</p>
+<p>使用拨号调制解调器，主机由电话网络连接（是逻辑上分隔的，有自己的一套东西）。然而链路层仍然能将电话网络看作链路层科技，连接两台主机（互联网的虚拟化）。</p>
+<p>本节考虑Multiprotocol Label Switching（MPLS）网络。</p>
+<p>建立目的：通过有选择地标记数据报，并允许路由器在可能的情况下根据固定长度的标签（而不是目标IP地址）转发数据报来增强IP数据报转发基础设施。</p>
+<p>MPLS头被插在23层的头之间。</p>
+<p>MPLS只能在具备MPLS处理能力的路由器之间传播（常被称为“标签switched路由器）。路由器查看其路由表里的MPLS标签然后立即把数据报放到合适的接口。它不需要查看IP和对照转发表了。</p>
+<p>MPLS可以用于构建virtual private networks。</p>
+<p><strong>Data Center Networking</strong></p>
+<p>数据中心不仅与互联网相连，而且内部也包含了复杂的网络，叫做数据中心网络。</p>
+<p>本节探讨为云应用的数据中心网络。</p>
+<p>数据中心有三大功能：提供内容，为特殊数据处理任务充当大量并行计算基础设施，提供云计算服务。</p>
+<p>现在的公司倾向于使用云提供者来满足基本上所有的IT需求。</p>
+<p>数据中心里的主机叫做blades，拥有CPU内存和磁盘存储。这些主机被码放在架子上，每个架子上放20到40个。每个架子顶端有一台交换机叫做Top of Rack switch，连接这台架子上的主机和其他交换机。每台主机都配上了数据中心内部的IP地址。</p>
+<p>为应对外部内部之间的交通，网络中包含边界路由器，连接数据中心网络和外界互联网。</p>
+<p>外部发来请求，数据中心会将它导引到负载均衡器。它的任务是把请求分配到主机。它也具有NAT功能，避免外界与主机直接连接</p>
+<p>层级结构。对于一个只有几千台主机的小型数据中心，一个由边界路由器、负载平衡器和几十个机架组成的简单网络可能就足够了，所有机架都由一个以太网交换机互连。但为了扩展到数万到几十万台主机，数据中心通常采用路由器和交换机的层次结构。在层次结构的顶部，边界路由器连接到访问路由器。在每个接入路由器下面，有三层交换机。每个接入路由器连接到一个顶层交换机，每个顶层交换机连接到多个第二层交换机和一个负载平衡器。每个第二层交换机依次通过机架或交换机（第三层交换机）连接到多个机架。所有链路通常使用以太网作为其链路层和物理层协议，并混合使用铜缆和光纤布线。通过这种分层设计，可以将数据中心扩展到数十万台主机。</p>
+<p>存在主机之间交流的问题，比如TOR交换机允许100Mbps，同时有40个不同架子上的主机互相通信，这样效率就低了。解决方法：使用更先进的交换机和路由器（但很贵）。<br>这个问题的第二个解决方案是尽可能地将相关服务和数据放在一起（例如，在同一个机架或附近的机架中），只要有可能就可以采用；以尽量减少通过tier-2或tier-1交换机的机架间通信。但这只能满足数据中心的一个关键要求，即计算和服务的灵活性。例如，大型互联网搜索引擎可以在分布在多个机架上的数千台主机上运行，所有主机对之间的带宽要求都很高。类似地，云计算服务（如Amazon Web Services或Microsoft Azure）可能希望将包含客户服务的多个虚拟机放置在容量最大的物理主机上，而不考虑其在数据中心的位置。如果这些物理主机分布在多个机架上，如上所述的网络瓶颈可能会导致性能不佳。</p>
+<p>该解决方案的最后一部分是增加TOR交换机和tier-2交换机之间的连接。以及第2层交换机和第1层交换机之间。例如，每个TOR交换机可以连接到两个tier-2交换机，然后在机架之间提供多条链路和交换机不相交的路径。第一个tier-2交换机和第二个tier-2交换机之间有四条不同的路径，共同提供了前两个tier-2交换机之间400 Gbps的总容量。增加层之间的连接度有两个显著的好处：交换机之间的容量增加，可靠性提高（因为路径多样性）。每个TOR连接到四个不同的tier-2交换机。每个tier-2交换机连接到四个不同的tier-1交换机。</p>
+<p>未来趋势</p>
+<p>减少代价<br>集中式SDN控制和管理<br>虚拟化<br>物理约束<br>硬件模块化和定制</p>
+<p><strong>回顾：网页请求</strong><br>协议栈的旅途已经走完了，现在来总结一下。模拟电脑是如何获取网页的。</p>
+<p>P523</p>
+<p>6总结<br>在本章中，研究了链路层及其服务、其运行的基本原则，以及在实现链路层服务时使用这些原则的一些重要特定协议。</p>
+<p>我们看到，链路层的基本服务是将网络层数据报从一个节点（主机、交换机、路由器、接入点）移动到相邻节点。我们看到，所有链路层协议都是通过将网络层数据报封装在链路层帧中，然后再通过链路将帧传输到相邻节点来运行的。然而，除了这个常见的帧功能之外，我们还了解到，不同的链路层协议提供非常不同的链路访问、传递和传输服务。这些差异部分是由于链路层协议必须在各种各样的链路类型上运行。简单的点到点链路有一个发送方和接收方通过一根“线”进行通信。多个发送方和接收方共享一条多址链路：因此，多址信道的链路层协议有一个用于协调链路访问的协议（其多址协议）。在MPLS的情况下，连接两个相邻节点的“链路”（例如，在IP意义上相邻的两个IP路由器，它们是朝向某个目的地的下一跳IP路由器）实际上可能是其自身的。从某种意义上讲，将网络视为链接的想法应该不会显得奇怪。例如，将家庭调制解调器/计算机连接到远程调制解调器/路由器的电话链路实际上是一条通过复杂电话网络的路径。</p>
+<p>在链路层通信的基本原理中，我们研究了错误检测和纠正技术、多址协议、链路层地址、虚拟化（VLAN）以及扩展交换LAN和dala中心网络的构建。目前，链路层的主要关注点是这些交换网络。在错误检测/纠正的情况下，我们研究了如何向帧的头部添加额外的位，以便检测并在某些情况下纠正在通过链路传输帧时可能发生的位翻转错误。我们介绍了简单的奇偶校验和校验和方案，以及更健壮的循环冗余校验。然后我们转到多址协议的主题。我们确定并研究了三种协调广播信道访问的广泛方法：信道划分方法（TDM、FDM）、随机访问方法（ALOHA协议和CSMA协议）和turs方法（轮询和令牌传递）。我们研究了有线接入网，发现它使用了许多这些多址方法。我们发现，让多个节点共享一个广播频道的结果是需要在链路层提供节点地址。我们了解到链路层地址与网络层地址有很大不同，在互联网的情况下，使用一种特殊的协议（ARP地址解析协议）在这两种寻址形式之间进行转换，并详细研究了非常成功的以太网协议。然后，我们研究了共享广播频道的节点如何形成LAN，以及如何将多个LAN连接在一起以形成更大的LAN—所有这些都无需干预网络层路由，以互连这些本地节点。我们还了解了如何在单个物理LAN基础设施上创建多个虚拟LAN</p>
+<p>我们结束了对链路层的研究，重点介绍了MPLS网络在互连IP路由器时如何提供链路层服务，并概述了当今大规模数据中心的网络设计。我们通过确定获取一个简单网页所需的许多协议来结束本章（以及前五章）。在覆盖了链接层之后，我们的职业生涯现在结束了！当然，物理层位于链接层之下，但物理层的细节可能最好留给另一门课程（例如，在通信理论中，而不是在计算机网络中）。然而，我们在本章和第一章（我们在第1.2节中对物理介质的讨论）中涉及了物理层的几个方面。在下一章研究无线链路特性时，我们将再次考虑物理层。</p>
+<p>虽然我们的协议栈之旅已经结束，但我们对计算机网络的研究还没有结束。在接下来的三章中，我们将介绍无线网络、网络安全和多媒体网络。这四个主题不适合任何一个层次；事实上，每个主题都跨越了许多层面。因此，理解这些主题（在某些网络文本中被称为高级主题）需要在协议栈的所有层都有一个坚实的基础——我们对链接层的研究现在已经完成了！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-3-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-1-%E5%BA%94%E7%94%A8%E5%B1%82/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa-regular fa-earth-asia"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZYZ</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

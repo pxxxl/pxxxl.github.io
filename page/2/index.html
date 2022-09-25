@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -188,7 +188,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/13/%E7%8E%B0%E4%BB%A3C++-1-auto%E5%8F%91%E5%B1%95%E5%8F%B2/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
@@ -206,7 +206,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/13/%E7%8E%B0%E4%BB%A3C++-1-auto%E5%8F%91%E5%B1%95%E5%8F%B2/" class="post-title-link" itemprop="url">auto发展史</a>
+          <a href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/" class="post-title-link" itemprop="url">偏函数和柯里化</a>
         </h2>
 
         <div class="post-meta-container">
@@ -217,14 +217,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-04-13 23:59:06" itemprop="dateCreated datePublished" datetime="2022-04-13T23:59:06+08:00">2022-04-13</time>
+      <time title="创建时间：2022-04-14 12:44:17" itemprop="dateCreated datePublished" datetime="2022-04-14T12:44:17+08:00">2022-04-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-22 23:36:03" itemprop="dateModified" datetime="2022-09-22T23:36:03+08:00">2022-09-22</time>
+      <time title="修改时间：2022-09-22 23:34:58" itemprop="dateModified" datetime="2022-09-22T23:34:58+08:00">2022-09-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -232,7 +232,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%8E%B0%E4%BB%A3C/" itemprop="url" rel="index"><span itemprop="name">现代C++</span></a>
+          <a href="/categories/C-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">C++函数式编程</span></a>
         </span>
     </span>
 
@@ -246,22 +246,18 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="auto"><a href="#auto" class="headerlink" title="auto"></a>auto</h2><h3 id="C-11"><a href="#C-11" class="headerlink" title="C++11"></a>C++11</h3><ul>
-<li>用auto在函数体内定义变量</li>
-<li>auto声明普通函数返回值，接尾置返回值类型</li>
-<li>decltype(auto)超级推导</li>
-</ul>
-<h3 id="C-14"><a href="#C-14" class="headerlink" title="C++14"></a>C++14</h3><ul>
-<li>自动推导auto声明的函数返回值</li>
-<li>lambda参数可以是auto</li>
-</ul>
-<h3 id="C-17"><a href="#C-17" class="headerlink" title="C++17"></a>C++17</h3><ul>
-<li>结构化绑定</li>
-</ul>
-<h3 id="C-20"><a href="#C-20" class="headerlink" title="C++20"></a>C++20</h3><ul>
-<li>concept 的一种声明方式</li>
-</ul>
-
+          <p><strong>函数式编程特别重视一元函数</strong></p>
+<hr>
+<h2 id="Partial（偏函数）"><a href="#Partial（偏函数）" class="headerlink" title="Partial（偏函数）"></a>Partial（偏函数）</h2><p>“偏函数”指：固定某个参数为特定值，然后返回一个接收余下参数的函数。这是一种减少参数的方式。</p>
+<p>打个比方：我们已经有了greater函数，它接收两个参数a和b。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -287,7 +283,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/13/%E7%8E%B0%E4%BB%A3C++-4-RAII/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-4-%E8%83%B6%E6%B0%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
@@ -305,7 +301,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/13/%E7%8E%B0%E4%BB%A3C++-4-RAII/" class="post-title-link" itemprop="url">RAII</a>
+          <a href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-4-%E8%83%B6%E6%B0%B4/" class="post-title-link" itemprop="url">胶水</a>
         </h2>
 
         <div class="post-meta-container">
@@ -316,14 +312,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-04-13 23:59:06" itemprop="dateCreated datePublished" datetime="2022-04-13T23:59:06+08:00">2022-04-13</time>
+      <time title="创建时间：2022-04-14 12:39:56" itemprop="dateCreated datePublished" datetime="2022-04-14T12:39:56+08:00">2022-04-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-22 23:36:13" itemprop="dateModified" datetime="2022-09-22T23:36:13+08:00">2022-09-22</time>
+      <time title="修改时间：2022-09-22 23:34:43" itemprop="dateModified" datetime="2022-09-22T23:34:43+08:00">2022-09-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -331,7 +327,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%8E%B0%E4%BB%A3C/" itemprop="url" rel="index"><span itemprop="name">现代C++</span></a>
+          <a href="/categories/C-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">C++函数式编程</span></a>
         </span>
     </span>
 
@@ -345,24 +341,299 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>RAII，即“资源分配即初始化”的英语缩写。</p>
-<p>在C++里，有些操作是需要成对出现的，比如new和delete。</p>
-<p>此外还有一个操作是成对出现的：对象的构造与析构。</p>
-<p>把new放进构造里面，delete放进析构里面，这样new和delete就和对象绑在一起了，在对象被析构时delete就会自动被调用了。这就是RAII的典型案例。</p>
-<p>C++标准库中就有这样的设备，叫做“智能指针”。</p>
-<p>#include<memory></p>
-<p>尝试使用智能指针，免去手动delete的麻烦。</p>
-<h2 id="智能指针unique-ptr"><a href="#智能指针unique-ptr" class="headerlink" title="智能指针unique_ptr"></a>智能指针unique_ptr</h2><p>unique_ptr 可以在大多数需要使用指针的场合下使用。以下是它的特点：</p>
-<ul>
-<li>unique_ptr 析构时会 delete 它所指的对象。</li>
-<li>unique_ptr 指向的对象被其“独占”。</li>
-</ul>
-<p>注意第二条，这是 unique_ptr 的主要特点，使用时不要有意违抗，否则可能出现多次delete情况。</p>
-<p>使用方法</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::unique_ptr&lt;所指对象类型&gt; <span class="title">p1</span><span class="params">(<span class="keyword">new</span> 所指对象类型)</span></span>;</span><br><span class="line"><span class="comment">//初始化成功</span></span><br><span class="line"><span class="comment">//来看点有意思的</span></span><br><span class="line"></span><br><span class="line">std::unique_ptr&lt;所指对象类型&gt; p2 = p1;</span><br><span class="line"><span class="comment">//喜提报错一条，原因：p1独占资源</span></span><br><span class="line"></span><br><span class="line">std::unique_ptr&lt;所指对象类型&gt; p3;</span><br><span class="line">p3 = p1;</span><br><span class="line"><span class="comment">//喜提报错一条，原因：p1独占资源</span></span><br></pre></td></tr></table></figure>
+          <p><strong>已经编写了一些小型函数，我们来看看它们可以如何变化与组合</strong></p>
+<p><strong>记住法则一：函数是一等公民。</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-4-%E8%83%B6%E6%B0%B4/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
-<p>看到了吧，只要unique_ptr不放手，其他unique_ptr就没法获取它占有的资源。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">p1 = <span class="literal">nullptr</span>;</span><br><span class="line"><span class="comment">//释放p1资源并将其置空</span></span><br><span class="line"></span><br><span class="line"><span class="function">std::unique_ptr <span class="title">p4</span><span class="params">(p1.release())</span></span>;</span><br><span class="line"><span class="comment">//移交</span></span><br><span class="line"></span><br><span class="line">p1.<span class="built_in">reset</span>();</span><br><span class="line"><span class="comment">//释放p1资源</span></span><br><span class="line"></span><br><span class="line">p2.<span class="built_in">reset</span>(p1.<span class="built_in">release</span>());</span><br><span class="line"><span class="comment">//释放p2并移交p1给p2</span></span><br><span class="line">传递删除器</span><br><span class="line"><span class="function">std::unique_ptr&lt;T, D&gt; <span class="title">p1</span><span class="params">(<span class="keyword">new</span> T, D d)</span></span>;</span><br><span class="line"><span class="comment">//d是可调用对象，析构时调用d来删除资源。</span></span><br></pre></td></tr></table></figure>
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-3-%E7%A7%AF%E6%9C%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-3-%E7%A7%AF%E6%9C%A8/" class="post-title-link" itemprop="url">积木</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-14 12:38:07" itemprop="dateCreated datePublished" datetime="2022-04-14T12:38:07+08:00">2022-04-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-22 23:34:45" itemprop="dateModified" datetime="2022-09-22T23:34:45+08:00">2022-09-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">C++函数式编程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>下面我们来趁热打铁，编写一些简单的纯函数来练练手，逐渐熟悉函数式编程的思维方式。</p>
+<p><em><strong>打开你的编辑器，和我一起写</strong></em></p>
+<p><em><strong>这些纯函数将会在之后的学习中用到</strong></em></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-3-%E7%A7%AF%E6%9C%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-2-%E5%BC%80%E5%90%AF%E6%96%B0%E4%B8%96%E7%95%8C%E7%9A%84%E5%A4%A7%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-2-%E5%BC%80%E5%90%AF%E6%96%B0%E4%B8%96%E7%95%8C%E7%9A%84%E5%A4%A7%E9%97%A8/" class="post-title-link" itemprop="url">开启新世界的大门</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-14 00:11:00" itemprop="dateCreated datePublished" datetime="2022-04-14T00:11:00+08:00">2022-04-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-22 23:35:25" itemprop="dateModified" datetime="2022-09-22T23:35:25+08:00">2022-09-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">C++函数式编程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h2><p>无论是面向过程还是面向对象，都是一种“指令式编程”模式：程序员“告诉”机器怎么做事，把事情的解决方案一步步列出来。</p>
+<p>与“指令式编程”对应的是“声明式编程”：程序员把重心放在“做什么”而不是“怎么做”。打个比方：使用数据库语言SQL时，用户是不必操心机器是怎么插入或者查找数据的，只需要一句声明“我要做什么”，机器便会自动寻找解决方案；此外，一些逻辑编程语言，也是“声明式”的。</p>
+<p><strong>函数式编程偏向于“声明式编程”而不是“指令式编程”。</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-2-%E5%BC%80%E5%90%AF%E6%96%B0%E4%B8%96%E7%95%8C%E7%9A%84%E5%A4%A7%E9%97%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-1-lambda%20%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-1-lambda%20%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">lambda 表达式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-14 00:10:57" itemprop="dateCreated datePublished" datetime="2022-04-14T00:10:57+08:00">2022-04-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-22 23:34:31" itemprop="dateModified" datetime="2022-09-22T23:34:31+08:00">2022-09-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">C++函数式编程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>熟悉一下C++函数式编程的主角：lambda表达式。</p>
+<p><em>请将你的编译器版本调到C++17及以上。</em></p>
+<hr>
+<h3 id="定义一个labmda变量（C-11与C-14）"><a href="#定义一个labmda变量（C-11与C-14）" class="headerlink" title="定义一个labmda变量（C++11与C++14）"></a>定义一个labmda变量（C++11与C++14）</h3><p>labmda既是一个函数，也是一个变量（事实上，它是一个由编译器自动生成的可调用类），让我们先来看看labmda是什么样子的：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-1-lambda%20%E8%A1%A8%E8%BE%BE%E5%BC%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -507,6 +778,206 @@
 <li>无引用，返回值是右值</li>
 <li>左值引用，返回值是左值引用</li>
 <li>万能引用：按推导返回值，再按照无类型推导的返回值返回</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/13/%E7%8E%B0%E4%BB%A3C++-4-RAII/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/13/%E7%8E%B0%E4%BB%A3C++-4-RAII/" class="post-title-link" itemprop="url">RAII</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-13 23:59:06" itemprop="dateCreated datePublished" datetime="2022-04-13T23:59:06+08:00">2022-04-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-22 23:36:13" itemprop="dateModified" datetime="2022-09-22T23:36:13+08:00">2022-09-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8E%B0%E4%BB%A3C/" itemprop="url" rel="index"><span itemprop="name">现代C++</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>RAII，即“资源分配即初始化”的英语缩写。</p>
+<p>在C++里，有些操作是需要成对出现的，比如new和delete。</p>
+<p>此外还有一个操作是成对出现的：对象的构造与析构。</p>
+<p>把new放进构造里面，delete放进析构里面，这样new和delete就和对象绑在一起了，在对象被析构时delete就会自动被调用了。这就是RAII的典型案例。</p>
+<p>C++标准库中就有这样的设备，叫做“智能指针”。</p>
+<p>#include<memory></p>
+<p>尝试使用智能指针，免去手动delete的麻烦。</p>
+<h2 id="智能指针unique-ptr"><a href="#智能指针unique-ptr" class="headerlink" title="智能指针unique_ptr"></a>智能指针unique_ptr</h2><p>unique_ptr 可以在大多数需要使用指针的场合下使用。以下是它的特点：</p>
+<ul>
+<li>unique_ptr 析构时会 delete 它所指的对象。</li>
+<li>unique_ptr 指向的对象被其“独占”。</li>
+</ul>
+<p>注意第二条，这是 unique_ptr 的主要特点，使用时不要有意违抗，否则可能出现多次delete情况。</p>
+<p>使用方法</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::unique_ptr&lt;所指对象类型&gt; <span class="title">p1</span><span class="params">(<span class="keyword">new</span> 所指对象类型)</span></span>;</span><br><span class="line"><span class="comment">//初始化成功</span></span><br><span class="line"><span class="comment">//来看点有意思的</span></span><br><span class="line"></span><br><span class="line">std::unique_ptr&lt;所指对象类型&gt; p2 = p1;</span><br><span class="line"><span class="comment">//喜提报错一条，原因：p1独占资源</span></span><br><span class="line"></span><br><span class="line">std::unique_ptr&lt;所指对象类型&gt; p3;</span><br><span class="line">p3 = p1;</span><br><span class="line"><span class="comment">//喜提报错一条，原因：p1独占资源</span></span><br></pre></td></tr></table></figure>
+
+<p>看到了吧，只要unique_ptr不放手，其他unique_ptr就没法获取它占有的资源。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">p1 = <span class="literal">nullptr</span>;</span><br><span class="line"><span class="comment">//释放p1资源并将其置空</span></span><br><span class="line"></span><br><span class="line"><span class="function">std::unique_ptr <span class="title">p4</span><span class="params">(p1.release())</span></span>;</span><br><span class="line"><span class="comment">//移交</span></span><br><span class="line"></span><br><span class="line">p1.<span class="built_in">reset</span>();</span><br><span class="line"><span class="comment">//释放p1资源</span></span><br><span class="line"></span><br><span class="line">p2.<span class="built_in">reset</span>(p1.<span class="built_in">release</span>());</span><br><span class="line"><span class="comment">//释放p2并移交p1给p2</span></span><br><span class="line">传递删除器</span><br><span class="line"><span class="function">std::unique_ptr&lt;T, D&gt; <span class="title">p1</span><span class="params">(<span class="keyword">new</span> T, D d)</span></span>;</span><br><span class="line"><span class="comment">//d是可调用对象，析构时调用d来删除资源。</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/13/%E7%8E%B0%E4%BB%A3C++-1-auto%E5%8F%91%E5%B1%95%E5%8F%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/13/%E7%8E%B0%E4%BB%A3C++-1-auto%E5%8F%91%E5%B1%95%E5%8F%B2/" class="post-title-link" itemprop="url">auto发展史</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-13 23:59:06" itemprop="dateCreated datePublished" datetime="2022-04-13T23:59:06+08:00">2022-04-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-22 23:36:03" itemprop="dateModified" datetime="2022-09-22T23:36:03+08:00">2022-09-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%8E%B0%E4%BB%A3C/" itemprop="url" rel="index"><span itemprop="name">现代C++</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="auto"><a href="#auto" class="headerlink" title="auto"></a>auto</h2><h3 id="C-11"><a href="#C-11" class="headerlink" title="C++11"></a>C++11</h3><ul>
+<li>用auto在函数体内定义变量</li>
+<li>auto声明普通函数返回值，接尾置返回值类型</li>
+<li>decltype(auto)超级推导</li>
+</ul>
+<h3 id="C-14"><a href="#C-14" class="headerlink" title="C++14"></a>C++14</h3><ul>
+<li>自动推导auto声明的函数返回值</li>
+<li>lambda参数可以是auto</li>
+</ul>
+<h3 id="C-17"><a href="#C-17" class="headerlink" title="C++17"></a>C++17</h3><ul>
+<li>结构化绑定</li>
+</ul>
+<h3 id="C-20"><a href="#C-20" class="headerlink" title="C++20"></a>C++20</h3><ul>
+<li>concept 的一种声明方式</li>
 </ul>
 
       
@@ -749,194 +1220,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-2-%E6%A8%A1%E5%9E%8B%E7%B4%A2%E5%BC%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
-      <meta itemprop="name" content="ZYZ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cozard 技术空间">
-      <meta itemprop="description" content="Cozard 的官方博客">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Cozard 技术空间">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-2-%E6%A8%A1%E5%9E%8B%E7%B4%A2%E5%BC%95/" class="post-title-link" itemprop="url">模型索引</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-12 23:59:06" itemprop="dateCreated datePublished" datetime="2022-04-12T23:59:06+08:00">2022-04-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-22 23:36:26" itemprop="dateModified" datetime="2022-09-22T23:36:26+08:00">2022-09-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Qt%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">Qt技术文档</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">QModelIndex与QAbstractItemModel一同定义，用以索引模型（model）中的项（Item）。</span><br><span class="line"></span><br><span class="line">由于所有模型都是以“行“、”列”、“层级”结构组织的，我们可以使用统一的方式索引模型中的项。</span><br><span class="line"></span><br><span class="line">所有模型都使用QModelIndex作为模型的索引。</span><br><span class="line"></span><br><span class="line">QModelIndex内部包含了行信息、列信息与指向所属模型的指针，因此理论上可以做很多事。</span><br><span class="line"></span><br><span class="line">文档原文：https://doc.qt.io/qt-5/qmodelindex.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="详细信息"><a href="#详细信息" class="headerlink" title="详细信息"></a>详细信息</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-2-%E6%A8%A1%E5%9E%8B%E7%B4%A2%E5%BC%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-1-%E5%88%9B%E5%BB%BA%E5%AD%90%E7%B1%BB%E6%A8%A1%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
-      <meta itemprop="name" content="ZYZ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cozard 技术空间">
-      <meta itemprop="description" content="Cozard 的官方博客">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Cozard 技术空间">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-1-%E5%88%9B%E5%BB%BA%E5%AD%90%E7%B1%BB%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">创建子类模型</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-12 23:55:43" itemprop="dateCreated datePublished" datetime="2022-04-12T23:55:43+08:00">2022-04-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-22 23:36:21" itemprop="dateModified" datetime="2022-09-22T23:36:21+08:00">2022-09-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Qt%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">Qt技术文档</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>子类模型需要提供 QabstractemModel 基类中定义的许多虚函数的实现。需要实现的函数数量取决于模型的类型——它是为视图提供简单的列表、表格还是复杂的项目层次结构。从 QAbstractListModel 和 QAbstractTableModel 继承的模型可以利用它们所提供函数的默认实现。以树状结构组织数据项的模型必须为QabstractemModel中的许多虚函数提供实现。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-1-%E5%88%9B%E5%BB%BA%E5%AD%90%E7%B1%BB%E6%A8%A1%E5%9E%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Transport LayerThe central piece of the layered network architecture transport layer provide logical communication between processes as if the two processes are in the same host transport layer do its">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cozard 技术空间">
+<meta property="og:url" content="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-2-%E4%BC%A0%E8%BE%93%E5%B1%82/index.html">
+<meta property="og:site_name" content="Cozard 技术空间">
+<meta property="og:description" content="Transport LayerThe central piece of the layered network architecture transport layer provide logical communication between processes as if the two processes are in the same host transport layer do its">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-25T02:43:17.557Z">
+<meta property="article:modified_time" content="2022-03-16T10:46:23.222Z">
+<meta property="article:author" content="ZYZ">
+<meta property="article:tag" content="Code Program Method">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-2-%E4%BC%A0%E8%BE%93%E5%B1%82/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-2-%E4%BC%A0%E8%BE%93%E5%B1%82/","path":"2022/09/25/计算机网络笔记-2-传输层/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Cozard 技术空间</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cozard 技术空间</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">规划、设计、探索</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Transport-Layer"><span class="nav-number">1.</span> <span class="nav-text">Transport Layer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Multiplexing-and-Demultiplexing"><span class="nav-number">1.1.</span> <span class="nav-text">Multiplexing and Demultiplexing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP-Multiplexing"><span class="nav-number">1.1.1.</span> <span class="nav-text">UDP Multiplexing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-Multiplexing"><span class="nav-number">1.1.2.</span> <span class="nav-text">TCP Multiplexing</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UDP"><span class="nav-number">1.2.</span> <span class="nav-text">UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP-Segment-Structure"><span class="nav-number">1.2.1.</span> <span class="nav-text">UDP Segment Structure</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#The-UDP-Checksum-provides-error-detection"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">The UDP Checksum provides error detection</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Principles-of-Reliable-Data-Transfer"><span class="nav-number">1.3.</span> <span class="nav-text">Principles of Reliable Data Transfer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Connected-Oriented-Transport-TCP"><span class="nav-number">1.4.</span> <span class="nav-text">Connected-Oriented Transport : TCP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-TCP-Connection"><span class="nav-number">1.4.1.</span> <span class="nav-text">The TCP Connection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-Segment-Structure"><span class="nav-number">1.4.2.</span> <span class="nav-text">TCP Segment Structure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sequence-Numbers-and-Acknowledgment-Numbers"><span class="nav-number">1.4.3.</span> <span class="nav-text">Sequence Numbers and Acknowledgment Numbers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Setting-and-Managing-the-Retransmission-Timeout-Interval"><span class="nav-number">1.4.4.</span> <span class="nav-text">Setting and Managing the Retransmission Timeout Interval</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reliable-Data-Transfer"><span class="nav-number">1.4.5.</span> <span class="nav-text">Reliable Data Transfer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flow-Control"><span class="nav-number">1.4.6.</span> <span class="nav-text">Flow Control</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#connection-management"><span class="nav-number">1.4.7.</span> <span class="nav-text">connection management</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Principles-of-Congestion-Control"><span class="nav-number">1.5.</span> <span class="nav-text">Principles of Congestion Control</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Causes-and-the-Costs-of-Congestion"><span class="nav-number">1.5.1.</span> <span class="nav-text">The Causes and the Costs of Congestion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Approaches-to-Congestion-Control"><span class="nav-number">1.5.2.</span> <span class="nav-text">Approaches to Congestion Control</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP-Congestion-Control"><span class="nav-number">1.6.</span> <span class="nav-text">TCP Congestion Control</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Classic-TCP-Congestion-Control"><span class="nav-number">1.6.1.</span> <span class="nav-text">Classic TCP Congestion Control</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-CUBIC"><span class="nav-number">1.6.2.</span> <span class="nav-text">TCP CUBIC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Network-Assisted-Explicit-Congestion-Notification-and-Delayed-based-Congestion-Control"><span class="nav-number">1.6.3.</span> <span class="nav-text">Network-Assisted Explicit Congestion Notification and Delayed-based Congestion Control</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fairness"><span class="nav-number">1.6.4.</span> <span class="nav-text">Fairness</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Evolution-of-Transport-Layer-Functionality"><span class="nav-number">1.7.</span> <span class="nav-text">Evolution of Transport-Layer Functionality</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#QUIC-Quick-UDP-Internet-Connections"><span class="nav-number">1.7.1.</span> <span class="nav-text">QUIC : Quick UDP Internet Connections</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYZ"
+      src="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+  <p class="site-author-name" itemprop="name">ZYZ</p>
+  <div class="site-description" itemprop="description">Cozard 的官方博客</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pxxxl" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pxxxl" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/wang-lang-pai-ma-wu-dao/posts" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wang-lang-pai-ma-wu-dao&#x2F;posts" rel="noopener" target="_blank"><i class="fa-brands fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-2-%E4%BC%A0%E8%BE%93%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-25 10:43:17" itemprop="dateCreated datePublished" datetime="2022-09-25T10:43:17+08:00">2022-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-03-16 18:46:23" itemprop="dateModified" datetime="2022-03-16T18:46:23+08:00">2022-03-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Transport-Layer"><a href="#Transport-Layer" class="headerlink" title="Transport Layer"></a>Transport Layer</h1><p><em><strong>The central piece of the layered network architecture</strong></em></p>
+<p>transport layer provide logical communication between processes as if the two processes are in the same host</p>
+<p>transport layer do its work in the host, the out-of-host teleport is done by the network service</p>
+<p>some of the transport layer’s service is constrained by the network layer</p>
+<p>network layer protocal has a name – IP(Internet Protocal, which provides logical communication between hosts</p>
+<p>IP makes its “best effort to deliver segments between <strong>hosts</strong>but not guarantees</p>
+<p>each host has its IP address</p>
+<p>UDP and TCP extends IP’s delivery service between two end systems to that between two processes, which is called multiplexing</p>
+<h2 id="Multiplexing-and-Demultiplexing"><a href="#Multiplexing-and-Demultiplexing" class="headerlink" title="Multiplexing and Demultiplexing"></a>Multiplexing and Demultiplexing</h2><p><strong>Multiplexing:gathering data chunks at the source host from different sockets, encapsulate each chunk with header to create segment, and pass to the network later</strong></p>
+<p><strong>Demultiplexing:delever the data in a segment to correct socket</strong></p>
+<p>requires :</p>
+<ol>
+<li>unique identifiers of socket(port)</li>
+<li>each segment have special field indicating the socket to be delivered</li>
+</ol>
+<p>port number: 0~65565</p>
+<h3 id="UDP-Multiplexing"><a href="#UDP-Multiplexing" class="headerlink" title="UDP Multiplexing"></a>UDP Multiplexing</h3><p>UDP socket:two-tuple<br>destination  IP  address  destination  port  number<br>the host uses them to direct (demultiplex) the segment to the appropriate socket.</p>
+<h3 id="TCP-Multiplexing"><a href="#TCP-Multiplexing" class="headerlink" title="TCP Multiplexing"></a>TCP Multiplexing</h3><p>TCP socket:four-tuple<br>source IP address<br>source port number<br>destination IP  address destination port number<br>the host uses all four values to direct (demultiplex) the segment to the appropriate socket.</p>
+<h2 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h2><p><strong>multiplexing/demultiplexing and some light error checking</strong></p>
+<p>takes messages from application, attaches source and destination port number field and 2 other small field and pass it to the network layer</p>
+<p>The network layer encapsulates the transport-layer seg-ment into an IP datagram and then makes a best-effort attempt to deliver the segment to the receiving host.</p>
+<p>connectionless, no handshake</p>
+<p>DNS:using UDP<br><strong>Using UDP</strong></p>
+<ol>
+<li>Finer application-level control over what data is sent, and when.</li>
+<li>No connection establishment.</li>
+<li>No connection state.</li>
+<li>Small packet header overhead.</li>
+</ol>
+<h3 id="UDP-Segment-Structure"><a href="#UDP-Segment-Structure" class="headerlink" title="UDP Segment Structure"></a>UDP Segment Structure</h3><p>The UDP header has four fields<br>each consisting of 2 bytes:</p>
+<ol>
+<li>Source port</li>
+<li>Dest Port</li>
+<li>Length</li>
+<li>Checksum</li>
+</ol>
+<p>Then the Application Data</p>
+<h4 id="The-UDP-Checksum-provides-error-detection"><a href="#The-UDP-Checksum-provides-error-detection" class="headerlink" title="The UDP Checksum provides error detection"></a>The UDP Checksum provides error detection</h4><p>the  checksum is used to determine whether bits within the UDP segment have been altered (for example, by noise in the links or while stored in a router) as it moved from source to destination.</p>
+<h2 id="Principles-of-Reliable-Data-Transfer"><a href="#Principles-of-Reliable-Data-Transfer" class="headerlink" title="Principles of Reliable Data Transfer"></a>Principles of Reliable Data Transfer</h2><p>“view lower layer simply as an unreliable point-to-point channel”</p>
+<p><strong>V1.0</strong><br><em>over a perfectly reliable channel</em></p>
+<p>Just packet the data and deliver it</p>
+<p><strong>V2.0</strong><br><em>over a channel with Bit Errors</em></p>
+<p>three additional protocol capabilities are required in ARQ protocols to handle the presence of bit errors:</p>
+<ol>
+<li>Error Detection.Extra bits needed</li>
+<li>Receiver Feedback.</li>
+<li>Retransmission.</li>
+</ol>
+<p>deliver and wait for a NAK or ACK<br>thus decide whether to retransmit<br>Stop and Wait</p>
+<p>Fatal flaw : ACK or NAK packet could be corrupted<br>Possible solution</p>
+<ol>
+<li>repeat asking sentence</li>
+<li>enough checksum to allow recovering</li>
+<li>sender resend when corrupted ACK/NAK received</li>
+</ol>
+<p>Real solution<br>add a new field to the data packet, Sequence number, 1 bit</p>
+<p><strong>V2.1</strong></p>
+<p><strong>V2.2</strong><br><em>NAK not need and solve the problem?</em></p>
+<p><strong>V3.0</strong><br><em>Solve the problem of packet loss as well</em></p>
+<p>But Stop and Wait performed not fast enough</p>
+<p><strong>Pipelining</strong></p>
+<ol>
+<li>the range of the sequence number must be increased</li>
+<li>buffer more than one packet</li>
+</ol>
+<p>Basic approaches toward pipelined error recovery</p>
+<p><strong>Go-Back-N</strong><br>transmit multiple packets (when available) without waiting for an acknowledgment, but is constrained to have no more than some maximum allowable number, N, of unacknowledged packets in the pipeline</p>
+<p>sliding-window protocol<br>TCP sequence numbers count bytes in the byte stream rather than packets.<br>Illustration P231</p>
+<p><strong>Selective Repeat</strong><br>Avoid  unnecessary  retrans-missions  by  having  the  sender  retransmit  only  those  packets  that  it  suspects  were received  in  error  (that  is,  were  lost  or  corrupted)  at  the  receiver)</p>
+<p>the window size must be less than or equal to half the size of the sequence number space for SR protocols</p>
+<p><em><strong>P237 All the techniques to guarantee reliable data transfer</strong></em></p>
+<h2 id="Connected-Oriented-Transport-TCP"><a href="#Connected-Oriented-Transport-TCP" class="headerlink" title="Connected-Oriented Transport : TCP"></a>Connected-Oriented Transport : TCP</h2><p><em>TCP—the Internet’s transport-layer, connection-oriented, reliable transport protocol.</em></p>
+<h3 id="The-TCP-Connection"><a href="#The-TCP-Connection" class="headerlink" title="The TCP Connection"></a>The TCP Connection</h3><p><em>handshake:send some preliminary segment to each other to establishment.</em></p>
+<p>“The connection” is a logical one, not an end-to-end TDM or FDM circuit in a circuit-switch network<br>common state<br>resids only in the TCPs in the two communicating end systems.<br>TCP protocol runs only in the end systems and not in the intermediate network elements  (routers  and  link-layer  switches), the intermediate routers are completely oblivious to TCP connections; they see datagrams, not connections.</p>
+<p>TCP : point-to-point</p>
+<p><strong>three-way-handshake to establish the connection</strong></p>
+<p>TCP pairs each chunk of client data with a TCP header, thereby forming TCP segments. The segments are passed down to the network layer, where they are separately encapsulated within network-layer IP datagrams.</p>
+<h3 id="TCP-Segment-Structure"><a href="#TCP-Segment-Structure" class="headerlink" title="TCP Segment Structure"></a>TCP Segment Structure</h3><ul>
+<li>The TCP segment consists of header fields and a data field.</li>
+<li>The data field contains a chunk of application data.</li>
+<li>the MSS limits the maximum size of a segment’s data field</li>
+</ul>
+<p><em>Structure</em></p>
+<ul>
+<li>Source and destination port numbers</li>
+<li>checksum field</li>
+<li>32-bit sequence number field</li>
+<li>32-bit acknowledgment number field</li>
+<li>16-bit receive window</li>
+<li>4-bit header length field</li>
+<li>options field</li>
+<li>6-bit flag field</li>
+<li>16-bit urgent data pointer field</li>
+</ul>
+<p>Illustration P242</p>
+<h3 id="Sequence-Numbers-and-Acknowledgment-Numbers"><a href="#Sequence-Numbers-and-Acknowledgment-Numbers" class="headerlink" title="Sequence Numbers and Acknowledgment Numbers"></a>Sequence Numbers and Acknowledgment Numbers</h3><p>TCP views data as an unstructured, but ordered, stream of bytes. TCP’s use of sequence numbers reflects this view in that sequence numbers are over the stream of transmitted bytes and not over the series of transmitted segments.</p>
+<p>The sequence number for a segment is therefore the byte-stream number of the first byte in the segment.</p>
+<h3 id="Setting-and-Managing-the-Retransmission-Timeout-Interval"><a href="#Setting-and-Managing-the-Retransmission-Timeout-Interval" class="headerlink" title="Setting and Managing the Retransmission Timeout Interval"></a>Setting and Managing the Retransmission Timeout Interval</h3><p>TimeoutInterval = EstimatedRTT + 4 DevRTT</p>
+<h3 id="Reliable-Data-Transfer"><a href="#Reliable-Data-Transfer" class="headerlink" title="Reliable Data Transfer"></a>Reliable Data Transfer</h3><p>use only a single retransmission timer, even if there are multiple transmitted but not yet acknowledged segment.</p>
+<p>TCP responds to the timeout event by retransmitting the segment that caused the timeout. TCP then restarts the timer.</p>
+<p>When ACK accepted, and the ACK number &gt; expected, update the expected.</p>
+<p><em>Doubleing the timeout interval</em><br>each time TCP retransmits, it sets the next timeout interval to twice the previous value<br>However, whenever the timer is started after either of the two other events (that is, data received from application above, and ACK received), the  TimeoutInterval is derived from the most recent values of EstimatedRTT and DevRTT.</p>
+<p><em>Fast retransmit</em><br>A duplicate ACK is an ACK that reacknowledges a segment for which the sender has already received an earlier acknowledgment<br>(Receiver Action P255)</p>
+<p>Retransmit the last in-order byte of data it has received, to inform the sender to retransmit.</p>
+<p>When the sender receive 3 duplicate ACKs for the same data, it takes this as an indication that the segment following the segment that has been ACKed three times has been lost.Then it performs a fast retransmit.</p>
+<p><em>Go-Back-N or Selective Repeat</em><br>Many TCP implementations will buffer correctly received but out-of-order segments<br>acknowledge out-of-order segments selectively<br>(<strong>QUESTION : conflict between multiple ACK and selective repeat</strong>)</p>
+<h3 id="Flow-Control"><a href="#Flow-Control" class="headerlink" title="Flow Control"></a>Flow Control</h3><p>eliminate  the  possibility of the sender overflowing the receiver’s buffer.</p>
+<p>sender  maintain  a  variable  called the receive window, used to give the sender an idea  of  how  much  free  buffer  space  is  available  at  the  receiver.<br>Host B tells Host A how much spare room it has in the connection buffer by placing its current value of rwnd in the receive window field of every segment it sends to A.</p>
+<h3 id="connection-management"><a href="#connection-management" class="headerlink" title="connection management"></a>connection management</h3><p><em>three-way handshake</em><br><em>four-way handshake</em></p>
+<p>when a host receives a TCP segment whose port numbers or source IP address do not match with any of the ongoing sockets in the host, the host will send a special reset segment to the source. This TCP segment has the RST flag bit (see Section 3.5.2) set to 1.<br>When a host receives a UDP packet whose destination port number doesn’t match with an ongoing UDP socket, the host sends a special ICMP datagram, as discussed in Chapter 5.</p>
+<p><em>SYN flood attack and its defence</em><br>SYN cookie<br>(not understand)</p>
+<h2 id="Principles-of-Congestion-Control"><a href="#Principles-of-Congestion-Control" class="headerlink" title="Principles of Congestion Control"></a>Principles of Congestion Control</h2><h3 id="The-Causes-and-the-Costs-of-Congestion"><a href="#The-Causes-and-the-Costs-of-Congestion" class="headerlink" title="The Causes and the Costs of Congestion"></a>The Causes and the Costs of Congestion</h3><p><em>scenario 1</em><br>Two Senders, a Router with Infinite Buffers</p>
+<p>Found one cost of a congested network—large queuing delays are experienced as the packet-arrival rate nears the link capacity.</p>
+<p><em>scenario 2</em><br>Two Senders and a Router with Finite Buffers</p>
+<p>Found another cost of a congested network—the sender must perform retransmissions in order to compensate for dropped (lost) packets due to buffer overflow.</p>
+<p>another cost of a congested network—unneeded retransmissions by the sender in the face of large delays may cause a router to use its link bandwidth to forward unneeded copies of a packet.</p>
+<p>another  cost  of  dropping  a  packet  due  to  congestion—when  a  packet is  dropped  along  a  path,  the  transmission  capacity  that  was  used  at  each  of  the upstream links to forward that packet to the point at which it is dropped ends up having been wasted.</p>
+<h3 id="Approaches-to-Congestion-Control"><a href="#Approaches-to-Congestion-Control" class="headerlink" title="Approaches to Congestion Control"></a>Approaches to Congestion Control</h3><p>End-to-end congestion control<br>Network-assisted congestion control</p>
+<h2 id="TCP-Congestion-Control"><a href="#TCP-Congestion-Control" class="headerlink" title="TCP Congestion Control"></a>TCP Congestion Control</h2><h3 id="Classic-TCP-Congestion-Control"><a href="#Classic-TCP-Congestion-Control" class="headerlink" title="Classic TCP Congestion Control"></a>Classic TCP Congestion Control</h3><p>If a TCP sender perceives that there is little congestion on the path between itself and the destination, then the TCP sender increases its send rate; if the sender perceives that there is congestion along the path, then the sender reduces its send rate</p>
+<p>The TCP congestion-control mechanism operating at the sender keeps track of an additional variable, the congestion window.</p>
+<p><strong>Principles:</strong></p>
+<ul>
+<li>A lost segment implies congestion, and hence, the TCP sender’s rate should be decreased  when  a  segment  is  lost.</li>
+<li>An acknowledged segment indicates that the network is delivering the sender’s segments to the receiver, and hence, the sender’s rate can be increased when an ACK arrives for a previously unacknowledged segment.</li>
+<li>Bandwidth probing. increase its rate in response to arriving ACKs until a loss event occurs, at which point, the transmission rate is decreased.</li>
+<li><em>the celebrated TCP congestion-control algorithm</em>*</li>
+</ul>
+<ol>
+<li>slow start</li>
+<li>congestion avoidance</li>
+<li>fast recovery</li>
+</ol>
+<p><em>Slow Start</em><br>When a TCP connection begins, the value of cwnd is typically initialized to a small value of 1.</p>
+<p>double the sending rate every RTT</p>
+<p>if there is a loss event  (i.e.,congestion) indicated by a timeout, the TCP sender sets the value of cwnd to 1 and begins the slow start process anew.<br>it also set the value of a  second state variable,  ssthresh (short-hand  for  “slow start threshold”)  to  cwnd/2—half of the value  of  the  congestion window value when congestion was detected<br>when the value of cwnd equals ssthresh, slow start ends and TCP transitions into congestion avoidance mode.<br>The final way in which slow start can end is if three duplicate ACKs are detected, in which case TCP performs a fast retransmit (see Section 3.5.4) and enters the fast recovery state.</p>
+<p><em>Congestion Avoidance</em><br>rather than doubling the value of cwnd every RTT, TCP adopts a more conservative approach and increases the value of cwnd by just a single MSS every RTT  </p>
+<p><em>Fast Recovery</em></p>
+<p>TCP linearly increases its conges-tion window size (and hence its transmission rate) until a triple duplicate-ACK event occurs. It then decreases its congestion window size by a factor of two but then again begins increasing it linearly, probing to see if there is additional available bandwidth.</p>
+<h3 id="TCP-CUBIC"><a href="#TCP-CUBIC" class="headerlink" title="TCP CUBIC"></a>TCP CUBIC</h3><h3 id="Network-Assisted-Explicit-Congestion-Notification-and-Delayed-based-Congestion-Control"><a href="#Network-Assisted-Explicit-Congestion-Notification-and-Delayed-based-Congestion-Control" class="headerlink" title="Network-Assisted Explicit Congestion Notification and Delayed-based Congestion Control"></a>Network-Assisted Explicit Congestion Notification and Delayed-based Congestion Control</h3><p><em>allow the network to explicitly signal congestion to a TCP sender and receiver.</em><br>At  the  network  layer,  two  bits  (with  four  possible  values, overall) in the Type of Service field of the IP datagram header (which we’ll discuss in Section 4.3) are used for ECN.</p>
+<h3 id="Fairness"><a href="#Fairness" class="headerlink" title="Fairness"></a>Fairness</h3><p>TCP congestion control converges to provide an equal share of a bottleneck link’s bandwidth among competing TCP connections.</p>
+<h2 id="Evolution-of-Transport-Layer-Functionality"><a href="#Evolution-of-Transport-Layer-Functionality" class="headerlink" title="Evolution of Transport-Layer Functionality"></a>Evolution of Transport-Layer Functionality</h2><p>a  rich  evolution  in  the  use  of  TCP  over  the  past  decade.</p>
+<p>There are versions of TCP<br>specifically  designed  for  use  over  wireless  links,  over  high-bandwidth  paths  with large RTTs, for paths with packet re-ordering, and for short paths strictly within data centers.</p>
+<h3 id="QUIC-Quick-UDP-Internet-Connections"><a href="#QUIC-Quick-UDP-Internet-Connections" class="headerlink" title="QUIC : Quick UDP Internet Connections"></a>QUIC : Quick UDP Internet Connections</h3><p>QUIC  is  a  new  application-layer  protocol designed from the ground up to improve the performance of transport-layer services  for  secure  HTTP. </p>
+<p>Connection-Oriented  and  Secure.<br>Streams.<br>Reliable,  TCP-friendly  congestion-controlled  data  transfer. </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-6-%E6%97%A0%E7%BA%BF%E4%B8%8E%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa-regular fa-earth-asia"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZYZ</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Wireless and Mobile Networks7.1 简介以下这些元素在无线网络中：  无线主机。智能手机、平板电脑。连接上互联网的设备 无线链路。属性有：传输速率与覆盖范围等等。 基站。职责是向关联的无线主机收发数据。协调多个无线主机的传输。蜂窝塔和802.11无线局域网的“接入点”都是基站的例子。  当我们说一个主机“关联”（associated）一个基站时，意思是：1.主机在基站的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cozard 技术空间">
+<meta property="og:url" content="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-6-%E6%97%A0%E7%BA%BF%E4%B8%8E%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="Cozard 技术空间">
+<meta property="og:description" content="Wireless and Mobile Networks7.1 简介以下这些元素在无线网络中：  无线主机。智能手机、平板电脑。连接上互联网的设备 无线链路。属性有：传输速率与覆盖范围等等。 基站。职责是向关联的无线主机收发数据。协调多个无线主机的传输。蜂窝塔和802.11无线局域网的“接入点”都是基站的例子。  当我们说一个主机“关联”（associated）一个基站时，意思是：1.主机在基站的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-25T02:43:17.555Z">
+<meta property="article:modified_time" content="2022-08-01T02:14:39.350Z">
+<meta property="article:author" content="ZYZ">
+<meta property="article:tag" content="Code Program Method">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-6-%E6%97%A0%E7%BA%BF%E4%B8%8E%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-6-%E6%97%A0%E7%BA%BF%E4%B8%8E%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C/","path":"2022/09/25/计算机网络笔记-6-无线与移动网络/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Cozard 技术空间</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cozard 技术空间</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">规划、设计、探索</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Wireless-and-Mobile-Networks"><span class="nav-number">1.</span> <span class="nav-text">Wireless and Mobile Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">7.1 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E7%BA%BF%E9%93%BE%E8%B7%AF%E5%92%8C%E7%BD%91%E7%BB%9C%E7%9A%84%E7%89%B9%E5%BE%81%E3%80%82"><span class="nav-number">1.2.</span> <span class="nav-text">无线链路和网络的特征。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CDMA"><span class="nav-number">1.2.1.</span> <span class="nav-text">CDMA</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WiFi%EF%BC%9A802-11-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="nav-number">1.3.</span> <span class="nav-text">WiFi：802.11 无线局域网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.1.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-802-11-MAC-Protocol"><span class="nav-number">1.3.2.</span> <span class="nav-text">The 802.11 MAC Protocol</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IEEE-802-11-%E5%B8%A7"><span class="nav-number">1.3.3.</span> <span class="nav-text">IEEE 802.11 帧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8CIP%E5%AD%90%E7%BD%91%E5%86%85%E7%A7%BB%E5%8A%A8"><span class="nav-number">1.3.4.</span> <span class="nav-text">同IP子网内移动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#802-11%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7"><span class="nav-number">1.3.5.</span> <span class="nav-text">802.11高级特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AA%E4%BA%BA%E5%8C%BA%E5%9F%9F%E7%BD%91%E7%BB%9C-%E8%93%9D%E7%89%99"><span class="nav-number">1.3.6.</span> <span class="nav-text">个人区域网络 蓝牙</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%9C%82%E7%AA%9D%E7%BD%91%E7%BB%9C%EF%BC%9A4G%E5%92%8C5G"><span class="nav-number">1.4.</span> <span class="nav-text">蜂窝网络：4G和5G</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYZ"
+      src="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+  <p class="site-author-name" itemprop="name">ZYZ</p>
+  <div class="site-description" itemprop="description">Cozard 的官方博客</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pxxxl" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pxxxl" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/wang-lang-pai-ma-wu-dao/posts" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wang-lang-pai-ma-wu-dao&#x2F;posts" rel="noopener" target="_blank"><i class="fa-brands fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-6-%E6%97%A0%E7%BA%BF%E4%B8%8E%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-25 10:43:17" itemprop="dateCreated datePublished" datetime="2022-09-25T10:43:17+08:00">2022-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-01 10:14:39" itemprop="dateModified" datetime="2022-08-01T10:14:39+08:00">2022-08-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Wireless-and-Mobile-Networks"><a href="#Wireless-and-Mobile-Networks" class="headerlink" title="Wireless and Mobile Networks"></a>Wireless and Mobile Networks</h1><h2 id="7-1-简介"><a href="#7-1-简介" class="headerlink" title="7.1 简介"></a>7.1 简介</h2><p>以下这些元素在无线网络中：</p>
+<ul>
+<li>无线主机。智能手机、平板电脑。连接上互联网的设备</li>
+<li>无线链路。属性有：传输速率与覆盖范围等等。</li>
+<li>基站。职责是向关联的无线主机收发数据。协调多个无线主机的传输。蜂窝塔和802.11无线局域网的“接入点”都是基站的例子。</li>
+</ul>
+<p>当我们说一个主机“关联”（associated）一个基站时，意思是：1.主机在基站的通信范围内；2.主机使用那个基站来转送数据，在它自己和更大的网络之间。</p>
+<p>主机与基站相连的模式叫做“基础设施模式”。没有基站的模式叫做“自组网”。</p>
+<p>移动设备移动时，发生接入点变化的过程叫做handoff 或者handover。</p>
+<ul>
+<li>网络基础设施。这就是主机想要连接上的更大的网络。</li>
+</ul>
+<p>此章节的关键归类：</p>
+<ul>
+<li><p>网络中的包是否穿过一个无线跃点（wireless hop）或是多个无线跃点。</p>
+</li>
+<li><p>是否有基础设施例如基站。</p>
+</li>
+<li><p>单无线跃点,基于基础设施。大多数网络是这样的。</p>
+</li>
+<li><p>单无线跃点，无基础设施。比如蓝牙网络。</p>
+</li>
+<li><p>多无线跃点，基于基础设施。使用中继，一些传感器网络属于此类。</p>
+</li>
+<li><p>多无线跃点，无基础设施。移动自组网。</p>
+</li>
+</ul>
+<p>本章主要讨论单无线跃点网络，多数讨论基于基础设施的网络。</p>
+<h2 id="无线链路和网络的特征。"><a href="#无线链路和网络的特征。" class="headerlink" title="无线链路和网络的特征。"></a>无线链路和网络的特征。</h2><ul>
+<li>随距离递减的信号强度。</li>
+<li>其他信号源的干扰。在同一频带内发射的无线电波源会相互干扰。</li>
+<li>多径传播。传播路径不同导致到达时间不同，信号会发生模糊。</li>
+</ul>
+<p>这些特征意味着比特位错误会更加频繁。需要强力检查更正手段。</p>
+<p>signal-to-noise ratio(SNR)是一个相对的衡量标准。单位是分贝。</p>
+<ul>
+<li>对于给定的调制方式，信噪比越高，二进制误码率越低。</li>
+<li>对于给定的SNR，一种具有更高比特传输速率的调制技术（无论是否出错）将具有更高的BER。</li>
+<li>物理层调制技术的动态选择可用于使调制技术适应信道条件。</li>
+</ul>
+<h3 id="CDMA"><a href="#CDMA" class="headerlink" title="CDMA"></a>CDMA</h3><p>code division multiple access属于channel partitioning 协议大家庭。在无线世界非常重要。</p>
+<p>在发射一个比特位时，将它拆成M位于预先准备好的CDMA码相乘再发出去，接收者使用相同的CDMA码来解码。多个发送者同时发送时也可以解码成功。</p>
+<h2 id="WiFi：802-11-无线局域网"><a href="#WiFi：802-11-无线局域网" class="headerlink" title="WiFi：802.11 无线局域网"></a>WiFi：802.11 无线局域网</h2><p>不同的802.11 b、g、n、ac、ax标准都有一些共同的特征，包括802.11帧格式。它们向后兼容，使用CSMA/CA协议。</p>
+<p>主要的差别在物理层。体现在传输频带不同。</p>
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p>基本的结构是“基本服务集合”BSS，包含一个或多个无线站和中心基站，中心基站叫做接入点（AP）。接入点连接路由器或交换机。</p>
+<p>家庭网络一般有一个AP和一个路由器（一般是集成为一个单元）。</p>
+<p>部署接入点的无线局域网通常被称为基础设施无线局域网。</p>
+<p>IEEE 802.11站点也可以将自己分组，形成一个自组织网络——一个没有中央控制且与“外部世界”没有连接的网络。</p>
+<p>在 802.11 中，每个无线站必须与AP“联合（associate）才能发送和接收网络层数据。</p>
+<p>当网络管理员安装AP时，管理员会分配一个字或两个字的服务集标识符（SSID）给接入点。（例如，在iPhone上的Wi-Fi设置下，会显示一个列表，其中显示范围内每个AP的SSID）管理员还必须分配一个通道号给AP。</p>
+<p>802.11在2.4 GHz至2.4835 GHz的频率范围内工作。在85 MHz频带内，802.11定义了11个部分重叠的信道。任何两个通道都是不重叠的，当且仅当它们被四个或更多通道分开时。特别是，通道1、6和11的集合是三个非重叠通道的唯一集合。这意味着，管理员可以通过在同一物理位置安装三个802.11接入点，将信道1、6和11分配给接入点，并将每个接入点与交换机互连，创建一个总最大传输速率为表7.1所示最大传输速率三倍的无线局域网。</p>
+<p>只有相”联合“的无线站和AP才会互相发送帧。</p>
+<p>有一种情景叫做“WIFI丛林”有很多个AP在同一个物理地点。这个时候主机如何识别呢？</p>
+<p>AP周期性地发送信标帧（beacon frames）包含AP的SSID和MAC地址。</p>
+<p>扫描通道和侦听信标帧的过程称为被动扫描（见图7.9a）。无线设备还可以通过广播探测帧来执行主动扫描，该探测帧将由无线设备范围内的所有AP接收，如图7.9b所示。AP使用探测响应帧响应探测请求帧。然后，无线设备可以从响应的AP中选择要与之关联的AP。</p>
+<p>连接AP需要认证，一些公司使用检查MAC的方法，咖啡馆使用用户名密码方法。AP都需要和认证服务器通信，使用RADIUS [RFC 2865] or DIAMETER [RFC 6733]协议。</p>
+<h3 id="The-802-11-MAC-Protocol"><a href="#The-802-11-MAC-Protocol" class="headerlink" title="The 802.11 MAC Protocol"></a>The 802.11 MAC Protocol</h3><p>802.11 采用CSMA with collision avoidance （CSMA/CA）作为多路访问协议。</p>
+<p>在以太网的语境下 CSMA 叫做“carrier sense multiple access” 意思是每个站感知一下隧道，然后再传输。尽管80211和以太网都用CSMA但是有一些重要区别。首先80211使用碰撞避免技术而不是碰撞探测技术。其次，因为无线通道误码率很高，802.11使用链路层确认/重传（ARQ）方案。</p>
+<p>802.11不实现碰撞检测，有两个重要原因：</p>
+<ul>
+<li>检测碰撞的能力要求能够同时发送（电台自身的信号）和接收（以确定另一个电台是否也在发射）。由于与802.11适配器处传输信号的强度相比，接收信号的强度通常非常小，因此构建能够检测冲突的硬件成本很高。</li>
+<li>更重要的是，即使适配器可以同时传输和侦听（并且可能在检测到繁忙信道时中止传输），由于隐藏终端问题和衰落，适配器仍无法检测到所有冲突，如第7.2节所述。</li>
+</ul>
+<p>802.11没有碰撞检测，因此它一旦开始发一个帧，就会整个传输该帧。为了避免大量碰撞，802.11采用一些碰撞避免策略。</p>
+<p>先来看看链路层确认策略。当目的站接收到通过CRC的帧时，它等待一段称为短帧间隔（SIFS）的短时间，然后发回一个确认帧。如果发射站在给定的时间内没有收到确认，则它假设发生了错误，并使用CSMA/CA协议重新传输帧以访问信道。如果在一些固定次数的重新传输之后没有收到确认，则发射站放弃并丢弃该帧。</p>
+<p>1.如果站点最初感觉到信道空闲，则在称为分布式帧间空间（DIFS）的短时间段后传输其帧；<br>2.否则，站点使用二进制指数退避选择一个随机退避值（如我们在第6.3.2节中遇到的），并在检测到信道空闲时，在DIFS后对该值进行倒计时。当检测到信道忙时，计数器值保持冻结。<br>3.当计数器达到零时（注意，只有在检测到信道空闲时，才会发生这种情况），站点传输整个帧，然后等待确认。<br>4已在目的站正确接收。如果站点有另一个帧要发送，则在步骤2开始CSMA/CA协议。如果没有收到确认，则发射站在步骤2中重新进入退避阶段，随机值从较大的间隔中选择。</p>
+<p>为什么即使感受到通道空闲，802.11仍然克制不传输呢（以太网协议不是这样的）？因为要尽量避免碰撞发生，在802.11下面，一旦发生碰撞，代价非常大（不停止传输）。</p>
+<p>对付隐藏起来的终端：RTS 和 CTS</p>
+<p>假想这样的情景：两个站互相隐藏，但对同一个AP不隐藏。</p>
+<p>这样的话两个站无法感知另一站是否正在传输。为避免碰撞，站可以发送 Request to Send（RTS）控制帧和 Clear to Send（CTS）控制帧。当发送者想要发送数据帧时，先向AP发送RTS，表明预测总发送时间，AP再广播CTS，通知哪个站可以发，其他站静默。</p>
+<p>也引入了延迟和消耗信道资源的问题，因此一般在DATA较长时使用。</p>
+<p>802.11也可以点对点传输。</p>
+<h3 id="IEEE-802-11-帧"><a href="#IEEE-802-11-帧" class="headerlink" title="IEEE 802.11 帧"></a>IEEE 802.11 帧</h3><p>帧的核心是有效载荷，它通常由IP数据报或ARP数据包组成。规定大小0-2312字节，一般小于1500字节。</p>
+<p>包括32位循环冗余校验（CRC）</p>
+<p>包含4个地址。前三个地址用于将网络层数据报从无线站通过AP移动到路由器接口。第四个用于点对点模式，这里不讨论。</p>
+<p>地址2是传输帧的站点的MAC地址。因此，如果无线站发送该帧，则该站的MAC地址被插入地址2字段中。类似地，如果AP传输帧，则AP的MAC地址插入地址2字段。</p>
+<p>地址1是要接收帧的无线站的MAC地址。因此，如果移动无线站发送该帧，则地址1包含目的AP的MAC地址。类似地，如果AP发送帧，则地址1包含目标无线站的MAC地址。</p>
+<p>为了理解地址3，回想一下BSS（由AP和无线电台组成）是子网的一部分，该子网通过一些路由器接口连接到其他子网。地址3包含此路由器接口的MAC地址。</p>
+<p>为了进一步了解地址3的用途，让我们在图7.14的背景下浏览一个互联网示例。在这个图中，有两个AP，每个AP负责多个无线电台。每个接入点都直接连接到路由器，路由器又连接到全球互联网。我们应该记住，AP是链路层设备，因此既不“讲”IP，也不理解IP地址。现在考虑将数据报从路由器接口R1移动到无线站H1。路由器不知道它和H1之间有AP；从路由器的角度来看，H1只是它（路由器）所连接的子网之一中的主机。</p>
+<p>路由器知道H1的IP地址（从数据报的目标地址），使用ARP来确定H1的MAC地址，就像在普通以太局域网中一样。在获得H1的MAC地址后，路由器接口R1将数据报封装在以太网帧内。该帧的源地址字段包含R1的MAC地址，目标地址字段包含H1的MAC地址。<br>•当以太网帧到达AP时，AP将802.3以太网帧转换为802.11帧，然后再将帧传输到无线信道。如上所述，AP分别用H1的MAC地址和它自己的MAC地址填充地址1和地址2。对于地址3，AP插入R1的MAC地址。通过这种方式，H1可以确定（从地址3）将数据报发送到子网的路由器接口的MAC地址。</p>
+<p>序列数，持续时间，和帧控制字段。</p>
+<p>序列数和tcp的那个类似</p>
+<p>802.11允许传输站点保留通道一段时间，包括传输与确认的时间。存在“持续时间”里面</p>
+<h3 id="同IP子网内移动"><a href="#同IP子网内移动" class="headerlink" title="同IP子网内移动"></a>同IP子网内移动</h3><p>传输站C从BSS1移动到BSS2时，传输站检测到信号强度变化。发生BSS切换。交换机也收到特殊帧，调整forwarding table。</p>
+<p>使用Global Positioning System (GPS) and the WiFi Positioning System (WPS)来定位</p>
+<h3 id="802-11高级特性"><a href="#802-11高级特性" class="headerlink" title="802.11高级特性"></a>802.11高级特性</h3><p>传输速率控制<br>功率管理（睡眠状态）</p>
+<h3 id="个人区域网络-蓝牙"><a href="#个人区域网络-蓝牙" class="headerlink" title="个人区域网络 蓝牙"></a>个人区域网络 蓝牙</h3><h2 id="蜂窝网络：4G和5G"><a href="#蜂窝网络：4G和5G" class="headerlink" title="蜂窝网络：4G和5G"></a>蜂窝网络：4G和5G</h2>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-1-%E5%BA%94%E7%94%A8%E5%B1%82/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-2-%E4%BC%A0%E8%BE%93%E5%B1%82/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa-regular fa-earth-asia"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZYZ</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -179,6 +179,1144 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-2-%E4%BC%A0%E8%BE%93%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-2-%E4%BC%A0%E8%BE%93%E5%B1%82/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-25 10:43:17" itemprop="dateCreated datePublished" datetime="2022-09-25T10:43:17+08:00">2022-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-03-16 18:46:23" itemprop="dateModified" datetime="2022-03-16T18:46:23+08:00">2022-03-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Transport-Layer"><a href="#Transport-Layer" class="headerlink" title="Transport Layer"></a>Transport Layer</h1><p><em><strong>The central piece of the layered network architecture</strong></em></p>
+<p>transport layer provide logical communication between processes as if the two processes are in the same host</p>
+<p>transport layer do its work in the host, the out-of-host teleport is done by the network service</p>
+<p>some of the transport layer’s service is constrained by the network layer</p>
+<p>network layer protocal has a name – IP(Internet Protocal, which provides logical communication between hosts</p>
+<p>IP makes its “best effort to deliver segments between <strong>hosts</strong>but not guarantees</p>
+<p>each host has its IP address</p>
+<p>UDP and TCP extends IP’s delivery service between two end systems to that between two processes, which is called multiplexing</p>
+<h2 id="Multiplexing-and-Demultiplexing"><a href="#Multiplexing-and-Demultiplexing" class="headerlink" title="Multiplexing and Demultiplexing"></a>Multiplexing and Demultiplexing</h2><p><strong>Multiplexing:gathering data chunks at the source host from different sockets, encapsulate each chunk with header to create segment, and pass to the network later</strong></p>
+<p><strong>Demultiplexing:delever the data in a segment to correct socket</strong></p>
+<p>requires :</p>
+<ol>
+<li>unique identifiers of socket(port)</li>
+<li>each segment have special field indicating the socket to be delivered</li>
+</ol>
+<p>port number: 0~65565</p>
+<h3 id="UDP-Multiplexing"><a href="#UDP-Multiplexing" class="headerlink" title="UDP Multiplexing"></a>UDP Multiplexing</h3><p>UDP socket:two-tuple<br>destination  IP  address  destination  port  number<br>the host uses them to direct (demultiplex) the segment to the appropriate socket.</p>
+<h3 id="TCP-Multiplexing"><a href="#TCP-Multiplexing" class="headerlink" title="TCP Multiplexing"></a>TCP Multiplexing</h3><p>TCP socket:four-tuple<br>source IP address<br>source port number<br>destination IP  address destination port number<br>the host uses all four values to direct (demultiplex) the segment to the appropriate socket.</p>
+<h2 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h2><p><strong>multiplexing/demultiplexing and some light error checking</strong></p>
+<p>takes messages from application, attaches source and destination port number field and 2 other small field and pass it to the network layer</p>
+<p>The network layer encapsulates the transport-layer seg-ment into an IP datagram and then makes a best-effort attempt to deliver the segment to the receiving host.</p>
+<p>connectionless, no handshake</p>
+<p>DNS:using UDP<br><strong>Using UDP</strong></p>
+<ol>
+<li>Finer application-level control over what data is sent, and when.</li>
+<li>No connection establishment.</li>
+<li>No connection state.</li>
+<li>Small packet header overhead.</li>
+</ol>
+<h3 id="UDP-Segment-Structure"><a href="#UDP-Segment-Structure" class="headerlink" title="UDP Segment Structure"></a>UDP Segment Structure</h3><p>The UDP header has four fields<br>each consisting of 2 bytes:</p>
+<ol>
+<li>Source port</li>
+<li>Dest Port</li>
+<li>Length</li>
+<li>Checksum</li>
+</ol>
+<p>Then the Application Data</p>
+<h4 id="The-UDP-Checksum-provides-error-detection"><a href="#The-UDP-Checksum-provides-error-detection" class="headerlink" title="The UDP Checksum provides error detection"></a>The UDP Checksum provides error detection</h4><p>the  checksum is used to determine whether bits within the UDP segment have been altered (for example, by noise in the links or while stored in a router) as it moved from source to destination.</p>
+<h2 id="Principles-of-Reliable-Data-Transfer"><a href="#Principles-of-Reliable-Data-Transfer" class="headerlink" title="Principles of Reliable Data Transfer"></a>Principles of Reliable Data Transfer</h2><p>“view lower layer simply as an unreliable point-to-point channel”</p>
+<p><strong>V1.0</strong><br><em>over a perfectly reliable channel</em></p>
+<p>Just packet the data and deliver it</p>
+<p><strong>V2.0</strong><br><em>over a channel with Bit Errors</em></p>
+<p>three additional protocol capabilities are required in ARQ protocols to handle the presence of bit errors:</p>
+<ol>
+<li>Error Detection.Extra bits needed</li>
+<li>Receiver Feedback.</li>
+<li>Retransmission.</li>
+</ol>
+<p>deliver and wait for a NAK or ACK<br>thus decide whether to retransmit<br>Stop and Wait</p>
+<p>Fatal flaw : ACK or NAK packet could be corrupted<br>Possible solution</p>
+<ol>
+<li>repeat asking sentence</li>
+<li>enough checksum to allow recovering</li>
+<li>sender resend when corrupted ACK/NAK received</li>
+</ol>
+<p>Real solution<br>add a new field to the data packet, Sequence number, 1 bit</p>
+<p><strong>V2.1</strong></p>
+<p><strong>V2.2</strong><br><em>NAK not need and solve the problem?</em></p>
+<p><strong>V3.0</strong><br><em>Solve the problem of packet loss as well</em></p>
+<p>But Stop and Wait performed not fast enough</p>
+<p><strong>Pipelining</strong></p>
+<ol>
+<li>the range of the sequence number must be increased</li>
+<li>buffer more than one packet</li>
+</ol>
+<p>Basic approaches toward pipelined error recovery</p>
+<p><strong>Go-Back-N</strong><br>transmit multiple packets (when available) without waiting for an acknowledgment, but is constrained to have no more than some maximum allowable number, N, of unacknowledged packets in the pipeline</p>
+<p>sliding-window protocol<br>TCP sequence numbers count bytes in the byte stream rather than packets.<br>Illustration P231</p>
+<p><strong>Selective Repeat</strong><br>Avoid  unnecessary  retrans-missions  by  having  the  sender  retransmit  only  those  packets  that  it  suspects  were received  in  error  (that  is,  were  lost  or  corrupted)  at  the  receiver)</p>
+<p>the window size must be less than or equal to half the size of the sequence number space for SR protocols</p>
+<p><em><strong>P237 All the techniques to guarantee reliable data transfer</strong></em></p>
+<h2 id="Connected-Oriented-Transport-TCP"><a href="#Connected-Oriented-Transport-TCP" class="headerlink" title="Connected-Oriented Transport : TCP"></a>Connected-Oriented Transport : TCP</h2><p><em>TCP—the Internet’s transport-layer, connection-oriented, reliable transport protocol.</em></p>
+<h3 id="The-TCP-Connection"><a href="#The-TCP-Connection" class="headerlink" title="The TCP Connection"></a>The TCP Connection</h3><p><em>handshake:send some preliminary segment to each other to establishment.</em></p>
+<p>“The connection” is a logical one, not an end-to-end TDM or FDM circuit in a circuit-switch network<br>common state<br>resids only in the TCPs in the two communicating end systems.<br>TCP protocol runs only in the end systems and not in the intermediate network elements  (routers  and  link-layer  switches), the intermediate routers are completely oblivious to TCP connections; they see datagrams, not connections.</p>
+<p>TCP : point-to-point</p>
+<p><strong>three-way-handshake to establish the connection</strong></p>
+<p>TCP pairs each chunk of client data with a TCP header, thereby forming TCP segments. The segments are passed down to the network layer, where they are separately encapsulated within network-layer IP datagrams.</p>
+<h3 id="TCP-Segment-Structure"><a href="#TCP-Segment-Structure" class="headerlink" title="TCP Segment Structure"></a>TCP Segment Structure</h3><ul>
+<li>The TCP segment consists of header fields and a data field.</li>
+<li>The data field contains a chunk of application data.</li>
+<li>the MSS limits the maximum size of a segment’s data field</li>
+</ul>
+<p><em>Structure</em></p>
+<ul>
+<li>Source and destination port numbers</li>
+<li>checksum field</li>
+<li>32-bit sequence number field</li>
+<li>32-bit acknowledgment number field</li>
+<li>16-bit receive window</li>
+<li>4-bit header length field</li>
+<li>options field</li>
+<li>6-bit flag field</li>
+<li>16-bit urgent data pointer field</li>
+</ul>
+<p>Illustration P242</p>
+<h3 id="Sequence-Numbers-and-Acknowledgment-Numbers"><a href="#Sequence-Numbers-and-Acknowledgment-Numbers" class="headerlink" title="Sequence Numbers and Acknowledgment Numbers"></a>Sequence Numbers and Acknowledgment Numbers</h3><p>TCP views data as an unstructured, but ordered, stream of bytes. TCP’s use of sequence numbers reflects this view in that sequence numbers are over the stream of transmitted bytes and not over the series of transmitted segments.</p>
+<p>The sequence number for a segment is therefore the byte-stream number of the first byte in the segment.</p>
+<h3 id="Setting-and-Managing-the-Retransmission-Timeout-Interval"><a href="#Setting-and-Managing-the-Retransmission-Timeout-Interval" class="headerlink" title="Setting and Managing the Retransmission Timeout Interval"></a>Setting and Managing the Retransmission Timeout Interval</h3><p>TimeoutInterval = EstimatedRTT + 4 DevRTT</p>
+<h3 id="Reliable-Data-Transfer"><a href="#Reliable-Data-Transfer" class="headerlink" title="Reliable Data Transfer"></a>Reliable Data Transfer</h3><p>use only a single retransmission timer, even if there are multiple transmitted but not yet acknowledged segment.</p>
+<p>TCP responds to the timeout event by retransmitting the segment that caused the timeout. TCP then restarts the timer.</p>
+<p>When ACK accepted, and the ACK number &gt; expected, update the expected.</p>
+<p><em>Doubleing the timeout interval</em><br>each time TCP retransmits, it sets the next timeout interval to twice the previous value<br>However, whenever the timer is started after either of the two other events (that is, data received from application above, and ACK received), the  TimeoutInterval is derived from the most recent values of EstimatedRTT and DevRTT.</p>
+<p><em>Fast retransmit</em><br>A duplicate ACK is an ACK that reacknowledges a segment for which the sender has already received an earlier acknowledgment<br>(Receiver Action P255)</p>
+<p>Retransmit the last in-order byte of data it has received, to inform the sender to retransmit.</p>
+<p>When the sender receive 3 duplicate ACKs for the same data, it takes this as an indication that the segment following the segment that has been ACKed three times has been lost.Then it performs a fast retransmit.</p>
+<p><em>Go-Back-N or Selective Repeat</em><br>Many TCP implementations will buffer correctly received but out-of-order segments<br>acknowledge out-of-order segments selectively<br>(<strong>QUESTION : conflict between multiple ACK and selective repeat</strong>)</p>
+<h3 id="Flow-Control"><a href="#Flow-Control" class="headerlink" title="Flow Control"></a>Flow Control</h3><p>eliminate  the  possibility of the sender overflowing the receiver’s buffer.</p>
+<p>sender  maintain  a  variable  called the receive window, used to give the sender an idea  of  how  much  free  buffer  space  is  available  at  the  receiver.<br>Host B tells Host A how much spare room it has in the connection buffer by placing its current value of rwnd in the receive window field of every segment it sends to A.</p>
+<h3 id="connection-management"><a href="#connection-management" class="headerlink" title="connection management"></a>connection management</h3><p><em>three-way handshake</em><br><em>four-way handshake</em></p>
+<p>when a host receives a TCP segment whose port numbers or source IP address do not match with any of the ongoing sockets in the host, the host will send a special reset segment to the source. This TCP segment has the RST flag bit (see Section 3.5.2) set to 1.<br>When a host receives a UDP packet whose destination port number doesn’t match with an ongoing UDP socket, the host sends a special ICMP datagram, as discussed in Chapter 5.</p>
+<p><em>SYN flood attack and its defence</em><br>SYN cookie<br>(not understand)</p>
+<h2 id="Principles-of-Congestion-Control"><a href="#Principles-of-Congestion-Control" class="headerlink" title="Principles of Congestion Control"></a>Principles of Congestion Control</h2><h3 id="The-Causes-and-the-Costs-of-Congestion"><a href="#The-Causes-and-the-Costs-of-Congestion" class="headerlink" title="The Causes and the Costs of Congestion"></a>The Causes and the Costs of Congestion</h3><p><em>scenario 1</em><br>Two Senders, a Router with Infinite Buffers</p>
+<p>Found one cost of a congested network—large queuing delays are experienced as the packet-arrival rate nears the link capacity.</p>
+<p><em>scenario 2</em><br>Two Senders and a Router with Finite Buffers</p>
+<p>Found another cost of a congested network—the sender must perform retransmissions in order to compensate for dropped (lost) packets due to buffer overflow.</p>
+<p>another cost of a congested network—unneeded retransmissions by the sender in the face of large delays may cause a router to use its link bandwidth to forward unneeded copies of a packet.</p>
+<p>another  cost  of  dropping  a  packet  due  to  congestion—when  a  packet is  dropped  along  a  path,  the  transmission  capacity  that  was  used  at  each  of  the upstream links to forward that packet to the point at which it is dropped ends up having been wasted.</p>
+<h3 id="Approaches-to-Congestion-Control"><a href="#Approaches-to-Congestion-Control" class="headerlink" title="Approaches to Congestion Control"></a>Approaches to Congestion Control</h3><p>End-to-end congestion control<br>Network-assisted congestion control</p>
+<h2 id="TCP-Congestion-Control"><a href="#TCP-Congestion-Control" class="headerlink" title="TCP Congestion Control"></a>TCP Congestion Control</h2><h3 id="Classic-TCP-Congestion-Control"><a href="#Classic-TCP-Congestion-Control" class="headerlink" title="Classic TCP Congestion Control"></a>Classic TCP Congestion Control</h3><p>If a TCP sender perceives that there is little congestion on the path between itself and the destination, then the TCP sender increases its send rate; if the sender perceives that there is congestion along the path, then the sender reduces its send rate</p>
+<p>The TCP congestion-control mechanism operating at the sender keeps track of an additional variable, the congestion window.</p>
+<p><strong>Principles:</strong></p>
+<ul>
+<li>A lost segment implies congestion, and hence, the TCP sender’s rate should be decreased  when  a  segment  is  lost.</li>
+<li>An acknowledged segment indicates that the network is delivering the sender’s segments to the receiver, and hence, the sender’s rate can be increased when an ACK arrives for a previously unacknowledged segment.</li>
+<li>Bandwidth probing. increase its rate in response to arriving ACKs until a loss event occurs, at which point, the transmission rate is decreased.</li>
+<li><em>the celebrated TCP congestion-control algorithm</em>*</li>
+</ul>
+<ol>
+<li>slow start</li>
+<li>congestion avoidance</li>
+<li>fast recovery</li>
+</ol>
+<p><em>Slow Start</em><br>When a TCP connection begins, the value of cwnd is typically initialized to a small value of 1.</p>
+<p>double the sending rate every RTT</p>
+<p>if there is a loss event  (i.e.,congestion) indicated by a timeout, the TCP sender sets the value of cwnd to 1 and begins the slow start process anew.<br>it also set the value of a  second state variable,  ssthresh (short-hand  for  “slow start threshold”)  to  cwnd/2—half of the value  of  the  congestion window value when congestion was detected<br>when the value of cwnd equals ssthresh, slow start ends and TCP transitions into congestion avoidance mode.<br>The final way in which slow start can end is if three duplicate ACKs are detected, in which case TCP performs a fast retransmit (see Section 3.5.4) and enters the fast recovery state.</p>
+<p><em>Congestion Avoidance</em><br>rather than doubling the value of cwnd every RTT, TCP adopts a more conservative approach and increases the value of cwnd by just a single MSS every RTT  </p>
+<p><em>Fast Recovery</em></p>
+<p>TCP linearly increases its conges-tion window size (and hence its transmission rate) until a triple duplicate-ACK event occurs. It then decreases its congestion window size by a factor of two but then again begins increasing it linearly, probing to see if there is additional available bandwidth.</p>
+<h3 id="TCP-CUBIC"><a href="#TCP-CUBIC" class="headerlink" title="TCP CUBIC"></a>TCP CUBIC</h3><h3 id="Network-Assisted-Explicit-Congestion-Notification-and-Delayed-based-Congestion-Control"><a href="#Network-Assisted-Explicit-Congestion-Notification-and-Delayed-based-Congestion-Control" class="headerlink" title="Network-Assisted Explicit Congestion Notification and Delayed-based Congestion Control"></a>Network-Assisted Explicit Congestion Notification and Delayed-based Congestion Control</h3><p><em>allow the network to explicitly signal congestion to a TCP sender and receiver.</em><br>At  the  network  layer,  two  bits  (with  four  possible  values, overall) in the Type of Service field of the IP datagram header (which we’ll discuss in Section 4.3) are used for ECN.</p>
+<h3 id="Fairness"><a href="#Fairness" class="headerlink" title="Fairness"></a>Fairness</h3><p>TCP congestion control converges to provide an equal share of a bottleneck link’s bandwidth among competing TCP connections.</p>
+<h2 id="Evolution-of-Transport-Layer-Functionality"><a href="#Evolution-of-Transport-Layer-Functionality" class="headerlink" title="Evolution of Transport-Layer Functionality"></a>Evolution of Transport-Layer Functionality</h2><p>a  rich  evolution  in  the  use  of  TCP  over  the  past  decade.</p>
+<p>There are versions of TCP<br>specifically  designed  for  use  over  wireless  links,  over  high-bandwidth  paths  with large RTTs, for paths with packet re-ordering, and for short paths strictly within data centers.</p>
+<h3 id="QUIC-Quick-UDP-Internet-Connections"><a href="#QUIC-Quick-UDP-Internet-Connections" class="headerlink" title="QUIC : Quick UDP Internet Connections"></a>QUIC : Quick UDP Internet Connections</h3><p>QUIC  is  a  new  application-layer  protocol designed from the ground up to improve the performance of transport-layer services  for  secure  HTTP. </p>
+<p>Connection-Oriented  and  Secure.<br>Streams.<br>Reliable,  TCP-friendly  congestion-controlled  data  transfer. </p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-6-%E6%97%A0%E7%BA%BF%E4%B8%8E%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-6-%E6%97%A0%E7%BA%BF%E4%B8%8E%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-25 10:43:17" itemprop="dateCreated datePublished" datetime="2022-09-25T10:43:17+08:00">2022-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-01 10:14:39" itemprop="dateModified" datetime="2022-08-01T10:14:39+08:00">2022-08-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Wireless-and-Mobile-Networks"><a href="#Wireless-and-Mobile-Networks" class="headerlink" title="Wireless and Mobile Networks"></a>Wireless and Mobile Networks</h1><h2 id="7-1-简介"><a href="#7-1-简介" class="headerlink" title="7.1 简介"></a>7.1 简介</h2><p>以下这些元素在无线网络中：</p>
+<ul>
+<li>无线主机。智能手机、平板电脑。连接上互联网的设备</li>
+<li>无线链路。属性有：传输速率与覆盖范围等等。</li>
+<li>基站。职责是向关联的无线主机收发数据。协调多个无线主机的传输。蜂窝塔和802.11无线局域网的“接入点”都是基站的例子。</li>
+</ul>
+<p>当我们说一个主机“关联”（associated）一个基站时，意思是：1.主机在基站的通信范围内；2.主机使用那个基站来转送数据，在它自己和更大的网络之间。</p>
+<p>主机与基站相连的模式叫做“基础设施模式”。没有基站的模式叫做“自组网”。</p>
+<p>移动设备移动时，发生接入点变化的过程叫做handoff 或者handover。</p>
+<ul>
+<li>网络基础设施。这就是主机想要连接上的更大的网络。</li>
+</ul>
+<p>此章节的关键归类：</p>
+<ul>
+<li><p>网络中的包是否穿过一个无线跃点（wireless hop）或是多个无线跃点。</p>
+</li>
+<li><p>是否有基础设施例如基站。</p>
+</li>
+<li><p>单无线跃点,基于基础设施。大多数网络是这样的。</p>
+</li>
+<li><p>单无线跃点，无基础设施。比如蓝牙网络。</p>
+</li>
+<li><p>多无线跃点，基于基础设施。使用中继，一些传感器网络属于此类。</p>
+</li>
+<li><p>多无线跃点，无基础设施。移动自组网。</p>
+</li>
+</ul>
+<p>本章主要讨论单无线跃点网络，多数讨论基于基础设施的网络。</p>
+<h2 id="无线链路和网络的特征。"><a href="#无线链路和网络的特征。" class="headerlink" title="无线链路和网络的特征。"></a>无线链路和网络的特征。</h2><ul>
+<li>随距离递减的信号强度。</li>
+<li>其他信号源的干扰。在同一频带内发射的无线电波源会相互干扰。</li>
+<li>多径传播。传播路径不同导致到达时间不同，信号会发生模糊。</li>
+</ul>
+<p>这些特征意味着比特位错误会更加频繁。需要强力检查更正手段。</p>
+<p>signal-to-noise ratio(SNR)是一个相对的衡量标准。单位是分贝。</p>
+<ul>
+<li>对于给定的调制方式，信噪比越高，二进制误码率越低。</li>
+<li>对于给定的SNR，一种具有更高比特传输速率的调制技术（无论是否出错）将具有更高的BER。</li>
+<li>物理层调制技术的动态选择可用于使调制技术适应信道条件。</li>
+</ul>
+<h3 id="CDMA"><a href="#CDMA" class="headerlink" title="CDMA"></a>CDMA</h3><p>code division multiple access属于channel partitioning 协议大家庭。在无线世界非常重要。</p>
+<p>在发射一个比特位时，将它拆成M位于预先准备好的CDMA码相乘再发出去，接收者使用相同的CDMA码来解码。多个发送者同时发送时也可以解码成功。</p>
+<h2 id="WiFi：802-11-无线局域网"><a href="#WiFi：802-11-无线局域网" class="headerlink" title="WiFi：802.11 无线局域网"></a>WiFi：802.11 无线局域网</h2><p>不同的802.11 b、g、n、ac、ax标准都有一些共同的特征，包括802.11帧格式。它们向后兼容，使用CSMA/CA协议。</p>
+<p>主要的差别在物理层。体现在传输频带不同。</p>
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p>基本的结构是“基本服务集合”BSS，包含一个或多个无线站和中心基站，中心基站叫做接入点（AP）。接入点连接路由器或交换机。</p>
+<p>家庭网络一般有一个AP和一个路由器（一般是集成为一个单元）。</p>
+<p>部署接入点的无线局域网通常被称为基础设施无线局域网。</p>
+<p>IEEE 802.11站点也可以将自己分组，形成一个自组织网络——一个没有中央控制且与“外部世界”没有连接的网络。</p>
+<p>在 802.11 中，每个无线站必须与AP“联合（associate）才能发送和接收网络层数据。</p>
+<p>当网络管理员安装AP时，管理员会分配一个字或两个字的服务集标识符（SSID）给接入点。（例如，在iPhone上的Wi-Fi设置下，会显示一个列表，其中显示范围内每个AP的SSID）管理员还必须分配一个通道号给AP。</p>
+<p>802.11在2.4 GHz至2.4835 GHz的频率范围内工作。在85 MHz频带内，802.11定义了11个部分重叠的信道。任何两个通道都是不重叠的，当且仅当它们被四个或更多通道分开时。特别是，通道1、6和11的集合是三个非重叠通道的唯一集合。这意味着，管理员可以通过在同一物理位置安装三个802.11接入点，将信道1、6和11分配给接入点，并将每个接入点与交换机互连，创建一个总最大传输速率为表7.1所示最大传输速率三倍的无线局域网。</p>
+<p>只有相”联合“的无线站和AP才会互相发送帧。</p>
+<p>有一种情景叫做“WIFI丛林”有很多个AP在同一个物理地点。这个时候主机如何识别呢？</p>
+<p>AP周期性地发送信标帧（beacon frames）包含AP的SSID和MAC地址。</p>
+<p>扫描通道和侦听信标帧的过程称为被动扫描（见图7.9a）。无线设备还可以通过广播探测帧来执行主动扫描，该探测帧将由无线设备范围内的所有AP接收，如图7.9b所示。AP使用探测响应帧响应探测请求帧。然后，无线设备可以从响应的AP中选择要与之关联的AP。</p>
+<p>连接AP需要认证，一些公司使用检查MAC的方法，咖啡馆使用用户名密码方法。AP都需要和认证服务器通信，使用RADIUS [RFC 2865] or DIAMETER [RFC 6733]协议。</p>
+<h3 id="The-802-11-MAC-Protocol"><a href="#The-802-11-MAC-Protocol" class="headerlink" title="The 802.11 MAC Protocol"></a>The 802.11 MAC Protocol</h3><p>802.11 采用CSMA with collision avoidance （CSMA/CA）作为多路访问协议。</p>
+<p>在以太网的语境下 CSMA 叫做“carrier sense multiple access” 意思是每个站感知一下隧道，然后再传输。尽管80211和以太网都用CSMA但是有一些重要区别。首先80211使用碰撞避免技术而不是碰撞探测技术。其次，因为无线通道误码率很高，802.11使用链路层确认/重传（ARQ）方案。</p>
+<p>802.11不实现碰撞检测，有两个重要原因：</p>
+<ul>
+<li>检测碰撞的能力要求能够同时发送（电台自身的信号）和接收（以确定另一个电台是否也在发射）。由于与802.11适配器处传输信号的强度相比，接收信号的强度通常非常小，因此构建能够检测冲突的硬件成本很高。</li>
+<li>更重要的是，即使适配器可以同时传输和侦听（并且可能在检测到繁忙信道时中止传输），由于隐藏终端问题和衰落，适配器仍无法检测到所有冲突，如第7.2节所述。</li>
+</ul>
+<p>802.11没有碰撞检测，因此它一旦开始发一个帧，就会整个传输该帧。为了避免大量碰撞，802.11采用一些碰撞避免策略。</p>
+<p>先来看看链路层确认策略。当目的站接收到通过CRC的帧时，它等待一段称为短帧间隔（SIFS）的短时间，然后发回一个确认帧。如果发射站在给定的时间内没有收到确认，则它假设发生了错误，并使用CSMA/CA协议重新传输帧以访问信道。如果在一些固定次数的重新传输之后没有收到确认，则发射站放弃并丢弃该帧。</p>
+<p>1.如果站点最初感觉到信道空闲，则在称为分布式帧间空间（DIFS）的短时间段后传输其帧；<br>2.否则，站点使用二进制指数退避选择一个随机退避值（如我们在第6.3.2节中遇到的），并在检测到信道空闲时，在DIFS后对该值进行倒计时。当检测到信道忙时，计数器值保持冻结。<br>3.当计数器达到零时（注意，只有在检测到信道空闲时，才会发生这种情况），站点传输整个帧，然后等待确认。<br>4已在目的站正确接收。如果站点有另一个帧要发送，则在步骤2开始CSMA/CA协议。如果没有收到确认，则发射站在步骤2中重新进入退避阶段，随机值从较大的间隔中选择。</p>
+<p>为什么即使感受到通道空闲，802.11仍然克制不传输呢（以太网协议不是这样的）？因为要尽量避免碰撞发生，在802.11下面，一旦发生碰撞，代价非常大（不停止传输）。</p>
+<p>对付隐藏起来的终端：RTS 和 CTS</p>
+<p>假想这样的情景：两个站互相隐藏，但对同一个AP不隐藏。</p>
+<p>这样的话两个站无法感知另一站是否正在传输。为避免碰撞，站可以发送 Request to Send（RTS）控制帧和 Clear to Send（CTS）控制帧。当发送者想要发送数据帧时，先向AP发送RTS，表明预测总发送时间，AP再广播CTS，通知哪个站可以发，其他站静默。</p>
+<p>也引入了延迟和消耗信道资源的问题，因此一般在DATA较长时使用。</p>
+<p>802.11也可以点对点传输。</p>
+<h3 id="IEEE-802-11-帧"><a href="#IEEE-802-11-帧" class="headerlink" title="IEEE 802.11 帧"></a>IEEE 802.11 帧</h3><p>帧的核心是有效载荷，它通常由IP数据报或ARP数据包组成。规定大小0-2312字节，一般小于1500字节。</p>
+<p>包括32位循环冗余校验（CRC）</p>
+<p>包含4个地址。前三个地址用于将网络层数据报从无线站通过AP移动到路由器接口。第四个用于点对点模式，这里不讨论。</p>
+<p>地址2是传输帧的站点的MAC地址。因此，如果无线站发送该帧，则该站的MAC地址被插入地址2字段中。类似地，如果AP传输帧，则AP的MAC地址插入地址2字段。</p>
+<p>地址1是要接收帧的无线站的MAC地址。因此，如果移动无线站发送该帧，则地址1包含目的AP的MAC地址。类似地，如果AP发送帧，则地址1包含目标无线站的MAC地址。</p>
+<p>为了理解地址3，回想一下BSS（由AP和无线电台组成）是子网的一部分，该子网通过一些路由器接口连接到其他子网。地址3包含此路由器接口的MAC地址。</p>
+<p>为了进一步了解地址3的用途，让我们在图7.14的背景下浏览一个互联网示例。在这个图中，有两个AP，每个AP负责多个无线电台。每个接入点都直接连接到路由器，路由器又连接到全球互联网。我们应该记住，AP是链路层设备，因此既不“讲”IP，也不理解IP地址。现在考虑将数据报从路由器接口R1移动到无线站H1。路由器不知道它和H1之间有AP；从路由器的角度来看，H1只是它（路由器）所连接的子网之一中的主机。</p>
+<p>路由器知道H1的IP地址（从数据报的目标地址），使用ARP来确定H1的MAC地址，就像在普通以太局域网中一样。在获得H1的MAC地址后，路由器接口R1将数据报封装在以太网帧内。该帧的源地址字段包含R1的MAC地址，目标地址字段包含H1的MAC地址。<br>•当以太网帧到达AP时，AP将802.3以太网帧转换为802.11帧，然后再将帧传输到无线信道。如上所述，AP分别用H1的MAC地址和它自己的MAC地址填充地址1和地址2。对于地址3，AP插入R1的MAC地址。通过这种方式，H1可以确定（从地址3）将数据报发送到子网的路由器接口的MAC地址。</p>
+<p>序列数，持续时间，和帧控制字段。</p>
+<p>序列数和tcp的那个类似</p>
+<p>802.11允许传输站点保留通道一段时间，包括传输与确认的时间。存在“持续时间”里面</p>
+<h3 id="同IP子网内移动"><a href="#同IP子网内移动" class="headerlink" title="同IP子网内移动"></a>同IP子网内移动</h3><p>传输站C从BSS1移动到BSS2时，传输站检测到信号强度变化。发生BSS切换。交换机也收到特殊帧，调整forwarding table。</p>
+<p>使用Global Positioning System (GPS) and the WiFi Positioning System (WPS)来定位</p>
+<h3 id="802-11高级特性"><a href="#802-11高级特性" class="headerlink" title="802.11高级特性"></a>802.11高级特性</h3><p>传输速率控制<br>功率管理（睡眠状态）</p>
+<h3 id="个人区域网络-蓝牙"><a href="#个人区域网络-蓝牙" class="headerlink" title="个人区域网络 蓝牙"></a>个人区域网络 蓝牙</h3><h2 id="蜂窝网络：4G和5G"><a href="#蜂窝网络：4G和5G" class="headerlink" title="蜂窝网络：4G和5G"></a>蜂窝网络：4G和5G</h2>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-1-%E5%BA%94%E7%94%A8%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-1-%E5%BA%94%E7%94%A8%E5%B1%82/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-25 10:43:07" itemprop="dateCreated datePublished" datetime="2022-09-25T10:43:07+08:00">2022-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-03-05 16:13:46" itemprop="dateModified" datetime="2022-03-05T16:13:46+08:00">2022-03-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Application-Layer"><a href="#Application-Layer" class="headerlink" title="Application Layer"></a>Application Layer</h1><h2 id="principle"><a href="#principle" class="headerlink" title="principle"></a>principle</h2><p>when developing your new application, you need to write software that<br>will run on multiple end systems. This software could be written, for example, in<br>C, Java, or Python. Importantly, you do not need to write software that runs on network-<br>core devices</p>
+<h2 id="architectures"><a href="#architectures" class="headerlink" title="architectures"></a>architectures</h2><h3 id="client-server"><a href="#client-server" class="headerlink" title="client-server"></a>client-server</h3><p>there is an always-on host, called the server,<br>which services requests from many other hosts, called clients.</p>
+<p>server has a fixed, well-known address, called an IP address.</p>
+<p>a clientcan always contact the server by sending a packet to the server’s IP address.</p>
+<p>A data center can have hundreds of thousands of servers</p>
+<h3 id="P2P"><a href="#P2P" class="headerlink" title="P2P"></a>P2P</h3><p>the application exploits direct communication between pairs of intermittently connected hosts, called peers.</p>
+<h2 id="Client-and-Server-Processes"><a href="#Client-and-Server-Processes" class="headerlink" title="Client and Server Processes"></a>Client and Server Processes</h2><p>In the context of a communication session between a pair of processes, the process that initiates the communication (that is, initially contacts the other process at the beginning of the session) is labeled as the client. The process that waits to be contacted to begin the session is the server.</p>
+<h2 id="The-Interface-Between-the-Process-and-the-Computer-Network"><a href="#The-Interface-Between-the-Process-and-the-Computer-Network" class="headerlink" title="The Interface Between the Process and the Computer Network"></a>The Interface Between the Process and the Computer Network</h2><p><strong>Socket</strong><br>Let’s consider an analogy to help us understand processes and sockets. A process is analogous to a house and its socket is analogous to its door. When a process wants to send a message to another process on another host, it shoves the message out its door (socket). This sending process assumes that there is a transportation infrastructure on the other side of its door that will transport the message to the door of the destination process. Once the message arrives at the destination host, the message passes through the receiving process’s door (socket), and the receiving process then acts on the message.</p>
+<p>The only control that the application developer has on the transportlayer side is (1) the choice of transport protocol and (2) perhaps the ability to fix a few transport-layer parameters such as maximum buffer and maximum segment sizes</p>
+<h2 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h2><p>To  identify  the  receiving  process,  two  pieces  of  information  need  to  be  specified:  (1) the address of the host and (2) an identifier that specifies the receiving process in the destination host.<br>a 32-bit  quantity  that  we  can  think  of  as  uniquely  identifying  the  host.</p>
+<p>port number， the receiving socket<br>Popular applica-<br>tions have been assigned specific port numbers. For example, a Web server is identified  by port number 80. A mail server process (using the SMTP protocol) is identified by  port number 25. A list of well-known port numbers for all Internet standard protocols  can be found at <a target="_blank" rel="noopener" href="http://www.iana.org/">www.iana.org</a>. </p>
+<h2 id="Choose-a-transport-layer-services-for-applications"><a href="#Choose-a-transport-layer-services-for-applications" class="headerlink" title="Choose a transport layer services for applications"></a>Choose a transport layer services for applications</h2><ul>
+<li>Reliable Data Transfer</li>
+<li>Throughput</li>
+<li>Timing</li>
+<li>Security</li>
+</ul>
+<h2 id="Transport-Services-Provided-by-the-Internet"><a href="#Transport-Services-Provided-by-the-Internet" class="headerlink" title="Transport Services Provided by the Internet"></a>Transport Services Provided by the Internet</h2><h3 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h3><ul>
+<li>Connection-oriented service</li>
+<li>Reliable data transfer service</li>
+</ul>
+<h3 id="UDP"><a href="#UDP" class="headerlink" title="UDP"></a>UDP</h3><p>UDP is a no-frills, lightweight transport protocol, providing minimal services. UDP is connectionless, so there is no handshaking before the two processes start to com- municate. UDP provides an unreliable data transfer service—that is, when a process  sends  a  message  into  a  UDP  socket,  UDP  provides  no  guarantee  that  the  message  will  ever  reach  the  receiving  process.  Furthermore,  messages  that  do  arrive  at  the receiving process may arrive out of order.</p>
+<h3 id="TLS"><a href="#TLS" class="headerlink" title="TLS"></a>TLS</h3><p>TCP’s enhancements being implemented in the application layer</p>
+<h2 id="Application-Layer-Protocols"><a href="#Application-Layer-Protocols" class="headerlink" title="Application-Layer Protocols"></a>Application-Layer Protocols</h2><p>An application-layer protocol  defines  how  an  application’s  processes,  running  on  different  end  systems, pass messages to each other. In particular, an application-layer protocol defines:</p>
+<p>The types of messages exchanged, for example, request messages and response<br>messages<br>• The syntax of the various message types, such as the fields in the message and<br>how the fields are delineated<br>• The semantics of the fields, that is, the meaning of the information in the fields<br>• Rules for determining when and how a process sends messages and responds to<br>messages</p>
+<h3 id="HTTP-heart-of-the-Web"><a href="#HTTP-heart-of-the-Web" class="headerlink" title="HTTP, heart of the Web"></a>HTTP, heart of the Web</h3><p>A  Web  page  (also  called  a  document)  consists  of  objects.</p>
+<p>HTTP need not worry about lost data or the details of how TCP recovers from loss or reordering of  data within the network. That is the job of TCP and the protocols in the lower layers of the protocol stack.</p>
+<p> the  server  sends  requested  files  to  clients  without storing any state information about the client</p>
+<p>a stateless protocol.</p>
+<p>A  Web  server  is  always  on,  with  a  fixed  IP  address,  and  it  services  requests from potentially millions of different browsers.</p>
+<h3 id="HTTP-with-Non-Persistent-Connections"><a href="#HTTP-with-Non-Persistent-Connections" class="headerlink" title="HTTP with Non-Persistent Connections"></a>HTTP with Non-Persistent Connections</h3><p>each TCP connection is closed after the server sends the object—the connection does not  persist for other objects. HTTP/1.0 employes non-persistent TCP connections. Note that each non-persistent TCP connection transports exactly one request message and one response message</p>
+<p>Indeed, users can configure some browsers to control the degree of parallelism. Browsers may open multiple TCP con-nection</p>
+<p>This  HTTP request/response eats up another RTT. Thus, roughly, the total response time is two RTTs plus the transmission time at the server of the HTML file.</p>
+<p>shortcoming</p>
+<ul>
+<li>a brand-new connection must  be  established  and  maintained  for  each  requested  object.</li>
+<li>each object suffers a delivery delay of two RTTs</li>
+</ul>
+<h3 id="HTTP-with-Persistent-Connections"><a href="#HTTP-with-Persistent-Connections" class="headerlink" title="HTTP with Persistent Connections"></a>HTTP with Persistent Connections</h3><p>The default mode of HTTP uses persistent connections with pipelining.</p>
+<h2 id="HTTP-Message-Format"><a href="#HTTP-Message-Format" class="headerlink" title="HTTP Message Format"></a>HTTP Message Format</h2><h3 id="HTTP-Request-Message"><a href="#HTTP-Request-Message" class="headerlink" title="HTTP Request Message"></a>HTTP Request Message</h3><p>ordinary ASCII text<br>lines, each followed by a carriage return and a line feed The last line is fol-lowed by an additional carriage return and line feed</p>
+<p>The first line of an HTTP request message is called the request line; the subsequent  lines  are  called  the  header  lines.  The  request  line  has  three  fields:  the method field, the URL field, and the HTTP version field. The method field can take on  several  different  values,  including  GET,  POST,  HEAD,  PUT,  and  DELETE.</p>
+<p>The GET method is used when the browser requests an object, with the requested object identified in the  URL  field. </p>
+<p>let’s now look at the general format of a request<br>message, as shown in Figure 2.8.<br>P113<br>HTML forms often use<br>the GET method and include the inputted data (in the form fields) in the requested URL.</p>
+<p>The  HEAD  method  is  similar  to  the  GET  method.  When  a  server  receives  a request with the HEAD method, it responds with an HTTP message but it leaves out the requested object. Application developers often use the HEAD method for debug-ging.  The  PUT  method  is  often  used  in  conjunction  with  Web  publishing  tools.  It allows  a  user  to  upload  an  object  to  a  specific  path  (directory)  on  a  specific  Web server.  The  PUT  method  is  also  used  by  applications  that  need  to  upload  objects to Web servers. The DELETE method allows a user, or an application, to delete an object on a Web server.</p>
+<h3 id="HTTP-Response-Message"><a href="#HTTP-Response-Message" class="headerlink" title="HTTP Response Message"></a>HTTP Response Message</h3><p>…</p>
+<h3 id="Cookies"><a href="#Cookies" class="headerlink" title="Cookies"></a>Cookies</h3><ul>
+<li>a cookie header  line  in  the  HTTP  response  message;</li>
+<li>a cookie  header  line  in  the  HTTP request  message;</li>
+<li>a cookie  file  kept  on  the  user’s  end  system  and  managed  by the user’s browser</li>
+<li>a back-end database at the Web site</li>
+</ul>
+<h3 id="Web-Caching"><a href="#Web-Caching" class="headerlink" title="Web Caching"></a>Web Caching</h3><p>proxy server</p>
+<p>conditional GET<br>(1) the request message uses the GET method and (2) the request message includes an<br>If-Modified-Since: header line.</p>
+<h2 id="HTTP-2"><a href="#HTTP-2" class="headerlink" title="HTTP/2"></a>HTTP/2</h2><p>enabling request and response multiplexing over a single TCP connection, provide request prioritization and server push, and provide efficient compression of HTTP header fields</p>
+<p>HTTP/2 changes how the data is formatted and transported between the client and server.</p>
+<p>with only 1 TCP<br>care for HOL problems</p>
+<p>The HTTP/2 solution for HOL blocking is to break each message into small frames, and interleave the request and response messages on the same TCP connection.</p>
+<p>use framing sublayer<br>Response Message Prioritization and Server Pushing。<br>the  server  can  push  additional  objects  to  the  client,  without  the  client  having  to<br>request each one</p>
+<p>HTTP/3<br>QUIC, discussed in Chapter 3, is a new “transport” protocol that is implemented in<br>the application layer over the bare-bones UDP protocol</p>
+<h2 id="Electronic-Mail"><a href="#Electronic-Mail" class="headerlink" title="Electronic Mail"></a>Electronic Mail</h2><p>Mail  servers  form  the  core  of  the  e-mail  infrastructure.  Each  recipient, has a mailbox located in one of the mail servers. </p>
+<h3 id="SMTP"><a href="#SMTP" class="headerlink" title="SMTP"></a>SMTP</h3><p>SMTP transfers messages from senders’ mail servers to the recipients’ mail servers.</p>
+<p>does not normally use intermediate mail servers for sending mail</p>
+<p>First,  the  client  SMTP  (running  on  the  sending  mail  server  host)  has TCP  establish  a  connection  to  port  25  at  the  server  SMTP  (running  on  the  receiv-ing  mail  server  host).  If  the  server  is  down,  the  client  tries  again  later.  Once this  connection  is  established,  the  server  and  client  perform  some  application-layer handshaking—just as humans often introduce themselves before trans-ferring  information  from  one  to  another,  SMTP  clients  and  servers  introduce themselves before transferring information. During this SMTP handshaking phase,  the SMTP client indicates the e-mail address of the sender (the person who gener-ated the message) and the e-mail address of the recipient. Once the SMTP client and server have introduced themselves to each other, the client sends the message. SMTP can count on the reliable data transfer service of TCP to get the message to the server without errors. The client then repeats this process over the same TCP connection if it has other messages to send to the server; otherwise, it instructs TCP to close the connection.</p>
+<p>send all of the messages over the same TCP connection.</p>
+<h3 id="Format"><a href="#Format" class="headerlink" title="Format"></a>Format</h3><p>The  commands  in  that  section  were  part  of  the SMTP handshaking protocol;<br>Every  header  must  have  a  From:  header  line  and  a  To:  header  line; a  header  may  include  a  Subject:  header  line  as  well  as  other  optional  header lines.  </p>
+<p>typically the send-er’s user agent does not dialogue directly with the recipient’s mail server. Instead, as shown in Figure 2.16, Alice’s user agent uses SMTP or HTTP to deliver the e-mail message into her mail server, then Alice’s mail server uses SMTP (as an SMTP cli-ent) to relay the e-mail message to Bob’s mail server.</p>
+<p>HTTP and IMAP approaches allow Bob to manage folders, maintained in Bob’s mail server. Bob can move messages into the folders he creates, delete messages, mark messages as important, and so on.</p>
+<h2 id="DNS—The-Internet’s-Directory-Service"><a href="#DNS—The-Internet’s-Directory-Service" class="headerlink" title="DNS—The Internet’s Directory Service"></a>DNS—The Internet’s Directory Service</h2><p>One identifier for a host is its hostname. Hostnames—such as <a target="_blank" rel="noopener" href="http://www.facebook.com/">www.facebook.com</a>, <a target="_blank" rel="noopener" href="http://www.google.com/">www.google.com</a>,  gaia.cs.umass.edu—are  mnemonic  and  are  therefore appreciated by humans</p>
+<p>hosts are also identified by so-called IP addresses</p>
+<p>The DNS is (1) a distributed database implemented in a hierarchy of DNS servers,  and  (2)  an  application-layer  protocol  that  allows  hosts  to  query  the  distributed database</p>
+<p>the  DNS  protocol  runs  over UDP and uses port 53</p>
+<ol>
+<li>The same user machine runs the client side of the DNS application.</li>
+<li>The browser extracts the hostname, <a target="_blank" rel="noopener" href="http://www.someschool.edu/">www.someschool.edu</a>, from the URL and passes the hostname to the client side of the DNS application.</li>
+<li>The DNS client sends a query containing the hostname to a DNS server.</li>
+<li>The DNS client eventually receives a reply, which includes the IP address for the hostname.</li>
+<li>Once the browser receives the IP address from DNS, it can initiate a TCP con-nection to the HTTP server process located at port 80 at that IP address.</li>
+</ol>
+<p>it<br>(1) runs between communicating end systems using the client-server paradigm and<br>(2) relies on an underlying end-to-end transport protocol to transfer DNS messages between communicating end systems</p>
+<p>A Distributed, Hierarchical Database<br>Root  name  servers  provide the IP addresses of the TLD servers.<br>For each of the top-level domains—top-level domains  such  as  com,  org,  net,  edu,  and  gov,  and  all  of  the  country  top-level domains such as uk, fr, ca, and jp—there is TLD server (or server cluster).TLD servers provide the IP addresses for authoritative DNS servers</p>
+<p>Every  organization  with  publicly  accessible  hosts (such  as  Web  servers  and  mail  servers)  on  the  Internet  must  provide  publicly accessible  DNS  records  that  map  the  names  of  those  hosts  to  IP  addresses.  An organization’s  authoritative  DNS  server  houses  these  DNS  records.</p>
+<h3 id="Resource-Record"><a href="#Resource-Record" class="headerlink" title="Resource Record"></a>Resource Record</h3><p>A resource record is a four-tuple that contains the following fields:(Name, Value, Type, TTL)</p>
+<p>To obtain the canonical name for the mail server, a DNS client would query for<br>an MX record; to obtain the canonical name for the other server, the DNS client<br>would query for the CNAME record.<br>If Type=A, then Name is a hostname and Value is the IP address for the host-<br>name. Thus, a Type A record provides the standard hostname-to-IP address map-<br>ping. As an example, (relay1.bar.foo.com, 145.37.93.126, A) is<br>a Type A record.<br>• If Type=NS, then Name is a domain (such as foo.com) and Value is the host-<br>name of an authoritative DNS server that knows how to obtain the IP addresses<br>for hosts in the domain. This record is used to route DNS queries further along in<br>the query chain. As an example, (foo.com, dns.foo.com, NS) is a Type<br>NS record</p>
+<p>If a DNS server is authoritative for a particular hostname, then the DNS server<br>will contain a Type A record for the hostname. (Even if the DNS server is not author-<br>itative, it may contain a Type A record in its cache.) If a server is not authoritative<br>for a hostname, then the server will contain a Type NS record for the domain that<br>includes the hostname; it will also contain a Type A record that provides the IP address<br>of the DNS server in the Value field of the NS record.</p>
+<h2 id="Peer-to-Peer-Distribution"><a href="#Peer-to-Peer-Distribution" class="headerlink" title="Peer-to-Peer Distribution"></a>Peer-to-Peer Distribution</h2><p>pairs  of intermittently connected hosts, called peers, communicate directly with each other.</p>
+<p>most popular P2P file distribution protocol is BitTorrent</p>
+<p> the collection of all peers participating in the distribution of a particular file is<br>called a torrent. Peers in a torrent download equal-size chunks of the file from one<br>another, with a typical chunk size of 256 KBytes. When a peer first joins a torrent, it<br>has no chunks. Over time it accumulates more and more chunks. While it downloads<br>chunks  it  also  uploads  chunks  to  other  peers.  Once  a  peer  has  acquired  the  entire<br>file, it may (selfishly) leave the torrent, or (altruistically) remain in the torrent and<br>continue to upload chunks to other peers. Also, any peer may leave the torrent at any<br>time with only a subset of chunks, and later rejoin the torrent.</p>
+<h2 id="Video-Streaming-and-Content-Distribution-Networks"><a href="#Video-Streaming-and-Content-Distribution-Networks" class="headerlink" title="Video Streaming and Content Distribution Networks"></a>Video Streaming and Content Distribution Networks</h2><p>they are implemented using application-level protocols and servers that function in some ways like a cache.</p>
+<p>In  HTTP  streaming,  the  video  is  simply  stored  at  an  HTTP  server  as  an  ordinary file with a specific URL. When a user wants to see the video, the client establishes a  TCP  connection  with  the  server  and  issues  an  HTTP  GET  request  for  that  URL. The server then sends the video file, within an HTTP response message, as quickly as the underlying network protocols and traffic conditions will allow.</p>
+<p>On the client side, the bytes are collected in a client application buffer.</p>
+<p>In DASH, the video is encoded into several different versions, with each version having a different bit rate and, correspondingly, a different quality level. The client dynamically requests chunks of video segments of a few seconds in length. When the amount of available bandwidth is high, the client naturally selects chunks from a high-rate version; and when the available bandwidth is low, it naturally selects from a low-rate version. The client selects different chunks one at a time with HTTP GET request messages </p>
+<p>With DASH, each video version is stored in the HTTP server, each with a differ-ent URL. The HTTP server also has a manifest file, which provides a URL for each version  along  with  its  bit  rate.</p>
+<p>The  client  first  requests  the  manifest  file  and  learns about the various versions. The client then selects one chunk at a time by specifying a URL and a byte range in an HTTP GET request message for each chunk. While down-loading chunks, the client also measures the received bandwidth and runs a rate deter-mination algorithm to select the chunk to request next.</p>
+<h3 id="Content-Distribution-Networks"><a href="#Content-Distribution-Networks" class="headerlink" title="Content Distribution Networks"></a>Content Distribution Networks</h3><p>The CDN may be a private CDN, that is, owned by the content provider<br>itself;  for  example,  Google’s  CDN  distributes  YouTube  videos  and  other  types  of<br>content. The CDN may alternatively be a third-party CDN that distributes content<br>on behalf of multiple content providers; Akamai, Limelight and Level-3 all operate<br>third-party  CDNs.  A  very  readable  overview  of  modern  CDNs  is  [Leighton  2009;<br>Nygren 2010].<br>CDNs  typically  adopt  one  of  two  different  server  placement  philosophies<br>[Huang 2008]:<br>• Enter  Deep.  One  philosophy,  pioneered  by  Akamai,  is  to  enter  deep  into  the<br>access  networks  of  Internet  Service  Providers,  by  deploying  server  clusters  in<br>access ISPs all over the world. (Access networks are described in Section 1.3.)<br>Akamai takes this approach with clusters in thousands of locations. The goal is<br>to get close to end users, thereby improving user-perceived delay and throughput<br>by decreasing the number of links and routers between the end user and the CDN<br>server from which it receives content. Because of this highly distributed design,<br>the task of maintaining and managing the clusters becomes challenging.<br>• Bring  Home.  A  second  design  philosophy,  taken  by  Limelight  and  many<br>other  CDN  companies,  is  to  bring  the  ISPs  home  by  building  large  clusters<br>at a smaller number (for example, tens) of sites. Instead of getting inside the<br>access  ISPs,  these  CDNs  typically  place  their  clusters  in  Internet  Exchange<br>Points  (IXPs)  (see  Section  1.3).  Compared  with  the  enter-deep  design  phi-<br>losophy,  the  bring-home  design  typically  results  in  lower  maintenance  and<br>management  overhead,  possibly  at  the  expense  of  higher  delay  and  lower<br>throughput to end users.</p>
+<p><strong>Most CDNs take advantage of DNS to intercept and redirect requests</strong></p>
+<p>At the core of any CDN deployment is a cluster selection strategy</p>
+<h2 id="Socket-Programming-Creating-Network-Applications"><a href="#Socket-Programming-Creating-Network-Applications" class="headerlink" title="Socket Programming: Creating Network Applications"></a>Socket Programming: Creating Network Applications</h2><p>Two types：open or proprietary</p>
+<h3 id="Socket-Programming-with-UDP"><a href="#Socket-Programming-with-UDP" class="headerlink" title="Socket Programming with UDP"></a>Socket Programming with UDP</h3><p>We said that each process is<br>analogous to a house and the process’s socket is analogous to a door. The application<br>resides on one side of the door in the house; the transport-layer protocol resides on<br>the other side of the door in the outside world. The application developer has control<br>of everything on the application-layer side of the socket; however, it has little control<br>of the transport-layer side.</p>
+<p>When a socket is created, an  identifier,  called  a  port  number,  is  assigned  to  it</p>
+<h2 id="Socket-Programming-with-TCP"><a href="#Socket-Programming-with-TCP" class="headerlink" title="Socket Programming with TCP"></a>Socket Programming with TCP</h2><p>Unlike UDP, TCP is a connection-oriented protocol. This means that before the cli-<br>ent and server can start to send data to each other, they first need to handshake and<br>establish a TCP connection. One end of the TCP connection is attached to the client<br>socket and the other end is attached to a server socket. When creating the TCP con-<br>nection, we associate with it the client socket address (IP address and port number)<br>and the server socket address (IP address and port number<br> With the TCP connec-<br>tion established, when one side wants to send data to the other side, it just drops the<br>data into the TCP connection via its socket. This is different from UDP, for which<br>the server must attach a destination address to the packet before dropping it into the<br>socket.</p>
+<p>During  the  three-way  handshake,  the  client  process  knocks  on  the  welcom-<br>ing  door  of  the  server  process.  When  the  server  “hears”  the  knocking,  it  creates  a<br>new  door—more  precisely,  a  new  socket  that  is  dedicated  to  that  particular   client.<br>In  our  example  below,  the  welcoming  door  is  a  TCP  socket  object  that  we  call<br>serverSocket; the newly created socket dedicated to the client making the con-<br>nection is called connectionSocket. Students who are encountering TCP sock-<br>ets for the first time sometimes confuse the welcoming socket (which is the initial<br>point  of  contact  for  all  clients  wanting  to  communicate  with  the  server),  and  each<br>newly  created  server-side  connection  socket  that  is  subsequently  created  for  com-<br>municating with each client.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-5-%E9%93%BE%E8%B7%AF%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-5-%E9%93%BE%E8%B7%AF%E5%B1%82/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-25 10:42:53" itemprop="dateCreated datePublished" datetime="2022-09-25T10:42:53+08:00">2022-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-06-16 12:33:39" itemprop="dateModified" datetime="2022-06-16T12:33:39+08:00">2022-06-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Link-Layer"><a href="#Link-Layer" class="headerlink" title="Link Layer"></a>Link Layer</h1><p>包是怎样在单个链路上传播的。<br>有两种截然不同的链路层channel，一种是广播channel，一种是点到点交流链路</p>
+<p>任何运行在链路层的设备都叫做node节点，包括主机，路由器，交换机，WiFi连接处。连接相邻节点的通道叫做链路。数据报被封装成为链路层帧。</p>
+<p>链路层的工作便是把数据报从一个节点传输到相邻的节点，但是传输手段多种多样。</p>
+<p>链路层可能提供以下服务：</p>
+<ul>
+<li>组成帧。所有链路层协议都把数据报封装进帧然后再放进链接。帧包括头部以及数据部。</li>
+<li>链接直达。medium access control（MAC）协议规定了数据报在在连接中的传输规则。</li>
+<li>可靠传输。有的传输协议会保证可靠传输，（不拖到传输层和应用层处理）这在无线传输中可能很有必要，但是有线传输错误率并不高所以不常使用。</li>
+<li>错误侦测和更正。在链路层的错误侦测通常更复杂，且在硬件中实现。</li>
+</ul>
+<p>在大部分情况下，链路层在一块叫做network adapter网络适配器（也叫newwork interface controller（NIC））的芯片上实现。由此，许多链路层的功能是在硬件上实现的。例如因特尔700系列适配器实现了以太网协议。 Atheros AR5006实现了WiFi协议。</p>
+<p>链路层控制器接过协议栈上层传递下来的数据报，包进链路层帧，然后传进链路。</p>
+<p>链路层有些部分是在软件上实现的，一般是高一级的链路层功能，像是装配链路层地址信息，激活控制器硬件，处理错误，传数据报上网络层…链路层是协议栈里面硬件和软件相会之处。</p>
+<p><strong>错误探测和更正技术</strong><br>error-detection and -correction bits（EDC）与帧D被一起送往接收方，这时候EDC和D将可能变化。传输过程中错误并不是总能被发现。</p>
+<p>下面有三种检测科技</p>
+<p><strong>Parity Checks</strong><br>使用单个的奇偶校验位。检测出是否发生奇数个比特错误。<br>一般情况下同时出现多个比特错误的概率是很小的，错误通常爆发式出现，这时候探测到的概率就是百分之五十。<br>如果把比特看为二维数组，并且每行每列都使用奇偶校验位，那么甚至能更正不严重的错误。</p>
+<p>接收机检测和纠正错误的能力称为forward error correction（FEC）。</p>
+<p>在需要速度的场合很有用。</p>
+<p><strong>checksum</strong><br>Internet校验和基于这种方法。字节数据被视为16位整数并求和。然后，该和的1s补码形成段标头中携带的Internet校验和。</p>
+<p>在TCP和UDP协议中，对所有字段（包括标头和数据字段）计算Internet校验和。在IP中，校验和是通过IP头计算的（因为UDP或TCP段有自己的校验和）。在其他协议中，例如XTP【Strayer 1992】，在报头上计算一个校验和，在整个数据包上计算另一个校验和。</p>
+<p>链路层使用循环冗余校验。由于传输层基于软件，所以需要有简单快速策略，而链路层的错误探测基于适配器的专用硬件，可以快速进行复杂的循环冗余校验。</p>
+<p><strong>Cyclic Redundancy Check (CRC)</strong><br>循环冗余校验</p>
+<p>CRC码也叫多项式码，它将bit串视为系数为1与0的多项式，操作被解释为多项式算术。</p>
+<p>模2算数：二进制加减乘除，不考虑加法的进位和减法的借位。加法和减法都等价于按位异或。</p>
+<p>发送者和接收者共同约定一个除数。</p>
+<p>被发送的帧必须扩展一部分。设除数r+1位，则将被发送的帧数据扩展r个0模2除除数，所得到的余数即为要扩展的部分（书里有数学推导）。</p>
+<p>除数G是约定好了的。比如32位的：<br>100000100110000010001110110110111</p>
+<p>可以探测到少于r+1位的爆发式错误，大于r+1的有1-0.5^r的概率探测到，可以探测到奇数位错误。</p>
+<p>数学证明不在讨论之列。</p>
+<p><strong>Multiple Access Links and Protocols</strong></p>
+<p>有两种网络链路：点到点链路和广播链路。</p>
+<p>point-to-point protocol（PPP）和high-level data link control（HDLC）是为点到点链路设计的协议。</p>
+<p>广播链路可以有很多发送端和接收端，连接到共享的广播通道上。一个节点发送了帧，其他的被链接的节点都会收到这个帧。</p>
+<p>Ethernet 和 wireless LANs都是广播技术的例子。</p>
+<p>本节不讨论具体协议，先解决关键问题：协调多个发送和接收节点对共享广播信道的访问——多访问问题。</p>
+<p>碰撞：多于两个节点同时发出帧时，这些帧都会丢失。</p>
+<p>有许多工作都是为了解决 multiple access protocol问题的。</p>
+<p>有很多multiple access protocol，可归为三类：</p>
+<ul>
+<li>channel partitioning protocols</li>
+<li>random access protocols</li>
+<li>taking-turns protocols</li>
+</ul>
+<p>多址接入协议应该有这些特征：（速率为每秒R比特的广播频道）<br>1、当只有一个节点有数据要发送时，该节点的吞吐量为R bps。<br>2、当M个节点有数据要发送时，每个节点的吞吐量为R/M bps。这不一定意味着M个节点中的每个节点总是具有R/M的瞬时速率，而是每个节点应该在一些适当定义的时间间隔上具有R/M的平均传输速率。<br>3、协议分散；也就是说，here is no master node that represents a single point of failure for the network.<br>4、协议简单，实现成本低廉。</p>
+<p><strong>Channel Partitioning Protocols</strong></p>
+<p>通道分割</p>
+<p>时分复用（TDM）绝对公平地为每个节点提供了相同地可发送时间。但有两个缺点：即使只有一个节点需要传输，它也只能在自己的时间范围内传输；节点必须遵守传输顺序。</p>
+<p>频分复用（FDM）具有与时分复用相同的特点。</p>
+<p>码分多址（code division multiple access）（CDMA）为每个节点安排一个码值，每个节点使用独特的码值来编码它所发送的数据。如果码值选得很好，不同的节点可以同时传输，使他们各自的接收者都接收到。</p>
+<p>随机访问协议</p>
+<p>每个节点都全力传输数据，出现碰撞时，参与进碰撞的节点都会独立等待一段随机延迟再重复传输。</p>
+<p>很多协议使用这种策略。<br>ALOHA协议使用这种策略。<br>carrier sense multiple access protocol（CSMA）（载波侦听多路访问协议）使用这种策略，以太网使用CSMA。</p>
+<p><strong>slotted ALOHA</strong></p>
+<p>做以下假设：<br>时间被分为一段一段槽，帧能在一段槽里被传完，所有节点能知道碰撞发生了。</p>
+<p>于是节点的行为是这样的：</p>
+<ul>
+<li>当节点有一个新的帧要发送时，它会等待到下一个时隙的开始，并在该时隙中传输整个帧。</li>
+<li>如果没有冲突，则节点已成功传输其帧，因此无需考虑重新传输帧。（如果节点有新帧，则可以为传输准备新帧。）</li>
+<li>如果发生冲突，节点会在插槽结束之前检测到冲突。节点在每个后续时隙中以概率p重新传输其帧，直到帧在没有冲突的情况下传输。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>允许持续全速传输。</li>
+<li>去中心化。</li>
+</ul>
+<p>但是有很多节点时冲突问题很严重。</p>
+<p><strong>ALOHA</strong><br>仍然规定了传输时间t，但是这次发送帧不会同步。</p>
+<p>很多节点时效率是slotted ALOHA的一半。</p>
+<p><strong>Carrier Sense Multiple Access (CSMA)</strong></p>
+<p>carrier sensing载波感应，节点在传输之前会监听通道，如果探测到传输消失，过一小段时间后会开始传输。<br>collision detection碰撞检测，正在传输的节点监听通道，如果出现碰撞则立即停止传输，随机等待一段时间后重新开始监听。</p>
+<p>这两个规则体现在载波侦听多址（CSMA）和带冲突检测的CSMA（CSMA/CD）协议系列中</p>
+<p>比特在通道里传播的时间越长，就越有可能发生碰撞，因为其他节点可能误以为此时没有节点在传输。</p>
+<p><strong>Carrier Sense Multiple Access with Collision Detection (CSMA/CD)</strong></p>
+<p>带冲突检测的载波侦听多址接入（CSMA/CD）</p>
+<p>这是适配器的行为：<br>1、适配器从网络层获取数据报，准备链路层帧，并放置帧适配器缓冲区。<br>2、如果适配器检测到信道空闲（即，没有信号能量从信道进入适配器），它将开始传输帧。另一方面，如果适配器检测到信道正忙，它将等待，直到检测到没有信号能量，然后开始传输帧。<br>3、传输时，适配器使用广播频道监视是否存在来自其他适配器的信号能量。<br>4、如果适配器传输整个帧而未检测到来自其他适配器的信号能量，则适配器完成帧的传输。另一方面，如果适配器在传输时检测到来自其他适配器的信号能量，它将中止传输（即停止传输其帧）。<br>5、中止后，适配器随机等待一段时间，然后返回步骤2。</p>
+<p>如何选择碰撞后的等待时间呢？binary exponential backoff algorithm二进制指数退避算法解决了这一问题。Ethernet和NOCSIS线缆网络多址协议使用了它。</p>
+<p>具体地，当传输已经经历n次碰撞的帧时，节点从{0,1,2，….2n-1}中随机选择K的值。因此，帧经历的碰撞越多，从中选择K的间隔就越大。对于以太网，节点等待的实际时间量是K*512位的倍（即，将512位发送到以太网所需的时间量的K倍），并且n可以接受的最大值被限制为10。</p>
+<p><strong>Taking-Turns Protocols</strong></p>
+<p>理想的协议有这样的特点：1.当只有一个节点活动时，满效率。2.当M个节点活动时，效率均分。<br>ALOHA和CSMA有第一条特性，但是没有第二条。接下来介绍的轮流协议可以做到两条。</p>
+<p>polling protocol轮询协议<br>一个节点被设计成主节点。主节点以循环方式轮询每个节点，给予每个节点发送帧的机会。</p>
+<p>缺点：</p>
+<ul>
+<li>轮询延迟</li>
+<li>如果主节点失效了，整个通道都会失效。</li>
+</ul>
+<p>蓝牙协议使用polling protocol</p>
+<p>token-passing protocol令牌传递协议<br>一个小型的，特殊用途的帧，叫做令牌在节点间传送，以一种固定顺序（即节点一总是会给节点二，节点二给三）。当一个节点拿到令牌后，如果有帧要送就抓住，直到送完或者到达一次允许的最大传输帧数，如果没有就把令牌送出去。</p>
+<p>缺点：一个节点失效了，整个通道都会失效。若节点拒绝释放令牌，还需要一些恢复过程介入。</p>
+<p><strong>DOCSIS：有线互联网接入的链路层协议</strong></p>
+<p>线缆接入网络一般都链接了几千居民线缆调制解调器到电缆调制解调器终端系统 (CMTS)上。<br>Data-Over-Cable  Service  Interface  Specifications (DOCSIS) （有线数据服务接口规范）指定了电缆数据网络体系结构及其协议。</p>
+<p>使用FDM分割下行与上行段，到多个频段。下行频道在24MHz与192MHz之间，最大传输1.6Gbps，上行6.4MHz到96MHz，最大1Gbps。每个上下行通道都是广播通道。下行通道只有CMTS一个节点传输，没有多路访问问题。</p>
+<p>每个上行信道被划分为时间间隔（类似TDM），每个时间间隔包含一系列小时隙，在此期间，电缆调制解调器可以传输到CMT。CMTS明确授予独立电缆调制解调器在特定迷你插槽期间传输的权限。CMTS通过在下游通道上发送称为MAP消息的控制消息来实现这一点，以指定在控制消息中指定的时间间隔内，哪个电缆调制解调器（带有要发送的数据）可以在哪个小时隙期间传输。由于小时隙被明确分配给电缆调制解调器，CMT可以确保在小时隙期间没有冲突传输。</p>
+<p>但CMT如何知道哪些电缆调制解调器首先要发送数据？这是通过让电缆调制解调器在专用于此目的的一组特殊间隔迷你插槽期间向CMT发送迷你插槽请求帧来实现的，这些小时隙请求帧以随机访问方式传输，因此可能相互冲突。电缆调制解调器既不能检测上游信道是否繁忙，也不能检测冲突。相反，如果在下一条下游控制消息中未收到对请求分配的响应，电缆调制解调器推断其迷你插槽请求帧发生冲突。当推断出冲突时，电缆调制解调器使用二进制指数延迟，并重发。当链路里没有什么上行交通时，线缆调制解调器可能会在名义上分配给迷你槽请求的帧上传递数据帧，以避免等待迷你帧分配。</p>
+<p><strong>Switched Local Area Networks</strong></p>
+<p>交换机在链路层工作，他们switch链路层的帧而不是网络层的数据报，它们不认IP，不用OSPF。</p>
+<p><strong>Link-Layer Addressing 和 ARP</strong></p>
+<p>主机和路由器拥有链路层地址，（同时有网络层地址），为什么需要有两个地址呢？这一节将给出答案。</p>
+<p>MAC地址<br>事实上不是主机和路由器有链路层地址，而是适配器（网络接口）有链路层地址。一个主机如果有多个适配器，那它将有多个链路层地址，就像有多个IP地址一样。</p>
+<p>但是链路层交换机没有链路层地址。因为它的工作只是在主机和路由器两者之间携带数据报。这份工作是透明的，发送者不必将帧定向寻址到交换机。</p>
+<p>链路层地址可以叫做LAN（局域网）地址、物理地址、MAC地址。MAC地址叫得最多。对大多数局域网（包括以太网、802.11无线局域网）MAC地址6字节长（2^48个）经常表示为16进制。尽管现在已经可以用软件改变MAC地址，但是我们假定MAC地址固定。</p>
+<p>MAC地址不重复，IEEE管理MAC地址空间。</p>
+<p>适配器的MAC地址自生产出来即固定。</p>
+<p>当一个适配器想送一个帧到一些目标适配器时，发送者适配器把目标MAC地址嵌入帧，然后发到局域网里面。如果适配器收到目标不是其MAC地址的帧，它会丢弃。</p>
+<p>广播地址，所有适配器都会接受：FFFFFFFFFFFF</p>
+<p>为什么主机和路由器需要有两层地址？</p>
+<ul>
+<li>LAN是为任意网络层协议设计的，不仅仅是IP和互联网。网络层除了IP以外还有其他协议比如说IPX、DECnet。LAN需要保持中立。</li>
+<li>如果适配器用网络层地址，那么就需要反复重新配置。</li>
+<li>此外，如果链路层没有自己的地址，把所有帧都发给网络层处理，那么会被打扰得很厉害，因为会收到在LAN中被广播的无关帧</li>
+</ul>
+<p>学到这里已经有三种地址了：应用层的主机名（指DNS服务），网络层的IP，链路层的MAC</p>
+<p>Address Resolution Protocol (ARP)</p>
+<p>以下讨论作这样的假设：交换机将广播所有的帧。</p>
+<p>使用ARP可以通过本LAN的IP地址来查询MAC地址。主机里的ARP模块接收IP地址返回对应的MAC地址。</p>
+<p>再次强调：ARP只解析与当前主机和路由器接口处于同一子网的IP地址。</p>
+<p>每台主机和路由器都有ARP表（内存中），放着IP和ARP映射关系。还有一条time-to-live值（TTL）表示这条映射将在什么时候被删除。这张表并不需要包含所有主机与路由器。一般的到期时间是20分钟。</p>
+<p>如果表里没有想要的映射条目，就需要构造ARP包，包里面包含发送端与接收端IP和MAC地址（查询时广播FFFFFFFFFFFF），查询与回复具有相同格式。查询包将会查询当前子网的所有设备。</p>
+<p>接收端ARP模块发现接收到的ARP包的目标地址和自己的IP地址相同，相同的话就送回包含着所需映射的ARP包（非FFFFFFFFFFFF广播帧）。</p>
+<p>接下来讨论发出子网的情况。</p>
+<p>（记住路由器的每个端口都有一个IP地址和一个MAC地址。）</p>
+<p>发送者先会将数据报写上目标地址，帧上却写路由器地址，发给路由器。路由器使用网络层协议（forwarding table使用）确定数据报要往哪里发。</p>
+<p><strong>Ethernet以太网</strong></p>
+<p>以太网是目前最流行的有线LAN技术。</p>
+<p>最初的以太网LAN是由Bob Metcalfe和David Boggs在20世纪70年代中期发明的。最初的以太网LAN使用同轴总线互连节点。以太网总线拓扑实际上在整个20世纪80年代和90年代中期一直存在。具有总线拓扑的以太网是一个广播LAN，所有传输的帧都传输到总线上，并由连接到总线的所有适配器处理。</p>
+<p>90年代末，大多数公司和大学把他们的LAN换成了使用基于中心（hub）的星形拓扑结构的以太网。中心使用物理层设备，收到一个比特后单纯地放大它，然后送给所有相连的节点。</p>
+<p>2000早期，以太网获得巨大改进，现在中心的物理层设备换成了交换机。这个交换机“碰撞少”、“善良”、“存储并转发”。</p>
+<p>以太网帧</p>
+<ul>
+<li>前导码（Preamble）（8字节），前七个字节是10101010，最后一个是10101011。前七个字节用于叫醒接收者适配器，同步接收者的时钟。最后两个比特告诉接收者重要的东西来了</li>
+<li>目标地址（6字节）（MAC地址）</li>
+<li>源地址（6字节）（MAC地址）</li>
+<li>类型域（2字节），载荷里面可以装其他类型的网络层协议，不只是IP。此外，ARP协议有它自己的类型数字。与网络层数据报的协议域和传输层段的端口数字域相类似，这些域犹如胶水将下层与上层的协议粘起来。</li>
+<li>数据域（46到1500字节）装着IP数据报</li>
+<li>循环冗余校验码（4字节）</li>
+</ul>
+<p>以太网是“无连接”的，如同IP和UDP一样。</p>
+<p>以太网是“不可靠”的，接收者发现报文错误之后只是简单地丢掉它。发送者不知道报文被丢弃了或者是没有送到。（当然如果上层有TCP的话，TCP会重发）</p>
+<p>以太网技术<br>历史上以太网使用同轴电缆，只需将电缆们连在一起，局域网就完成了。</p>
+<p>现在节点连在交换机上，用双绞铜线或光纤。</p>
+<p>mid-1990s 100Mbps以太网被标准化，十倍于之前。</p>
+<p>40Gigabit Ethernet凭借着已经装配好的巨量以太网设施，具有巨大的潜能，它的标准包括以下这些：</p>
+<ul>
+<li>使用标准以太网帧，这可以追溯到10Mbps时代。</li>
+<li>允许点到点。在Gigabit 以太网级别的行话里，中心（hub）叫做有缓存的分配者（buffered distributors）</li>
+<li>用CSMA/CD来分享广播通道。为了拥有可接受的效率，节点之间的最大距离必须被限制。</li>
+<li>允许在点到点通道的两个方向上以40 Gbps的速度进行全双工操作</li>
+</ul>
+<p>下一节将学习交换机，现代交换机是全双工的（full-duplex）不会有碰撞，即使两个节点之间互相传播。所以MAC协议实际上不需要了。</p>
+<p>有了这么大的改变，以太网帧的格式始终没有变，以太网仍然是以太网。</p>
+<p><strong>链路层交换机</strong><br>交换机的职责是接收传入的链路层帧，将它们转发到出口链路。交换机对于节点们来说是透明的（就好像链路上根本没有这台机器一样）。交换机拥有出口（output interface）缓冲区（buffer），来应对流量突然增大超出链路传输能力的情况。</p>
+<p>转发与过滤<br>过滤功能是来决定帧是被转发进接口，或者是被丢弃。转发功能是决定一个包应被发往哪些接口。</p>
+<p>这两个功能是根据转发表来完成的。转发表条目中包含一些（并不一定所有）主机和路由器。条目包含：一个MAC地址，导向那个地址的交换机接口，这条条目放进表的时间。</p>
+<p>（在第四章网络层中我们认识到很多现代的包交换机（packet switch）可以被配置成基于MAC或IP进行转发）</p>
+<p>接收到发来的帧时，链路层交换机具有这样的行为：</p>
+<ul>
+<li>如果帧上写的目标地址不在表中，就把它发给除了接收链路接口之外的所有接口。</li>
+<li>如果在表中，就把帧装到对应接口的缓冲区。</li>
+</ul>
+<p>自学习<br>交换机的表格是自动构建的，动态的，自治的。以下是它的行为：</p>
+<ul>
+<li>交换机表（switch table）初始为空</li>
+<li>每收到一个帧，交换机就会组合“源MAC”地址、接口号、现在时间来组合成条目插到表里面去。</li>
+<li>如果一段时间内（the aging time）某个地址没有发来帧，交换机会把条目删去。</li>
+</ul>
+<p>交换机是即插即用的设备，它们不需要用户或管理员的干预。</p>
+<p>交换机是全双工的，每个接口都能同时收发。</p>
+<p>交换机可以消灭掉碰撞。交换机 会把帧缓存起来，每次不会同时传输超过一个帧。因为交换机的效率是所有接口的效率相加，因此相比于hub或者粗暴链接，使用交换机的LAN获得了相当大的性能提升。</p>
+<p>异质链路。交换机将链路们分开了，不同速的链路可以在同一个LAN下工作。这保证了兼容旧设备。</p>
+<p>管理。交换机提供了强化的安全，也可以减轻网络的管理负担。比方说交换机可以发现某个一直在发帧的出了问题的适配器，然后断掉它的链接。交换机也会收集带宽使用、碰撞率、交通类型的统计信息，呈给管理人员看。</p>
+<p><strong>交换机 vs 路由器</strong><br>传统上，路由器基于第三层，用网络层地址；交换机基于第二层，用MAC地址。然而第4章学到的现代交换机使用“匹配加动作”可以转发第二层的帧。使用广义转发的交换机可以使用帧头部、数据报头部、传输层头部的11个域中的一些完成转发。</p>
+<p>首先考虑交换机的利弊。如上所述，交换机是即插即用的，交换机也可以具有相对较高的过滤和转发速率，交换机只能处理到第2层的帧，而路由器必须处理到第3层的数据报。另一方面，为了防止广播帧的循环，交换网络的活动拓扑被限制为生成树。此外，大型交换网络将需要主机和路由器中的大型ARP表，并将产生大量ARP流量和处理。此外，交换机容易受到广播风暴的影响。如果一台主机失控并传输源源不断的以太网广播帧，交换机将转发所有这些帧，导致整个网络崩溃。</p>
+<p>现在考虑一下路由器的优缺点。由于网络寻址通常是分层的（而不是像MAC寻址那样平坦），所以即使网络有冗余路径，数据包通常也不会在路由器中循环。（然而，当路由器表配置错误时，数据包可能会循环；但正如我们在第4章中了解到的，IP使用一个特殊的数据报头字段来限制循环。）因此，数据包不限于生成树，可以使用源和目标之间的最佳路径。因为路由器没有生成树的限制，所以它们允许互联网具有丰富的拓扑结构，例如，包括欧洲和北美之间的多个活动链接。路由器的另一个特点是，它们提供防火墙保护，防止第二层广播风暴。不过，路由器最显著的缺点可能是它们不是即插即用的，它们和连接到它们的主机需要配置它们的IP地址。此外，路由器通常比交换机具有更大的每包处理时间，因为它们必须通过第3层字段进行处理。最后，单词router有两种不同的发音方式，要么是“rootor”要么是“rowter”，人们会浪费大量时间争论正确的发音。</p>
+<p>一般来说，几百台主机的小型网络，有几个LAN部分。对于这些小型网络，交换机足够了。大一点的网络就需要包含路由器了。路由器提供更健壮的交通隔离，使用更聪明的路径。</p>
+<p>虚拟局域网（VLANs）</p>
+<p>某个机构的局域网们可能会被设置成这样：每个部门有自己的局域网，交换机。交换机通过层级结构连接。这种配置方式有缺陷：</p>
+<ul>
+<li>缺少交通隔离。携带广播地址或者未被交换机识别的地址的帧会被传遍整个机构网络。隐私需要被保护。</li>
+<li>低效率使用。单个团体，主机较少时不划算。把这些团体放到一个LAN里又会无法隔离。</li>
+<li>管理使用者。员工挪动工作团队，或者跨团队很难管理。</li>
+</ul>
+<p>支持VLAN的交换机则可以解决这些问题。交换机的端口（接口）们被管理员分成了几组，每组都构成一个VLAN。交换机的硬件将只为同一个VLAN内的主机传输帧。</p>
+<p>如果两个VLAN要通信，可以拉一个端口出来接到路由器上，配置这个端口同时属于两个VLAN。</p>
+<p>VLAN中继是一个互联VLAN交换机的很好方法，每个交换机都有一个特别端口，被配置成为中继端口。中继端口属于所有VLAN。有以太网帧格式扩展以解决获知VLAN源头的问题。在发送方VLAN中继接口处，报文头部加上了4字节VLAN tag，包含2字节标记协议标识符（TPID）字段（固定十六进制值为81-00）、包含12位VLAN标识符字段的2字节标记控制信息字段，和与IP数据报TOS字段类似的3位优先级字段。</p>
+<p>虚拟局域网还有很多种不同的实现方法。</p>
+<p><strong>Link Virtualization:A Network as a Link LAyer</strong></p>
+<p>由于本章涉及链路层协议，并且鉴于我们现在接近本章的结尾，反思一下我们对术语链路的理解是如何演变的，我们在本章开始时将链路视为连接两个通信主机的物理导线。在研究多址协议时，我们发现，多个主机可以通过共享电线连接，而连接主机的“电线”可以是无线电频谱或其他媒体。这使我们更抽象地将链接视为一个通道，而不是一条电线。在我们对以太网LAN的研究中我们看到，互连介质实际上可能是一个相当复杂的交换基础设施。在整个进化过程中。然而主机本身认为互连介质只是连接两个或多个主机的链路层通道。例如，我们看到，一个以太网主机可以很幸运地不知道它是通过一个短LAN组件还是通过地理位置分散的交换LAN（图6）连接到其他LAN主机或通过VLAN。</p>
+<p>使用拨号调制解调器，主机由电话网络连接（是逻辑上分隔的，有自己的一套东西）。然而链路层仍然能将电话网络看作链路层科技，连接两台主机（互联网的虚拟化）。</p>
+<p>本节考虑Multiprotocol Label Switching（MPLS）网络。</p>
+<p>建立目的：通过有选择地标记数据报，并允许路由器在可能的情况下根据固定长度的标签（而不是目标IP地址）转发数据报来增强IP数据报转发基础设施。</p>
+<p>MPLS头被插在23层的头之间。</p>
+<p>MPLS只能在具备MPLS处理能力的路由器之间传播（常被称为“标签switched路由器）。路由器查看其路由表里的MPLS标签然后立即把数据报放到合适的接口。它不需要查看IP和对照转发表了。</p>
+<p>MPLS可以用于构建virtual private networks。</p>
+<p><strong>Data Center Networking</strong></p>
+<p>数据中心不仅与互联网相连，而且内部也包含了复杂的网络，叫做数据中心网络。</p>
+<p>本节探讨为云应用的数据中心网络。</p>
+<p>数据中心有三大功能：提供内容，为特殊数据处理任务充当大量并行计算基础设施，提供云计算服务。</p>
+<p>现在的公司倾向于使用云提供者来满足基本上所有的IT需求。</p>
+<p>数据中心里的主机叫做blades，拥有CPU内存和磁盘存储。这些主机被码放在架子上，每个架子上放20到40个。每个架子顶端有一台交换机叫做Top of Rack switch，连接这台架子上的主机和其他交换机。每台主机都配上了数据中心内部的IP地址。</p>
+<p>为应对外部内部之间的交通，网络中包含边界路由器，连接数据中心网络和外界互联网。</p>
+<p>外部发来请求，数据中心会将它导引到负载均衡器。它的任务是把请求分配到主机。它也具有NAT功能，避免外界与主机直接连接</p>
+<p>层级结构。对于一个只有几千台主机的小型数据中心，一个由边界路由器、负载平衡器和几十个机架组成的简单网络可能就足够了，所有机架都由一个以太网交换机互连。但为了扩展到数万到几十万台主机，数据中心通常采用路由器和交换机的层次结构。在层次结构的顶部，边界路由器连接到访问路由器。在每个接入路由器下面，有三层交换机。每个接入路由器连接到一个顶层交换机，每个顶层交换机连接到多个第二层交换机和一个负载平衡器。每个第二层交换机依次通过机架或交换机（第三层交换机）连接到多个机架。所有链路通常使用以太网作为其链路层和物理层协议，并混合使用铜缆和光纤布线。通过这种分层设计，可以将数据中心扩展到数十万台主机。</p>
+<p>存在主机之间交流的问题，比如TOR交换机允许100Mbps，同时有40个不同架子上的主机互相通信，这样效率就低了。解决方法：使用更先进的交换机和路由器（但很贵）。<br>这个问题的第二个解决方案是尽可能地将相关服务和数据放在一起（例如，在同一个机架或附近的机架中），只要有可能就可以采用；以尽量减少通过tier-2或tier-1交换机的机架间通信。但这只能满足数据中心的一个关键要求，即计算和服务的灵活性。例如，大型互联网搜索引擎可以在分布在多个机架上的数千台主机上运行，所有主机对之间的带宽要求都很高。类似地，云计算服务（如Amazon Web Services或Microsoft Azure）可能希望将包含客户服务的多个虚拟机放置在容量最大的物理主机上，而不考虑其在数据中心的位置。如果这些物理主机分布在多个机架上，如上所述的网络瓶颈可能会导致性能不佳。</p>
+<p>该解决方案的最后一部分是增加TOR交换机和tier-2交换机之间的连接。以及第2层交换机和第1层交换机之间。例如，每个TOR交换机可以连接到两个tier-2交换机，然后在机架之间提供多条链路和交换机不相交的路径。第一个tier-2交换机和第二个tier-2交换机之间有四条不同的路径，共同提供了前两个tier-2交换机之间400 Gbps的总容量。增加层之间的连接度有两个显著的好处：交换机之间的容量增加，可靠性提高（因为路径多样性）。每个TOR连接到四个不同的tier-2交换机。每个tier-2交换机连接到四个不同的tier-1交换机。</p>
+<p>未来趋势</p>
+<p>减少代价<br>集中式SDN控制和管理<br>虚拟化<br>物理约束<br>硬件模块化和定制</p>
+<p><strong>回顾：网页请求</strong><br>协议栈的旅途已经走完了，现在来总结一下。模拟电脑是如何获取网页的。</p>
+<p>P523</p>
+<p>6总结<br>在本章中，研究了链路层及其服务、其运行的基本原则，以及在实现链路层服务时使用这些原则的一些重要特定协议。</p>
+<p>我们看到，链路层的基本服务是将网络层数据报从一个节点（主机、交换机、路由器、接入点）移动到相邻节点。我们看到，所有链路层协议都是通过将网络层数据报封装在链路层帧中，然后再通过链路将帧传输到相邻节点来运行的。然而，除了这个常见的帧功能之外，我们还了解到，不同的链路层协议提供非常不同的链路访问、传递和传输服务。这些差异部分是由于链路层协议必须在各种各样的链路类型上运行。简单的点到点链路有一个发送方和接收方通过一根“线”进行通信。多个发送方和接收方共享一条多址链路：因此，多址信道的链路层协议有一个用于协调链路访问的协议（其多址协议）。在MPLS的情况下，连接两个相邻节点的“链路”（例如，在IP意义上相邻的两个IP路由器，它们是朝向某个目的地的下一跳IP路由器）实际上可能是其自身的。从某种意义上讲，将网络视为链接的想法应该不会显得奇怪。例如，将家庭调制解调器/计算机连接到远程调制解调器/路由器的电话链路实际上是一条通过复杂电话网络的路径。</p>
+<p>在链路层通信的基本原理中，我们研究了错误检测和纠正技术、多址协议、链路层地址、虚拟化（VLAN）以及扩展交换LAN和dala中心网络的构建。目前，链路层的主要关注点是这些交换网络。在错误检测/纠正的情况下，我们研究了如何向帧的头部添加额外的位，以便检测并在某些情况下纠正在通过链路传输帧时可能发生的位翻转错误。我们介绍了简单的奇偶校验和校验和方案，以及更健壮的循环冗余校验。然后我们转到多址协议的主题。我们确定并研究了三种协调广播信道访问的广泛方法：信道划分方法（TDM、FDM）、随机访问方法（ALOHA协议和CSMA协议）和turs方法（轮询和令牌传递）。我们研究了有线接入网，发现它使用了许多这些多址方法。我们发现，让多个节点共享一个广播频道的结果是需要在链路层提供节点地址。我们了解到链路层地址与网络层地址有很大不同，在互联网的情况下，使用一种特殊的协议（ARP地址解析协议）在这两种寻址形式之间进行转换，并详细研究了非常成功的以太网协议。然后，我们研究了共享广播频道的节点如何形成LAN，以及如何将多个LAN连接在一起以形成更大的LAN—所有这些都无需干预网络层路由，以互连这些本地节点。我们还了解了如何在单个物理LAN基础设施上创建多个虚拟LAN</p>
+<p>我们结束了对链路层的研究，重点介绍了MPLS网络在互连IP路由器时如何提供链路层服务，并概述了当今大规模数据中心的网络设计。我们通过确定获取一个简单网页所需的许多协议来结束本章（以及前五章）。在覆盖了链接层之后，我们的职业生涯现在结束了！当然，物理层位于链接层之下，但物理层的细节可能最好留给另一门课程（例如，在通信理论中，而不是在计算机网络中）。然而，我们在本章和第一章（我们在第1.2节中对物理介质的讨论）中涉及了物理层的几个方面。在下一章研究无线链路特性时，我们将再次考虑物理层。</p>
+<p>虽然我们的协议栈之旅已经结束，但我们对计算机网络的研究还没有结束。在接下来的三章中，我们将介绍无线网络、网络安全和多媒体网络。这四个主题不适合任何一个层次；事实上，每个主题都跨越了许多层面。因此，理解这些主题（在某些网络文本中被称为高级主题）需要在协议栈的所有层都有一个坚实的基础——我们对链接层的研究现在已经完成了！</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-3-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-3-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-25 10:42:53 / 修改时间：10:48:07" itemprop="dateCreated datePublished" datetime="2022-09-25T10:42:53+08:00">2022-09-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Network-Layer-Data-Plane"><a href="#Network-Layer-Data-Plane" class="headerlink" title="Network Layer : Data Plane"></a>Network Layer : Data Plane</h1><p><em><strong>network layer : host to host communication service</strong></em></p>
+<p><em>the per-router functions in the layer that determine how a datagram arriving on a router’s input links is forwarded to one of that router’s output links</em><br><em>traditional IP forwarding and generalized forwarding</em><br><em>IPV4 and IPV6</em></p>
+<p>The primary role of the network layer is deceptively simple，to move packets from<br>a sending host to a receiving host</p>
+<p>Forwarding. When a packet arrives at a router’s input link, the router must move the packet to the  appropriate output link</p>
+<p><strong>Forwarding and routing</strong><br>Forwarding refers to the router-local action of transferring a packet from an input<br>link interface to the appropriate output link interface. Forwarding takes place at very<br>short timescales (typically a few nanoseconds), and thus is typically implemented in<br>hardware. Routing refers to the network-wide process that determines the end-to-end<br>paths that packets take from source to destination. Routing takes place on much longer<br>timescales (typically seconds), and as we will see is often implemented in software.</p>
+<p>We can think of forwarding as the process of getting<br>through a single interchange: A car enters the interchange from one road and deter-<br>mines which road it should take to leave the interchange. We can think of routing as<br>the process of planning the trip from Pennsylvania to Florida: Before embarking on<br>the trip, the driver has consulted a map and chosen one of many paths possible, with<br>each path consisting of a series of road segments connected at interchanges.</p>
+<p>WFQ different from round robin in???(P341)</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-4-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-4-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-25 10:42:53 / 修改时间：10:47:53" itemprop="dateCreated datePublished" datetime="2022-09-25T10:42:53+08:00">2022-09-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Network-Layer-Control-Plane"><a href="#Network-Layer-Control-Plane" class="headerlink" title="Network Layer : Control Plane"></a>Network Layer : Control Plane</h1><p>flow table和forwarding table是如何计算出来的？有两个方法可以用来做这个事，Per-router control，独立的路由算法在路由器之间交互；Logically centralized control，逻辑中心控制器计算并分发。</p>
+<p>集中式路由算法使用完全的，全局的网络信息来计算最短路径。这种算法一般叫LS算法。<br>分散式路由算法，没有节点具有有关所有网络链接的成本的完整信息。相反，每个节点开始只需了解自身直接连接的成本。节点逐渐计算到目标的最小成本路径称为距离向量（DV）算法。</p>
+<p>静态路由算法，路线改变很慢。动态路由算法，经常改变路线。</p>
+<p>按照算法是否对路线负载敏感也可以分类。</p>
+<p><strong>LS算法</strong><br>使用link-state-broadcast，每个节点都广播与自己相邻节点信息，这样所有节点都知道信息。</p>
+<p>迪杰斯特拉算法。</p>
+<p>如果算法考虑了负载，可能会出现震荡现象，即很多路由器都会选取某一条空旷路径，致使它堵塞，然后又会选取另一条空旷路径。</p>
+<p>解决办法：可以使算法不同时计算。</p>
+<p><strong>DV算法</strong><br>没看</p>
+<p>两种算法的比较：<br>。。。<br>互有胜负，都被使用着。</p>
+<p><strong>OSPF</strong><br>背景：刚才讨论过的算法过于简单化了，在范围很大或者组织需要拥有自治权时，这样的模拟显然不能有效。但如果把路由器们组织autonomous<br>systems (ASs)，问题就得到了解 决。</p>
+<p>ISP中的路由器与链接构成AS，有的ISP有多个AS。每个AS都有独特编号，像IP地址，被ICANN注册管理。</p>
+<p>同一个路由器中的AS运行同一套算法。在AS内部的算法叫做自治系统内路由协议intra-autonomous system routing protocol。</p>
+<p>OSPF：Open Shortest Path First开放最短路径优先。<br>是LS算法，每个路由器建立完全的拓扑图，单独运行迪杰斯特拉，单个链接成本由网络管理员配置。</p>
+<p>有时候网络操作员会配置特定权重以实现特定流量控制。</p>
+<p>OSPF时常更新链路权值以增强稳定性。</p>
+<p>优点：安全，交换可以被鉴定，只有被信任的路由器可以参与，有两种认证方式，simple和MD5；多个同长路径可同时使用；单播和多播路由支持；在单个AS内部支持层级结构，OSPF自治系统被分为多个区域，边界路由器需要担起路由外部包裹的职责，OSPF也需要划分出主心骨区域，包裹从边界路由器开始路由，然后通过主干路由到目标区域中的区域边界路由器，然后路由到最终目的地。</p>
+<p><strong>BGP</strong><br>AS之间的路由协议。<br>所有AS都运行BGP，Border Gateway Protocol，边界网关协议。</p>
+<p>去中心化，异步，使用DV算法。</p>
+<p>包裹不再被路由到某个特定地址，而是去往CIDRized prefixes，每个前缀代表一个子网或子网的集合。</p>
+<p>BGP为路由器提供了以下的方法：</p>
+<ul>
+<li>获取某个前缀是否可达的信息，从相邻AS中。 A subnet screams, “I exist and I am here,” and BGP makes sure that all the routers in the Internet know about this subnet。</li>
+<li>确定前缀的“最佳”路径the router will locally run a BGP route-selection procedure (using the prefix reachability information  it  obtained  via  neighboring  routers).  The  best  route  will  be  determined based on policy as well as the reachability information。</li>
+</ul>
+<p>对于每个AS，路由器要么是内部路由器要么是网关路由器，网关路由器和其他AS的路由器直接相连。</p>
+<p>广播BGP协议时，每个AS不仅知道了某个前缀存在，还知道了前缀所属AS的路径（它是走什么路发过来的）。</p>
+<p>BGP信息由路由器交换，每一对路由器建立半永久TCP连接使用端口179，这样的TCP连接和发送的BGP信息，叫做BGP连接。</p>
+<p>跨AS的BGP连接叫external BGP（eBGP）connection，内部的叫做internal BGP（iBGP）connection。</p>
+<p>每个路由器都知道了前缀的存在。</p>
+<p>BGP信息有多条属性，其中包括AS-PATH和NEXT-HOP，AS-PATH属性包含了从前缀的源头开始经过的一系列AS，路由器更新AS-PATH时会防止循环。</p>
+<p>NEXT-HOP（下一跳节点）属性提供了AS间和AS内路由协议之间的关键链接，具有微妙但重要的用途。NEXT-HOP属性是开始AS-PATH的路由器接口的IP地址。比如“AS2 AS3 x”被AS1收到，NEXT-HOP就是AS1和AS2之间的路由器IP地址，且属于AS2。</p>
+<p>（route：前缀与路径加附带的属性）<br>热土豆路由。路由器决策时选择的路由（从所有可能的路由中）是到开始该路由的下一跳路由器的成本最低的路由。路由器尽可能快地将数据抛出所在AS。这是一种贪心算法。</p>
+<p>事实上BGP使用比热土豆路由更复杂的算法</p>
+<p>BGP在可能使用的路径中一个一个排除，直到只留下一个可用路径（使用以下的淘汰规则）。</p>
+<p>路由被赋予了local preference属性，具有最高属性的路由将被选中。这个属性完全是由AS网络管理员决定的。</p>
+<p>同时具有最高local preference属性的路由，具有最短的AS-PATH属性将被选中。</p>
+<p>同时满足以上条件的，最短NEXT-HOP将被使用（即热土豆路由）</p>
+<p>如果还有余下的，使用BGP identifier</p>
+<p>这样的算法不再贪心。</p>
+<p>BGP路由表包含超过50万条路由（即前缀和相应属性）。</p>
+<p><strong>IP-Anycast</strong><br>BGP还通常被用作实现IP-Anycast服务的手段，常被DNS使用。</p>
+<p>打个比方，某些用户是如何使用IP-Anycast服务的呢？一个CDN为他的多个服务器注册了同一个IP地址，使用标准BGP广播，这样路由器可以利用BGP机制找出最近的服务器。</p>
+<p>然而CDN实际上不常使用IP-anycast，因为同一个TCP连接的包可能到达不同服务器。DNS却广泛使用IP-anycast。</p>
+<p>通过控制AS routing policy（最高权力），可以完成一些特殊控制。</p>
+<p>商业ISP遵循的一条经验法则是，任何流经ISP主干网的流量必须在作为该ISP客户的网络中有一个源或一个目的地（或两者兼有）；否则，流量将在ISP网络上免费获得。</p>
+<p><strong>大串烧：假设您刚刚创建了一家拥有多台服务器的小公司…</strong></p>
+<p>首先需要获取网络连接，要和本地ISP联系，把自己的网关路由连到ISP路由器上面。然后ISP交出一段IP地址范围。这时候就可以给服务器们赋上地址啦，一个给Web服务器，一个给邮件服务器，一个给公司DNS服务器，一个给网关路由器…</p>
+<p>然后需要和Internet registrar联系，获取一个域名。把自己DNS服务器地IP地址给他们，他们会把域名和相应的IP地址条目插进.com顶级域名服务器，这时候外界的人就可以用域名访问到公司DNS服务器了。</p>
+<p>还有一步没完成呢，别的路由器还不知道怎么路由这些数据报呢。本地ISP需要使用BGP来把分配的前缀广播出去，这下所有路由器都知道公司的前缀了（或者是知道某个包含公司前缀的合计（aggregate）了）。</p>
+<p><strong>SDN</strong></p>
+<p>前情回顾：<br><strong>4.4Generalized Forwarding and SDN</strong></p>
+<p>destination-based forwarding的两步<br>match：寻找目标IP地址<br>action：把包送到特定输出端口</p>
+<p>Generalized forwarding: 每个分组交换机包含一个 match-plus-action table（由远程控制者计算并分发）</p>
+<p>接下来的关于广义转发的讨论将基于Open Flow。</p>
+<p>在OpenFlow里match-plus-action forwarding table 被叫做flow table，每一个条目都包含：</p>
+<ul>
+<li>一组header field value 用于匹配包</li>
+<li>一组计数者，在有包被匹配时更新</li>
+<li>一组要采取的行动（Action），这样的行动多种多样。</li>
+</ul>
+<p>对Match成功的包执行Action</p>
+<p>Match：OpenFlow的匹配可以基于连接层，网络层，传输层。OpenFlow使得一个设备既能具有层级3的能力，也有层级二的。</p>
+<p>包的头部有十二个值，包括源与目的地MAC、IP、Port，VLAN信息，协议信息，Eth Type，ingress port（包被收纳的入口端口）等等。</p>
+<p>有些部分被匹配，有些部分却不会。巴特勒·兰普森：一次做一件事，把它做好。接口应该捕获抽象的最基本要素。不要一概而论；概括通常是错误的。</p>
+<p>Action：每个条目都有0个或以上的动作，用于施加给匹配成功的包。这些动作包括：</p>
+<ul>
+<li>转发（forwarding），发送到目的端口、所有端口、部分端口、远程控制器…</li>
+<li>丢掉（Dropping）</li>
+<li>修改域（Modify-field）</li>
+</ul>
+<p>这么做有很多好处，包括可以使用同一套硬件完成不同功能。</p>
+<p>好的回到控制层。</p>
+<p>有四个SDN关键特征：</p>
+<ul>
+<li>基于流的转发。匹配可以基于传输层网络层与链路层，与传统匹配方式形成了鲜明对比。计算、组织、安装流表在交换机上是SDN控制层的责任。</li>
+<li>数据层与控制层分离。数据层包含网络交换机们——简单而高速地执行“匹配然后动作”的设备；控制层包含服务器和软件。</li>
+<li>在数据层交换机之外的网络控制功能。控制器拥有精确的网络状态信息，提供给在控制层上运行的网络控制应用，它还提供应用程序们监控、编程、控制底层网络设备的途径。此外控制器只是逻辑上中心化，实际上有很多控制器。</li>
+<li>可编程的网络。网络可以通过运行在控制层的应用程序来被编程。应用程序们使用控制器提供的API控制数据层的设备们。</li>
+</ul>
+<p>此外还看到SDN网络的解耦合特性。各个设备不一定要同一个厂家生产。</p>
+<p>SDN控制层分为两个部分：SDN控制器和SDN网络控制应用程序。</p>
+<p>SDN控制器的功能可以分三层：</p>
+<ul>
+<li>对话层，SDN控制器和被控制的设备进行对话。这是最底层，两者之间的对话被称作是“southbound”接口。</li>
+<li>网络范围的状态管理层。SDN控制层需要底层信息。所有信息均构成SDN控制器维护的网络范围“状态”的示例。</li>
+<li>网络控制应用层的接口。控制器通过其“northbound”接口与网络控制应用程序交互<br>P426这张图很形象。</li>
+</ul>
+<p>下面看看OpenFlow协议，它可以用来在SDN控制器和被控制设备之间通信（在对话层）</p>
+<p><strong>OpenFlow Portocol</strong><br>OpenFlow在tcp上工作，端口是6653</p>
+<p>以下这些信息常被控制器发送：</p>
+<ul>
+<li>配置。使控制器查询和设置一台交换机的配置参数</li>
+<li>更改状态。增删流表的条目，设置交换机端口属性。</li>
+<li>读状态。控制器收集统计信息和计数器值。</li>
+<li>发包。控制器自己发一个特定的包到交换机特定端口，这条信息包含了整个包。</li>
+</ul>
+<p>SDN交换机发送这些信息：</p>
+<ul>
+<li>流被移除。通知控制器一条流表条目被移除了</li>
+<li>端口状态。通知控制器端口状态的改变。</li>
+<li>送包进来（packet-in）。送一个包给控制器，当匹配失败或者匹配成功的某种情况。</li>
+</ul>
+<p>谷歌的B4网络与SDN息息相关。</p>
+<p>一个例子<br>（Dijkstra的算法作为单独的应用程序在交换机之外执行。<br>分组交换机向SDN控制器发送链路更新，而不是相互发送）</p>
+<p>SDN给了ISP很高的自由度，且ISP能更方便地操作路由器。</p>
+<p><strong>ICMP：the internet control message protocol</strong><br>用作主机和路由器之间互相沟通网络层信息。<br>ICMP看上去是IP的一部分，但是结构上它是在IP之上的。ICMP是作为IP数据报的负载被传送的，就像TCP和UDP段一样。<br>ICMP都具有type和code域<br>ICMP常用于报告错误或者异常情况。<br>ping和Traceroute是基于ICMP特性的。</p>
+<p><strong>SNMP，NETCONF/YANG</strong><br>除了SDN，还有一些工具能够管理网络。</p>
+<p>“网络管理包括硬件、软件和人员要素的部署、集成和协调，以监控、测试、轮询、配置、分析、评估和控制网络和要素资源，以合理的成本满足实时、操作性能和服务质量要求。”</p>
+<p>网络管理的关键组件：</p>
+<ul>
+<li>管理服务器。是一个应用程序。控制。</li>
+<li>被管理的设备。在管理网络里的设备（包括软件）</li>
+<li>数据。有配置数据，操作数据，设备统计数据</li>
+<li>网络管理agent。运行在被管理的设备里，与管理服务器沟通</li>
+<li>网络管理协议。需要注意的是，网络管理协议本身并不管理网络。相反，它提供了网络管理员可以用来管理（“监视、测试、轮询、配置、分析、评估和控制”）网络的功能。这是一个微妙但重要的区别。</li>
+</ul>
+<p>有三种常用的方式管理网络：</p>
+<ul>
+<li>CLI。直接command line interface来命令设备。命令直接在被管理设备的控制台上敲击，或通过Telnet或者secure shell（SSH）连接。很难，易出错，难以管理大型网络。家庭无线路由器可以用HTTP连上然后配置，这样做比CLI不容易出错一点。</li>
+<li>SNMP/MIB。Simple Network Management Protocol（SNMP）与Management Information Base（MIB）。网络操作员可以使用SNMP查询、设置在MIB里的数据。然后CLI。以上两种管理方式都是管理单独设备的。SNMP/MIB在管理大型网络时有短板。</li>
+<li>NETCONF/YANG。更抽象，更广大，更全观。YANG是一种数据建模语言，用于建模配置和操作数据。NETCONF协议用于将YANG兼容的操作和数据与远程设备进行通信。</li>
+</ul>
+<p><strong>SNMP和MIB</strong><br>The  Simple  Network  Management  Protocol  version  3是应用层协议，用来传输网络管理控制和信息，在管理服务器和代表那台服务器做事的agent之间。</p>
+<p>SNMP信息可以双向发送，用于通知、查询，更改MIB信息等。</p>
+<p>MIB对象被SMI(Structure of Management Information 用于保证数据语法词法被很好地定义同时)语言详细描述。</p>
+<p>PDU：protocol data units，是SNMPv3定义的7种消息类型。</p>
+<ul>
+<li>GetRequest</li>
+<li>GetNextRequest</li>
+<li>GetBulkRequest(这三个是粒度上的差别)</li>
+<li>InformRequest</li>
+<li>SetRequest</li>
+<li>Response</li>
+<li>SNMPv2-Trap</li>
+</ul>
+<p>PDU一般是装在UDP里的</p>
+<p>被管理设备的操作状态数据等数据在SNMP/MIB方法里是被呈现为被集合在一起而成为MIB的对象们的。相关MIB对象被聚集成为MIB模块。</p>
+<p><strong>The Network Configuration Protocol (NETCONF) and YANG</strong></p>
+<p>NETCONF在管理服务器和受管设备之间运行，用于（i）检索、设置和修改受管设备配置（ii）查询受管设备运行数据和统计数据（iii）订阅受管设备生成的通知。管理服务器通过发送结构化XML文档中指定的配置并激活受管设备上的配置，主动控制受管设备。NETCONF使用远程过程调用（RPC）范式，其中协议消息也以XML编码，并通过安全的、面向连接的会话（如TLS（传输层安全）协议）在管理服务器和受管设备之间进行交换。</p>
+<p>NETCONF Operation如下：</p>
+<ul>
+<li><get-config></li>
+<li><get></li>
+<li><edit-config></li>
+<li><lock>,<unlock></li>
+<li><create-subscription></li>
+<li><notification></li>
+</ul>
+<p><strong>YANG</strong><br>data modeling language来精确描述网络数据的结构词法语法，被NETCONF所使用。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -563,581 +1701,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
-      <meta itemprop="name" content="ZYZ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cozard 技术空间">
-      <meta itemprop="description" content="Cozard 的官方博客">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Cozard 技术空间">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/" class="post-title-link" itemprop="url">偏函数和柯里化</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-14 12:44:17" itemprop="dateCreated datePublished" datetime="2022-04-14T12:44:17+08:00">2022-04-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-22 23:34:58" itemprop="dateModified" datetime="2022-09-22T23:34:58+08:00">2022-09-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">C++函数式编程</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>函数式编程特别重视一元函数</strong></p>
-<hr>
-<h2 id="Partial（偏函数）"><a href="#Partial（偏函数）" class="headerlink" title="Partial（偏函数）"></a>Partial（偏函数）</h2><p>“偏函数”指：固定某个参数为特定值，然后返回一个接收余下参数的函数。这是一种减少参数的方式。</p>
-<p>打个比方：我们已经有了greater函数，它接收两个参数a和b。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5-%E5%81%8F%E5%87%BD%E6%95%B0%E5%92%8C%E6%9F%AF%E9%87%8C%E5%8C%96/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-4-%E8%83%B6%E6%B0%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
-      <meta itemprop="name" content="ZYZ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cozard 技术空间">
-      <meta itemprop="description" content="Cozard 的官方博客">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Cozard 技术空间">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-4-%E8%83%B6%E6%B0%B4/" class="post-title-link" itemprop="url">胶水</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-14 12:39:56" itemprop="dateCreated datePublished" datetime="2022-04-14T12:39:56+08:00">2022-04-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-22 23:34:43" itemprop="dateModified" datetime="2022-09-22T23:34:43+08:00">2022-09-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">C++函数式编程</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>已经编写了一些小型函数，我们来看看它们可以如何变化与组合</strong></p>
-<p><strong>记住法则一：函数是一等公民。</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-4-%E8%83%B6%E6%B0%B4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-3-%E7%A7%AF%E6%9C%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
-      <meta itemprop="name" content="ZYZ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cozard 技术空间">
-      <meta itemprop="description" content="Cozard 的官方博客">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Cozard 技术空间">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-3-%E7%A7%AF%E6%9C%A8/" class="post-title-link" itemprop="url">积木</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-14 12:38:07" itemprop="dateCreated datePublished" datetime="2022-04-14T12:38:07+08:00">2022-04-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-22 23:34:45" itemprop="dateModified" datetime="2022-09-22T23:34:45+08:00">2022-09-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">C++函数式编程</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>下面我们来趁热打铁，编写一些简单的纯函数来练练手，逐渐熟悉函数式编程的思维方式。</p>
-<p><em><strong>打开你的编辑器，和我一起写</strong></em></p>
-<p><em><strong>这些纯函数将会在之后的学习中用到</strong></em></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-3-%E7%A7%AF%E6%9C%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-2-%E5%BC%80%E5%90%AF%E6%96%B0%E4%B8%96%E7%95%8C%E7%9A%84%E5%A4%A7%E9%97%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
-      <meta itemprop="name" content="ZYZ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cozard 技术空间">
-      <meta itemprop="description" content="Cozard 的官方博客">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Cozard 技术空间">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-2-%E5%BC%80%E5%90%AF%E6%96%B0%E4%B8%96%E7%95%8C%E7%9A%84%E5%A4%A7%E9%97%A8/" class="post-title-link" itemprop="url">开启新世界的大门</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-14 00:11:00" itemprop="dateCreated datePublished" datetime="2022-04-14T00:11:00+08:00">2022-04-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-22 23:35:25" itemprop="dateModified" datetime="2022-09-22T23:35:25+08:00">2022-09-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">C++函数式编程</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h2><p>无论是面向过程还是面向对象，都是一种“指令式编程”模式：程序员“告诉”机器怎么做事，把事情的解决方案一步步列出来。</p>
-<p>与“指令式编程”对应的是“声明式编程”：程序员把重心放在“做什么”而不是“怎么做”。打个比方：使用数据库语言SQL时，用户是不必操心机器是怎么插入或者查找数据的，只需要一句声明“我要做什么”，机器便会自动寻找解决方案；此外，一些逻辑编程语言，也是“声明式”的。</p>
-<p><strong>函数式编程偏向于“声明式编程”而不是“指令式编程”。</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-2-%E5%BC%80%E5%90%AF%E6%96%B0%E4%B8%96%E7%95%8C%E7%9A%84%E5%A4%A7%E9%97%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-1-lambda%20%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
-      <meta itemprop="name" content="ZYZ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cozard 技术空间">
-      <meta itemprop="description" content="Cozard 的官方博客">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Cozard 技术空间">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-1-lambda%20%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">lambda 表达式</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-14 00:10:57" itemprop="dateCreated datePublished" datetime="2022-04-14T00:10:57+08:00">2022-04-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-22 23:34:31" itemprop="dateModified" datetime="2022-09-22T23:34:31+08:00">2022-09-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">C++函数式编程</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>熟悉一下C++函数式编程的主角：lambda表达式。</p>
-<p><em>请将你的编译器版本调到C++17及以上。</em></p>
-<hr>
-<h3 id="定义一个labmda变量（C-11与C-14）"><a href="#定义一个labmda变量（C-11与C-14）" class="headerlink" title="定义一个labmda变量（C++11与C++14）"></a>定义一个labmda变量（C++11与C++14）</h3><p>labmda既是一个函数，也是一个变量（事实上，它是一个由编译器自动生成的可调用类），让我们先来看看labmda是什么样子的：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-1-lambda%20%E8%A1%A8%E8%BE%BE%E5%BC%8F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/13/%E7%8E%B0%E4%BB%A3C++-3-lambda%E5%8F%91%E5%B1%95%E5%8F%B2.md/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
-      <meta itemprop="name" content="ZYZ">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Cozard 技术空间">
-      <meta itemprop="description" content="Cozard 的官方博客">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Cozard 技术空间">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/13/%E7%8E%B0%E4%BB%A3C++-3-lambda%E5%8F%91%E5%B1%95%E5%8F%B2.md/" class="post-title-link" itemprop="url">lambda发展史</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-13 23:59:06" itemprop="dateCreated datePublished" datetime="2022-04-13T23:59:06+08:00">2022-04-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-22 23:45:16" itemprop="dateModified" datetime="2022-09-22T23:45:16+08:00">2022-09-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%8E%B0%E4%BB%A3C/" itemprop="url" rel="index"><span itemprop="name">现代C++</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <hr>
-<h2 id="C-11"><a href="#C-11" class="headerlink" title="C++11"></a>C++11</h2><ul>
-<li>引入labmda表达式</li>
-</ul>
-<h2 id="C-14"><a href="#C-14" class="headerlink" title="C++14"></a>C++14</h2><ul>
-<li>参数可以auto</li>
-<li>表达式捕获</li>
-</ul>
-<h2 id="C-17"><a href="#C-17" class="headerlink" title="C++17"></a>C++17</h2><ul>
-<li>更加智能的自动返回值推导</li>
-<li>可以使用*this捕获所在类的副本</li>
-<li>可以constexpr</li>
-</ul>
-<h2 id="C-20"><a href="#C-20" class="headerlink" title="C++20"></a>C++20</h2><ul>
-<li>constexpr lambda</li>
-<li>this指针不再可以用=隐式捕获</li>
-<li>可以使用模板</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

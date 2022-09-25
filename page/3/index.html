@@ -19,28 +19,26 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="C++11 引入labmda表达式  C++14 参数可以auto 表达式捕获  C++17 更加智能的自动返回值推导 可以使用*this捕获所在类的副本 可以constexpr  C++20 constexpr lambda this指针不再可以用&#x3D;隐式捕获 可以使用模板">
-<meta property="og:type" content="article">
-<meta property="og:title" content="lambda发展史">
-<meta property="og:url" content="http://example.com/2022/04/13/%E7%8E%B0%E4%BB%A3C++-3-lambda%E5%8F%91%E5%B1%95%E5%8F%B2.md/index.html">
+    <meta name="description" content="Cozard 的官方博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cozard 技术空间">
+<meta property="og:url" content="http://example.com/page/3/index.html">
 <meta property="og:site_name" content="Cozard 技术空间">
-<meta property="og:description" content="C++11 引入labmda表达式  C++14 参数可以auto 表达式捕获  C++17 更加智能的自动返回值推导 可以使用*this捕获所在类的副本 可以constexpr  C++20 constexpr lambda this指针不再可以用&#x3D;隐式捕获 可以使用模板">
+<meta property="og:description" content="Cozard 的官方博客">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-04-13T15:59:06.000Z">
-<meta property="article:modified_time" content="2022-09-22T15:45:16.999Z">
 <meta property="article:author" content="ZYZ">
-<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Code Program Method">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2022/04/13/%E7%8E%B0%E4%BB%A3C++-3-lambda%E5%8F%91%E5%B1%95%E5%8F%B2.md/">
+<link rel="canonical" href="http://example.com/page/3/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/04/13/%E7%8E%B0%E4%BB%A3C++-3-lambda%E5%8F%91%E5%B1%95%E5%8F%B2.md/","path":"2022/04/13/现代C++-3-lambda发展史.md/","title":"lambda发展史"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/3/index.html","title":""}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>lambda发展史 | Cozard 技术空间</title>
+<title>Cozard 技术空间</title>
   
 
 
@@ -71,7 +69,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <p class="site-title">Cozard 技术空间</p>
+      <h1 class="site-title">Cozard 技术空间</h1>
       <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">规划、设计、探索</p>
@@ -104,7 +102,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -117,7 +115,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-11"><span class="nav-number">1.</span> <span class="nav-text">C++11</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-14"><span class="nav-number">2.</span> <span class="nav-text">C++14</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-17"><span class="nav-number">3.</span> <span class="nav-text">C++17</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-20"><span class="nav-number">4.</span> <span class="nav-text">C++20</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -181,17 +178,16 @@
 </noscript>
 
 
-    <div class="main-inner post posts-expand">
+    <div class="main-inner index posts-expand">
 
-
-  
+    
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/13/%E7%8E%B0%E4%BB%A3C++-3-lambda%E5%8F%91%E5%B1%95%E5%8F%B2.md/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -205,13 +201,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="lambda发展史 | Cozard 技术空间">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          lambda发展史
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/13/%E7%8E%B0%E4%BB%A3C++-3-lambda%E5%8F%91%E5%B1%95%E5%8F%B2.md/" class="post-title-link" itemprop="url">lambda发展史</a>
+        </h2>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -250,7 +246,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <hr>
+          <hr>
 <h2 id="C-11"><a href="#C-11" class="headerlink" title="C++11"></a>C++11</h2><ul>
 <li>引入labmda表达式</li>
 </ul>
@@ -269,6 +265,7 @@
 <li>可以使用模板</li>
 </ul>
 
+      
     </div>
 
     
@@ -276,24 +273,8 @@
     
 
     <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
-          </div>
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-2-%E6%A8%A1%E5%9E%8B%E7%B4%A2%E5%BC%95/" rel="prev" title="模型索引">
-                  <i class="fa fa-chevron-left"></i> 模型索引
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2022/04/13/%E7%8E%B0%E4%BB%A3C++-6-constexpr%E5%8F%91%E5%B1%95%E5%8F%B2/" rel="next" title="lambda发展史">
-                  lambda发展史 <i class="fa fa-chevron-right"></i>
-                </a>
-            </div>
-          </div>
+        <div class="post-eof"></div>
+      
     </footer>
   </article>
 </div>
@@ -301,7 +282,195 @@
 
 
 
+    
 
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-2-%E6%A8%A1%E5%9E%8B%E7%B4%A2%E5%BC%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-2-%E6%A8%A1%E5%9E%8B%E7%B4%A2%E5%BC%95/" class="post-title-link" itemprop="url">模型索引</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-12 23:59:06" itemprop="dateCreated datePublished" datetime="2022-04-12T23:59:06+08:00">2022-04-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-22 23:36:26" itemprop="dateModified" datetime="2022-09-22T23:36:26+08:00">2022-09-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Qt%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">Qt技术文档</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">QModelIndex与QAbstractItemModel一同定义，用以索引模型（model）中的项（Item）。</span><br><span class="line"></span><br><span class="line">由于所有模型都是以“行“、”列”、“层级”结构组织的，我们可以使用统一的方式索引模型中的项。</span><br><span class="line"></span><br><span class="line">所有模型都使用QModelIndex作为模型的索引。</span><br><span class="line"></span><br><span class="line">QModelIndex内部包含了行信息、列信息与指向所属模型的指针，因此理论上可以做很多事。</span><br><span class="line"></span><br><span class="line">文档原文：https://doc.qt.io/qt-5/qmodelindex.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="详细信息"><a href="#详细信息" class="headerlink" title="详细信息"></a>详细信息</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-2-%E6%A8%A1%E5%9E%8B%E7%B4%A2%E5%BC%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-1-%E5%88%9B%E5%BB%BA%E5%AD%90%E7%B1%BB%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-1-%E5%88%9B%E5%BB%BA%E5%AD%90%E7%B1%BB%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">创建子类模型</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-12 23:55:43" itemprop="dateCreated datePublished" datetime="2022-04-12T23:55:43+08:00">2022-04-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-22 23:36:21" itemprop="dateModified" datetime="2022-09-22T23:36:21+08:00">2022-09-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Qt%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">Qt技术文档</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>子类模型需要提供 QabstractemModel 基类中定义的许多虚函数的实现。需要实现的函数数量取决于模型的类型——它是为视图提供简单的列表、表格还是复杂的项目层次结构。从 QAbstractListModel 和 QAbstractTableModel 继承的模型可以利用它们所提供函数的默认实现。以树状结构组织数据项的模型必须为QabstractemModel中的许多虚函数提供实现。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/12/Qt%E6%96%87%E6%A1%A3%E8%AF%91%E6%B3%A8-1-%E5%88%9B%E5%BB%BA%E5%AD%90%E7%B1%BB%E6%A8%A1%E5%9E%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
 
 </div>
   </main>

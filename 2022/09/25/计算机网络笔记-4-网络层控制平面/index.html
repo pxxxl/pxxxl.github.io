@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Network Layer : Control Planeflow table和forwarding table是如何计算出来的？有两个方法可以用来做这个事，Per-router control，独立的路由算法在路由器之间交互；Logically centralized control，逻辑中心控制器计算并分发。 集中式路由算法使用完全的，全局的网络信息来计算最短路径。这种算法一般叫LS算法。分散">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cozard 技术空间">
+<meta property="og:url" content="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-4-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/index.html">
+<meta property="og:site_name" content="Cozard 技术空间">
+<meta property="og:description" content="Network Layer : Control Planeflow table和forwarding table是如何计算出来的？有两个方法可以用来做这个事，Per-router control，独立的路由算法在路由器之间交互；Logically centralized control，逻辑中心控制器计算并分发。 集中式路由算法使用完全的，全局的网络信息来计算最短路径。这种算法一般叫LS算法。分散">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-25T02:42:53.324Z">
+<meta property="article:modified_time" content="2022-09-25T02:47:53.744Z">
+<meta property="article:author" content="ZYZ">
+<meta property="article:tag" content="Code Program Method">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-4-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-4-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/","path":"2022/09/25/计算机网络笔记-4-网络层控制平面/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Cozard 技术空间</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cozard 技术空间</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">规划、设计、探索</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Network-Layer-Control-Plane"><span class="nav-number">1.</span> <span class="nav-text">Network Layer : Control Plane</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ZYZ"
+      src="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+  <p class="site-author-name" itemprop="name">ZYZ</p>
+  <div class="site-description" itemprop="description">Cozard 的官方博客</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/pxxxl" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;pxxxl" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/wang-lang-pai-ma-wu-dao/posts" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wang-lang-pai-ma-wu-dao&#x2F;posts" rel="noopener" target="_blank"><i class="fa-brands fa-zhihu fa-fw"></i>Zhihu</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-4-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/%5Cimages%5CdeltaruneNew%20(2).jpg">
+      <meta itemprop="name" content="ZYZ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cozard 技术空间">
+      <meta itemprop="description" content="Cozard 的官方博客">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Cozard 技术空间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-25 10:42:53 / 修改时间：10:47:53" itemprop="dateCreated datePublished" datetime="2022-09-25T10:42:53+08:00">2022-09-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Network-Layer-Control-Plane"><a href="#Network-Layer-Control-Plane" class="headerlink" title="Network Layer : Control Plane"></a>Network Layer : Control Plane</h1><p>flow table和forwarding table是如何计算出来的？有两个方法可以用来做这个事，Per-router control，独立的路由算法在路由器之间交互；Logically centralized control，逻辑中心控制器计算并分发。</p>
+<p>集中式路由算法使用完全的，全局的网络信息来计算最短路径。这种算法一般叫LS算法。<br>分散式路由算法，没有节点具有有关所有网络链接的成本的完整信息。相反，每个节点开始只需了解自身直接连接的成本。节点逐渐计算到目标的最小成本路径称为距离向量（DV）算法。</p>
+<p>静态路由算法，路线改变很慢。动态路由算法，经常改变路线。</p>
+<p>按照算法是否对路线负载敏感也可以分类。</p>
+<p><strong>LS算法</strong><br>使用link-state-broadcast，每个节点都广播与自己相邻节点信息，这样所有节点都知道信息。</p>
+<p>迪杰斯特拉算法。</p>
+<p>如果算法考虑了负载，可能会出现震荡现象，即很多路由器都会选取某一条空旷路径，致使它堵塞，然后又会选取另一条空旷路径。</p>
+<p>解决办法：可以使算法不同时计算。</p>
+<p><strong>DV算法</strong><br>没看</p>
+<p>两种算法的比较：<br>。。。<br>互有胜负，都被使用着。</p>
+<p><strong>OSPF</strong><br>背景：刚才讨论过的算法过于简单化了，在范围很大或者组织需要拥有自治权时，这样的模拟显然不能有效。但如果把路由器们组织autonomous<br>systems (ASs)，问题就得到了解 决。</p>
+<p>ISP中的路由器与链接构成AS，有的ISP有多个AS。每个AS都有独特编号，像IP地址，被ICANN注册管理。</p>
+<p>同一个路由器中的AS运行同一套算法。在AS内部的算法叫做自治系统内路由协议intra-autonomous system routing protocol。</p>
+<p>OSPF：Open Shortest Path First开放最短路径优先。<br>是LS算法，每个路由器建立完全的拓扑图，单独运行迪杰斯特拉，单个链接成本由网络管理员配置。</p>
+<p>有时候网络操作员会配置特定权重以实现特定流量控制。</p>
+<p>OSPF时常更新链路权值以增强稳定性。</p>
+<p>优点：安全，交换可以被鉴定，只有被信任的路由器可以参与，有两种认证方式，simple和MD5；多个同长路径可同时使用；单播和多播路由支持；在单个AS内部支持层级结构，OSPF自治系统被分为多个区域，边界路由器需要担起路由外部包裹的职责，OSPF也需要划分出主心骨区域，包裹从边界路由器开始路由，然后通过主干路由到目标区域中的区域边界路由器，然后路由到最终目的地。</p>
+<p><strong>BGP</strong><br>AS之间的路由协议。<br>所有AS都运行BGP，Border Gateway Protocol，边界网关协议。</p>
+<p>去中心化，异步，使用DV算法。</p>
+<p>包裹不再被路由到某个特定地址，而是去往CIDRized prefixes，每个前缀代表一个子网或子网的集合。</p>
+<p>BGP为路由器提供了以下的方法：</p>
+<ul>
+<li>获取某个前缀是否可达的信息，从相邻AS中。 A subnet screams, “I exist and I am here,” and BGP makes sure that all the routers in the Internet know about this subnet。</li>
+<li>确定前缀的“最佳”路径the router will locally run a BGP route-selection procedure (using the prefix reachability information  it  obtained  via  neighboring  routers).  The  best  route  will  be  determined based on policy as well as the reachability information。</li>
+</ul>
+<p>对于每个AS，路由器要么是内部路由器要么是网关路由器，网关路由器和其他AS的路由器直接相连。</p>
+<p>广播BGP协议时，每个AS不仅知道了某个前缀存在，还知道了前缀所属AS的路径（它是走什么路发过来的）。</p>
+<p>BGP信息由路由器交换，每一对路由器建立半永久TCP连接使用端口179，这样的TCP连接和发送的BGP信息，叫做BGP连接。</p>
+<p>跨AS的BGP连接叫external BGP（eBGP）connection，内部的叫做internal BGP（iBGP）connection。</p>
+<p>每个路由器都知道了前缀的存在。</p>
+<p>BGP信息有多条属性，其中包括AS-PATH和NEXT-HOP，AS-PATH属性包含了从前缀的源头开始经过的一系列AS，路由器更新AS-PATH时会防止循环。</p>
+<p>NEXT-HOP（下一跳节点）属性提供了AS间和AS内路由协议之间的关键链接，具有微妙但重要的用途。NEXT-HOP属性是开始AS-PATH的路由器接口的IP地址。比如“AS2 AS3 x”被AS1收到，NEXT-HOP就是AS1和AS2之间的路由器IP地址，且属于AS2。</p>
+<p>（route：前缀与路径加附带的属性）<br>热土豆路由。路由器决策时选择的路由（从所有可能的路由中）是到开始该路由的下一跳路由器的成本最低的路由。路由器尽可能快地将数据抛出所在AS。这是一种贪心算法。</p>
+<p>事实上BGP使用比热土豆路由更复杂的算法</p>
+<p>BGP在可能使用的路径中一个一个排除，直到只留下一个可用路径（使用以下的淘汰规则）。</p>
+<p>路由被赋予了local preference属性，具有最高属性的路由将被选中。这个属性完全是由AS网络管理员决定的。</p>
+<p>同时具有最高local preference属性的路由，具有最短的AS-PATH属性将被选中。</p>
+<p>同时满足以上条件的，最短NEXT-HOP将被使用（即热土豆路由）</p>
+<p>如果还有余下的，使用BGP identifier</p>
+<p>这样的算法不再贪心。</p>
+<p>BGP路由表包含超过50万条路由（即前缀和相应属性）。</p>
+<p><strong>IP-Anycast</strong><br>BGP还通常被用作实现IP-Anycast服务的手段，常被DNS使用。</p>
+<p>打个比方，某些用户是如何使用IP-Anycast服务的呢？一个CDN为他的多个服务器注册了同一个IP地址，使用标准BGP广播，这样路由器可以利用BGP机制找出最近的服务器。</p>
+<p>然而CDN实际上不常使用IP-anycast，因为同一个TCP连接的包可能到达不同服务器。DNS却广泛使用IP-anycast。</p>
+<p>通过控制AS routing policy（最高权力），可以完成一些特殊控制。</p>
+<p>商业ISP遵循的一条经验法则是，任何流经ISP主干网的流量必须在作为该ISP客户的网络中有一个源或一个目的地（或两者兼有）；否则，流量将在ISP网络上免费获得。</p>
+<p><strong>大串烧：假设您刚刚创建了一家拥有多台服务器的小公司…</strong></p>
+<p>首先需要获取网络连接，要和本地ISP联系，把自己的网关路由连到ISP路由器上面。然后ISP交出一段IP地址范围。这时候就可以给服务器们赋上地址啦，一个给Web服务器，一个给邮件服务器，一个给公司DNS服务器，一个给网关路由器…</p>
+<p>然后需要和Internet registrar联系，获取一个域名。把自己DNS服务器地IP地址给他们，他们会把域名和相应的IP地址条目插进.com顶级域名服务器，这时候外界的人就可以用域名访问到公司DNS服务器了。</p>
+<p>还有一步没完成呢，别的路由器还不知道怎么路由这些数据报呢。本地ISP需要使用BGP来把分配的前缀广播出去，这下所有路由器都知道公司的前缀了（或者是知道某个包含公司前缀的合计（aggregate）了）。</p>
+<p><strong>SDN</strong></p>
+<p>前情回顾：<br><strong>4.4Generalized Forwarding and SDN</strong></p>
+<p>destination-based forwarding的两步<br>match：寻找目标IP地址<br>action：把包送到特定输出端口</p>
+<p>Generalized forwarding: 每个分组交换机包含一个 match-plus-action table（由远程控制者计算并分发）</p>
+<p>接下来的关于广义转发的讨论将基于Open Flow。</p>
+<p>在OpenFlow里match-plus-action forwarding table 被叫做flow table，每一个条目都包含：</p>
+<ul>
+<li>一组header field value 用于匹配包</li>
+<li>一组计数者，在有包被匹配时更新</li>
+<li>一组要采取的行动（Action），这样的行动多种多样。</li>
+</ul>
+<p>对Match成功的包执行Action</p>
+<p>Match：OpenFlow的匹配可以基于连接层，网络层，传输层。OpenFlow使得一个设备既能具有层级3的能力，也有层级二的。</p>
+<p>包的头部有十二个值，包括源与目的地MAC、IP、Port，VLAN信息，协议信息，Eth Type，ingress port（包被收纳的入口端口）等等。</p>
+<p>有些部分被匹配，有些部分却不会。巴特勒·兰普森：一次做一件事，把它做好。接口应该捕获抽象的最基本要素。不要一概而论；概括通常是错误的。</p>
+<p>Action：每个条目都有0个或以上的动作，用于施加给匹配成功的包。这些动作包括：</p>
+<ul>
+<li>转发（forwarding），发送到目的端口、所有端口、部分端口、远程控制器…</li>
+<li>丢掉（Dropping）</li>
+<li>修改域（Modify-field）</li>
+</ul>
+<p>这么做有很多好处，包括可以使用同一套硬件完成不同功能。</p>
+<p>好的回到控制层。</p>
+<p>有四个SDN关键特征：</p>
+<ul>
+<li>基于流的转发。匹配可以基于传输层网络层与链路层，与传统匹配方式形成了鲜明对比。计算、组织、安装流表在交换机上是SDN控制层的责任。</li>
+<li>数据层与控制层分离。数据层包含网络交换机们——简单而高速地执行“匹配然后动作”的设备；控制层包含服务器和软件。</li>
+<li>在数据层交换机之外的网络控制功能。控制器拥有精确的网络状态信息，提供给在控制层上运行的网络控制应用，它还提供应用程序们监控、编程、控制底层网络设备的途径。此外控制器只是逻辑上中心化，实际上有很多控制器。</li>
+<li>可编程的网络。网络可以通过运行在控制层的应用程序来被编程。应用程序们使用控制器提供的API控制数据层的设备们。</li>
+</ul>
+<p>此外还看到SDN网络的解耦合特性。各个设备不一定要同一个厂家生产。</p>
+<p>SDN控制层分为两个部分：SDN控制器和SDN网络控制应用程序。</p>
+<p>SDN控制器的功能可以分三层：</p>
+<ul>
+<li>对话层，SDN控制器和被控制的设备进行对话。这是最底层，两者之间的对话被称作是“southbound”接口。</li>
+<li>网络范围的状态管理层。SDN控制层需要底层信息。所有信息均构成SDN控制器维护的网络范围“状态”的示例。</li>
+<li>网络控制应用层的接口。控制器通过其“northbound”接口与网络控制应用程序交互<br>P426这张图很形象。</li>
+</ul>
+<p>下面看看OpenFlow协议，它可以用来在SDN控制器和被控制设备之间通信（在对话层）</p>
+<p><strong>OpenFlow Portocol</strong><br>OpenFlow在tcp上工作，端口是6653</p>
+<p>以下这些信息常被控制器发送：</p>
+<ul>
+<li>配置。使控制器查询和设置一台交换机的配置参数</li>
+<li>更改状态。增删流表的条目，设置交换机端口属性。</li>
+<li>读状态。控制器收集统计信息和计数器值。</li>
+<li>发包。控制器自己发一个特定的包到交换机特定端口，这条信息包含了整个包。</li>
+</ul>
+<p>SDN交换机发送这些信息：</p>
+<ul>
+<li>流被移除。通知控制器一条流表条目被移除了</li>
+<li>端口状态。通知控制器端口状态的改变。</li>
+<li>送包进来（packet-in）。送一个包给控制器，当匹配失败或者匹配成功的某种情况。</li>
+</ul>
+<p>谷歌的B4网络与SDN息息相关。</p>
+<p>一个例子<br>（Dijkstra的算法作为单独的应用程序在交换机之外执行。<br>分组交换机向SDN控制器发送链路更新，而不是相互发送）</p>
+<p>SDN给了ISP很高的自由度，且ISP能更方便地操作路由器。</p>
+<p><strong>ICMP：the internet control message protocol</strong><br>用作主机和路由器之间互相沟通网络层信息。<br>ICMP看上去是IP的一部分，但是结构上它是在IP之上的。ICMP是作为IP数据报的负载被传送的，就像TCP和UDP段一样。<br>ICMP都具有type和code域<br>ICMP常用于报告错误或者异常情况。<br>ping和Traceroute是基于ICMP特性的。</p>
+<p><strong>SNMP，NETCONF/YANG</strong><br>除了SDN，还有一些工具能够管理网络。</p>
+<p>“网络管理包括硬件、软件和人员要素的部署、集成和协调，以监控、测试、轮询、配置、分析、评估和控制网络和要素资源，以合理的成本满足实时、操作性能和服务质量要求。”</p>
+<p>网络管理的关键组件：</p>
+<ul>
+<li>管理服务器。是一个应用程序。控制。</li>
+<li>被管理的设备。在管理网络里的设备（包括软件）</li>
+<li>数据。有配置数据，操作数据，设备统计数据</li>
+<li>网络管理agent。运行在被管理的设备里，与管理服务器沟通</li>
+<li>网络管理协议。需要注意的是，网络管理协议本身并不管理网络。相反，它提供了网络管理员可以用来管理（“监视、测试、轮询、配置、分析、评估和控制”）网络的功能。这是一个微妙但重要的区别。</li>
+</ul>
+<p>有三种常用的方式管理网络：</p>
+<ul>
+<li>CLI。直接command line interface来命令设备。命令直接在被管理设备的控制台上敲击，或通过Telnet或者secure shell（SSH）连接。很难，易出错，难以管理大型网络。家庭无线路由器可以用HTTP连上然后配置，这样做比CLI不容易出错一点。</li>
+<li>SNMP/MIB。Simple Network Management Protocol（SNMP）与Management Information Base（MIB）。网络操作员可以使用SNMP查询、设置在MIB里的数据。然后CLI。以上两种管理方式都是管理单独设备的。SNMP/MIB在管理大型网络时有短板。</li>
+<li>NETCONF/YANG。更抽象，更广大，更全观。YANG是一种数据建模语言，用于建模配置和操作数据。NETCONF协议用于将YANG兼容的操作和数据与远程设备进行通信。</li>
+</ul>
+<p><strong>SNMP和MIB</strong><br>The  Simple  Network  Management  Protocol  version  3是应用层协议，用来传输网络管理控制和信息，在管理服务器和代表那台服务器做事的agent之间。</p>
+<p>SNMP信息可以双向发送，用于通知、查询，更改MIB信息等。</p>
+<p>MIB对象被SMI(Structure of Management Information 用于保证数据语法词法被很好地定义同时)语言详细描述。</p>
+<p>PDU：protocol data units，是SNMPv3定义的7种消息类型。</p>
+<ul>
+<li>GetRequest</li>
+<li>GetNextRequest</li>
+<li>GetBulkRequest(这三个是粒度上的差别)</li>
+<li>InformRequest</li>
+<li>SetRequest</li>
+<li>Response</li>
+<li>SNMPv2-Trap</li>
+</ul>
+<p>PDU一般是装在UDP里的</p>
+<p>被管理设备的操作状态数据等数据在SNMP/MIB方法里是被呈现为被集合在一起而成为MIB的对象们的。相关MIB对象被聚集成为MIB模块。</p>
+<p><strong>The Network Configuration Protocol (NETCONF) and YANG</strong></p>
+<p>NETCONF在管理服务器和受管设备之间运行，用于（i）检索、设置和修改受管设备配置（ii）查询受管设备运行数据和统计数据（iii）订阅受管设备生成的通知。管理服务器通过发送结构化XML文档中指定的配置并激活受管设备上的配置，主动控制受管设备。NETCONF使用远程过程调用（RPC）范式，其中协议消息也以XML编码，并通过安全的、面向连接的会话（如TLS（传输层安全）协议）在管理服务器和受管设备之间进行交换。</p>
+<p>NETCONF Operation如下：</p>
+<ul>
+<li><get-config></li>
+<li><get></li>
+<li><edit-config></li>
+<li><lock>,<unlock></li>
+<li><create-subscription></li>
+<li><notification></li>
+</ul>
+<p><strong>YANG</strong><br>data modeling language来精确描述网络数据的结构词法语法，被NETCONF所使用。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/14/C++%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-9-Y-%E7%BB%84%E5%90%88%E5%AD%90/" rel="prev" title="Y-组合子">
+                  <i class="fa fa-chevron-left"></i> Y-组合子
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0-3-%E7%BD%91%E7%BB%9C%E5%B1%82%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa-regular fa-earth-asia"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ZYZ</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
